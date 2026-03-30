@@ -150,7 +150,7 @@ export default function AreasPage() {
             </div>
             <div className="mt-6 p-4 bg-teal/8 border border-teal/15 rounded-xl text-sm text-gray leading-relaxed">
               Not seeing your city listed? Call us at{' '}
-              <a href="tel:+19366486488" className="text-teal font-semibold">(936) 648-6488</a>.
+              <a href="tel:+15033137121" className="text-teal font-semibold">(503) 313-7121</a>.
               We likely serve your area or can connect you with a trusted local partner.
             </div>
           </div>

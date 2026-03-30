@@ -176,8 +176,8 @@ export default function AboutPage() {
             <Link href="/contact" className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all text-sm">
               Schedule Your IT Assessment
             </Link>
-            <a href="tel:+19366486488" className="border border-teal/40 text-cyan hover:border-teal font-bold px-8 py-3.5 rounded-lg transition-all text-sm">
-              (936) 648-6488
+            <a href="tel:+15033137121" className="border border-teal/40 text-cyan hover:border-teal font-bold px-8 py-3.5 rounded-lg transition-all text-sm">
+              (503) 313-7121
             </a>
           </div>
         </div>

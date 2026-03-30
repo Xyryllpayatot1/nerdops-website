@@ -165,7 +165,7 @@ export default function SolutionsPage() {
 
                   <div className="flex flex-wrap gap-3">
                     <a
-                      href="tel:+19366486488"
+                      href="tel:+15033137121"
                       className="bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm"
                     >
                       {s.cta}

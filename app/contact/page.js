@@ -66,7 +66,7 @@ export default function ContactPage() {
               <h2 className="font-serif text-2xl font-bold mb-6 mt-2">We Are Here When You Need Us</h2>
 
               <div className="space-y-5">
-                <a href="tel:+19366486488" className="flex items-start gap-4 group">
+                <a href="tel:+15033137121" className="flex items-start gap-4 group">
                   <div className="w-10 h-10 bg-teal/10 border border-teal/15 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-4.5 h-4.5 text-teal" fill="currentColor" viewBox="0 0 20 20" style={{width:'18px',height:'18px'}}>
                       <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
@@ -74,7 +74,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-gray text-xs mb-0.5">Phone</p>
-                    <p className="font-semibold text-white group-hover:text-teal transition-colors">(936) 648-6488</p>
+                    <p className="font-semibold text-white group-hover:text-teal transition-colors">(503) 313-7121</p>
                   </div>
                 </a>
 
@@ -139,7 +139,7 @@ export default function ContactPage() {
                 <p className="text-gray text-sm leading-relaxed max-w-sm mx-auto">
                   Your message has been received. A member of our team will be in touch within
                   one business hour. For urgent matters, please call{' '}
-                  <a href="tel:+19366486488" className="text-teal font-semibold">(936) 648-6488</a>.
+                  <a href="tel:+15033137121" className="text-teal font-semibold">(503) 313-7121</a>.
                 </p>
               </div>
             ) : (

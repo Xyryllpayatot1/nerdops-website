@@ -253,7 +253,7 @@ export default function HomePage() {
 
           <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center mb-20">
             <a
-              href="tel:+19366486488"
+              href="tel:+15033137121"
               className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/25 text-sm tracking-wide inline-flex items-center gap-2"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -530,10 +530,10 @@ export default function HomePage() {
               Claim Your Free Cyber Security Audit
             </Link>
             <a
-              href="tel:+19366486488"
+              href="tel:+15033137121"
               className="border border-teal/40 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all text-sm tracking-wide"
             >
-              Call Us — (936) 648-6488
+              Call Us — (503) 313-7121
             </a>
           </div>
         </div>

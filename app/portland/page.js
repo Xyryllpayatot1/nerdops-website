@@ -114,7 +114,7 @@ export default function PortlandPage() {
           </p>
           <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center">
             <a
-              href="tel:+19366486488"
+              href="tel:+15033137121"
               className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/25 text-sm tracking-wide inline-flex items-center gap-2"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -265,7 +265,7 @@ export default function PortlandPage() {
                   <p className="font-semibold text-white leading-snug">750 SW 9th Ave<br />Portland, OR 97205</p>
                 </div>
               </div>
-              <a href="tel:+19366486488" className="flex items-start gap-4 group">
+              <a href="tel:+15033137121" className="flex items-start gap-4 group">
                 <div className="w-10 h-10 bg-teal/10 border border-teal/15 rounded-lg flex items-center justify-center flex-shrink-0">
                   <svg className="w-4 h-4 text-teal" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
@@ -273,7 +273,7 @@ export default function PortlandPage() {
                 </div>
                 <div>
                   <p className="text-gray text-xs mb-0.5">Phone</p>
-                  <p className="font-semibold text-white group-hover:text-teal transition-colors">(936) 648-6488</p>
+                  <p className="font-semibold text-white group-hover:text-teal transition-colors">(503) 313-7121</p>
                 </div>
               </a>
               <div className="flex items-start gap-4">
@@ -331,7 +331,7 @@ export default function PortlandPage() {
               Claim Your Free Cyber Security Audit
             </Link>
             <a
-              href="tel:+19366486488"
+              href="tel:+15033137121"
               className="border border-teal/40 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all text-sm tracking-wide inline-flex items-center gap-2"
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

@@ -14,7 +14,8 @@
       "Bash(python3 -c \"from PIL import Image; print\\(''''PIL ok''''\\)\")",
       "Bash(mkdir -p /home/xyryllpanget/Downloads/nerdops-website/public)",
       "Bash(python3:*)",
-      "Read(//home/xyryllpanget/Downloads/nerdops-website/**)"
+      "Read(//home/xyryllpanget/Downloads/nerdops-website/**)",
+      "Bash(xargs sed:*)"
     ]
   }
 }
