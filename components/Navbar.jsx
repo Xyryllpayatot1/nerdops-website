@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SOLUTIONS = [
   { label: 'Managed IT Services',               href: '/solutions#managed-it' },
@@ -44,8 +45,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-5 flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="font-serif text-xl font-bold tracking-wide select-none">
-            <span className="text-teal">Nerd</span>Ops
+          <Link href="/" className="select-none flex items-center">
+            <Image src="/logo.png" alt="ZERO NERDS" width={120} height={67} priority />
           </Link>
 
           {/* Desktop nav */}

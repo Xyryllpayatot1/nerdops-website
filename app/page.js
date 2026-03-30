@@ -224,7 +224,7 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-4xl mx-auto">
           <div className="animate-fade-in-up inline-flex items-center gap-2 bg-teal/10 border border-teal/30 text-cyan text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full mb-8">
-            IT Managed Services &amp; 24/7 Support — Spring, TX
+            IT Managed Services &amp; 24/7 Support — Portland, OR
           </div>
 
           <h1
@@ -297,10 +297,10 @@ export default function HomePage() {
           <div className="reveal">
             <span className="section-label">Who We Are</span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-5">
-              A Reliable IT Support Company in Spring, TX and Surrounding Areas
+              A Reliable IT Support Company in Portland, OR and Surrounding Areas
             </h2>
             <p className="text-gray text-sm leading-relaxed mb-4">
-              We are a trusted IT support company serving Spring, TX, and businesses nationwide.
+              We are a trusted IT support company serving Portland, OR, and businesses nationwide.
               With 11 years of experience, we deliver proactive IT services, cybersecurity protection,
               and structured infrastructure support that keep systems stable and secure.
             </p>
@@ -458,7 +458,7 @@ export default function HomePage() {
             <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">
               What Our Clients Say
             </h2>
-            <p className="text-gray text-sm">Verified reviews from businesses across Spring, TX and surrounding areas.</p>
+            <p className="text-gray text-sm">Verified reviews from businesses across Portland, OR and surrounding areas.</p>
           </div>
 
           <div className="columns-1 md:columns-2 lg:columns-3 gap-4">

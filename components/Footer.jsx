@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SOLUTIONS = [
   { label: 'Managed IT Services',               href: '/solutions#managed-it' },
@@ -39,11 +40,11 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <Link href="/" className="font-serif text-2xl font-bold">
-              <span className="text-teal">Nerd</span>Ops
+            <Link href="/" className="inline-block">
+              <Image src="/logo.png" alt="ZERO NERDS" width={110} height={62} />
             </Link>
             <p className="text-gray text-sm leading-relaxed mt-3 max-w-xs">
-              A trusted IT support company serving Spring, TX and businesses nationwide.
+              A trusted IT support company serving Portland, OR and businesses nationwide.
               Proactive IT services, cybersecurity protection, and structured infrastructure
               support that keep systems stable and secure.
             </p>
@@ -141,7 +142,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray/60">
-          <span>&copy;{new Date().getFullYear()} NerdOps IT Solutions. All Rights Reserved.</span>
+          <span>&copy;{new Date().getFullYear()} ZERO NERDS. All Rights Reserved.</span>
           <div className="flex gap-5">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <a href="#" className="hover:text-white transition-colors">Leave a Review!</a>
