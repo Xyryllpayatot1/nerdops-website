@@ -92,7 +92,7 @@ export default function GalleryPage() {
             Gallery Coming Soon
           </h1>
           <p className="text-gray text-base leading-relaxed max-w-xl mx-auto">
-            Dependable IT services in Spring, TX. We are building out our gallery to showcase
+            Dependable IT services in Portland, OR. We are building out our gallery to showcase
             infrastructure projects, on-site work, and client environments.
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function GalleryPage() {
             <h2 className="font-serif text-2xl font-bold mb-3">Infrastructure, Cloud, and Security Projects</h2>
             <p className="text-gray text-sm leading-relaxed">
               Our work spans server room builds, cloud migrations, network infrastructure, and cybersecurity
-              implementations across businesses throughout Spring, TX and surrounding areas.
+              implementations across businesses throughout Portland, OR and surrounding areas.
             </p>
           </div>
 

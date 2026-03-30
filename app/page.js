@@ -140,8 +140,8 @@ const FAQS = [
     a: 'Managed services include continuous monitoring, system updates, and infrastructure management that prevent outages before they impact productivity.',
   },
   {
-    q: 'Do you support small businesses in Spring, TX?',
-    a: 'Yes, we provide business IT support and cybersecurity services for growing organizations in Spring, TX, and across the United States.',
+    q: 'Do you support small businesses in Portland, OR?',
+    a: 'Yes, we provide business IT support and cybersecurity services for growing organizations in Portland, OR, and across the United States.',
   },
   {
     q: 'How does cloud monitoring improve performance?',
@@ -346,12 +346,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
             {SERVICES.map((s) => (
               <Link
                 key={s.id}
                 href={s.href}
-                className="reveal card-bar relative bg-navy border border-white/6 rounded-xl p-7 overflow-hidden hover:-translate-y-1 hover:border-teal/30 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group"
+                className="reveal break-inside-avoid mb-4 card-bar relative bg-navy border border-white/6 rounded-xl p-7 overflow-hidden hover:-translate-y-1 hover:border-teal/30 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group inline-block w-full"
               >
                 <span className="section-label block mb-2 group-hover:text-cyan transition-colors">{s.tagline}</span>
                 <h3 className="font-serif font-bold text-base mb-3 text-white leading-snug">{s.title}</h3>

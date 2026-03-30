@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 const SOLUTIONS = [
   { label: 'Managed IT Services',               href: '/solutions#managed-it' },
@@ -40,10 +39,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <Link href="/" className="inline-block">
-              <Image src="/logo.png" alt="ZERO NERDS" width={110} height={62} />
-            </Link>
-            <p className="text-gray text-sm leading-relaxed mt-3 max-w-xs">
+            <p className="text-gray text-sm leading-relaxed max-w-xs">
               A trusted IT support company serving Portland, OR and businesses nationwide.
               Proactive IT services, cybersecurity protection, and structured infrastructure
               support that keep systems stable and secure.

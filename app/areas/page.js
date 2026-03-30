@@ -15,14 +15,14 @@ function useReveal() {
 }
 
 const PRIMARY = [
-  { city: 'Spring, TX',           note: 'Primary Service Area & Office Location' },
+  { city: 'Portland, OR',           note: 'Primary Service Area & Office Location' },
   { city: 'Houston, TX',          note: 'On-Site Support Available' },
   { city: 'The Woodlands, TX',    note: 'On-Site Support Available' },
   { city: 'Conroe, TX',           note: 'On-Site Support Available' },
 ];
 
 const ALL_AREAS = [
-  'Spring, TX', 'Houston, TX', 'The Woodlands, TX', 'Conroe, TX',
+  'Portland, OR', 'Houston, TX', 'The Woodlands, TX', 'Conroe, TX',
   'Tomball, TX', 'Humble, TX', 'Cypress, TX', 'Pasadena, TX',
   'Friendswood, TX', 'Katy, TX', 'Rosenberg, TX', 'League City, TX',
   'Dickinson, TX', 'Alvin, TX', 'Huntsville, TX', 'Coldspring, TX',
@@ -41,10 +41,10 @@ export default function AreasPage() {
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <span className="section-label block text-center">Areas We Serve</span>
           <h1 className="font-serif text-4xl md:text-5xl font-bold mt-3 mb-5 leading-tight">
-            Serving Spring, TX and<br />Surrounding Areas with Pride
+            Serving Portland, OR and<br />Surrounding Areas with Pride
           </h1>
           <p className="text-gray text-base leading-relaxed max-w-xl mx-auto">
-            We provide dependable IT services and managed IT support in Spring, TX, and nearby
+            We provide dependable IT services and managed IT support in Portland, OR, and nearby
             communities. As a trusted IT support company, we help businesses secure systems
             and reduce downtime.
           </p>
@@ -164,7 +164,7 @@ export default function AreasPage() {
             Identify Vulnerabilities Before They Cause Downtime
           </h2>
           <p className="text-gray text-sm leading-relaxed mb-8">
-            Secure your Free Cyber Security Audit today. Available to all businesses in Spring, TX and surrounding areas.
+            Secure your Free Cyber Security Audit today. Available to all businesses in Portland, OR and surrounding areas.
           </p>
           <Link href="/contact" className="bg-teal hover:bg-teal/90 text-white font-bold px-9 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm">
             Claim Your Free Cyber Security Audit

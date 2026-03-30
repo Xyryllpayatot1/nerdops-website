@@ -36,11 +36,10 @@ export default function Navbar() {
       </div>
 
       <nav
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-navy2/96 backdrop-blur-md shadow-xl border-b border-teal/15'
-            : 'bg-navy2/90 backdrop-blur-sm border-b border-white/5'
+        className={`sticky top-0 z-50 transition-all duration-300 border-b border-[#c8d4e8] ${
+          scrolled ? 'shadow-md' : ''
         }`}
+        style={{ backgroundColor: '#dce6f5' }}
       >
         <div className="max-w-7xl mx-auto px-5 flex items-center justify-between h-16">
 
@@ -52,12 +51,12 @@ export default function Navbar() {
           {/* Desktop nav */}
           <ul className="hidden lg:flex items-center gap-7 text-sm font-medium">
             <li>
-              <Link href="/" className="text-gray hover:text-white transition-colors">
+              <Link href="/" className="text-navy hover:text-teal transition-colors">
                 Home
               </Link>
             </li>
             <li>
-              <Link href="/about" className="text-gray hover:text-white transition-colors">
+              <Link href="/about" className="text-navy/70 hover:text-teal transition-colors">
                 Get To Know Us
               </Link>
             </li>
@@ -68,7 +67,7 @@ export default function Navbar() {
               onMouseEnter={() => setSolutionsOpen(true)}
               onMouseLeave={() => setSolutionsOpen(false)}
             >
-              <button className="text-gray hover:text-white transition-colors flex items-center gap-1.5">
+              <button className="text-navy/70 hover:text-teal transition-colors flex items-center gap-1.5">
                 Our Solutions
                 <svg
                   className={`w-3 h-3 transition-transform duration-200 ${solutionsOpen ? 'rotate-180' : ''}`}
@@ -78,35 +77,48 @@ export default function Navbar() {
                 </svg>
               </button>
               <div
-                className={`absolute top-full left-0 mt-2 w-72 bg-navy border border-white/8 rounded-xl shadow-2xl py-2 z-50 transition-all duration-200 ${
+                className={`absolute top-full left-0 w-72 z-50 pt-1 transition-all duration-200 ${
                   solutionsOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
                 }`}
               >
+              <div className="bg-white border border-slate-200 rounded-xl shadow-2xl py-2">
                 {SOLUTIONS.map((s) => (
                   <Link
                     key={s.href}
                     href={s.href}
-                    className="flex items-center gap-2.5 px-4 py-3 text-gray hover:text-white hover:bg-white/4 transition-colors text-sm"
+                    className="flex items-center gap-2.5 px-4 py-3 text-navy/70 hover:text-teal hover:bg-teal/5 transition-colors text-sm"
                   >
                     <span className="w-1 h-1 rounded-full bg-teal/50 flex-shrink-0" />
                     {s.label}
                   </Link>
                 ))}
               </div>
+              </div>
             </li>
 
             <li>
-              <Link href="/areas" className="text-gray hover:text-white transition-colors">
+              <Link href="/areas" className="text-navy/70 hover:text-teal transition-colors">
                 Areas We Serve
               </Link>
             </li>
             <li>
-              <Link href="/gallery" className="text-gray hover:text-white transition-colors">
+              <Link href="/gallery" className="text-navy/70 hover:text-teal transition-colors">
                 Our Gallery
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="text-gray hover:text-white transition-colors">
+              <Link
+                href="/portland"
+                className="inline-flex items-center gap-1.5 bg-teal/10 hover:bg-teal/20 text-teal font-semibold text-xs px-3 py-1.5 rounded-full border border-teal/25 transition-all duration-200"
+              >
+                <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                Portland, OR
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="text-navy/70 hover:text-teal transition-colors">
                 Contact Us
               </Link>
             </li>
@@ -132,7 +144,7 @@ export default function Navbar() {
 
             {/* Hamburger */}
             <button
-              className="lg:hidden text-gray hover:text-white p-1"
+              className="lg:hidden text-navy hover:text-teal p-1"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle navigation"
             >
@@ -151,19 +163,20 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="lg:hidden bg-navy border-t border-white/5 px-5 py-4">
+          <div className="lg:hidden border-t border-[#c8d4e8] px-5 py-4" style={{ backgroundColor: '#dce6f5' }}>
             {[
               { href: '/',          label: 'Home' },
               { href: '/about',     label: 'Get To Know Us' },
               { href: '/solutions', label: 'Our Solutions' },
               { href: '/areas',     label: 'Areas We Serve' },
               { href: '/gallery',   label: 'Our Gallery' },
+              { href: '/portland',  label: 'Portland, OR' },
               { href: '/contact',   label: 'Contact Us' },
             ].map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="block py-3 text-gray hover:text-white border-b border-white/5 text-sm font-medium transition-colors"
+                className="block py-3 text-navy/70 hover:text-teal border-b border-gray/10 text-sm font-medium transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
                 {item.label}

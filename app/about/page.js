@@ -25,7 +25,7 @@ const VALUES = [
   },
   {
     title: 'Clear Communication',
-    desc: 'We explain solutions in simple terms and maintain transparency. Businesses in Spring, TX trust our accountability and responsiveness.',
+    desc: 'We explain solutions in simple terms and maintain transparency. Businesses in Portland, OR trust our accountability and responsiveness.',
   },
 ];
 
@@ -43,7 +43,7 @@ export default function AboutPage() {
             Who We Are
           </h1>
           <p className="text-gray text-base leading-relaxed max-w-2xl mx-auto">
-            A Reliable IT Support Company Serving Spring, TX and Surrounding Areas
+            A Reliable IT Support Company Serving Portland, OR and Surrounding Areas
           </p>
         </div>
       </section>
@@ -64,7 +64,7 @@ export default function AboutPage() {
               <p>
                 Technology should move your business forward, not hold it back. When systems are unstable,
                 cybersecurity gaps go unnoticed, or support requests go unanswered, productivity suffers.
-                That is why working with a dependable IT support company in Spring, TX makes a measurable
+                That is why working with a dependable IT support company in Portland, OR makes a measurable
                 difference. We focus on proactive IT services that reduce downtime, strengthen security, and
                 create long-term infrastructure stability for both homeowners and commercial organizations.
               </p>
@@ -76,7 +76,7 @@ export default function AboutPage() {
                 remains secure and reliable.
               </p>
               <p>
-                As an established IT support company in Spring, TX, we take responsibility for your
+                As an established IT support company in Portland, OR, we take responsibility for your
                 infrastructure so you can focus on growth and daily operations. Every service we provide
                 is grounded in reliability, accountability, and clear communication.
               </p>
