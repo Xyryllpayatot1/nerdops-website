@@ -7,11 +7,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        navy:  '#1b1736',
-        navy2: '#12102a',
-        teal:  '#35b29f',
-        cyan:  '#5cf2f2',
-        ocean: '#2271a1',
+        navy:  '#162040',
+        navy2: '#0d1530',
+        teal:  '#29abe2',
+        cyan:  '#5dd5f7',
+        ocean: '#1e5fa0',
         gray:  '#8a9ab0',
       },
       fontFamily: {
@@ -27,7 +27,7 @@ module.exports = {
       keyframes: {
         ticker:   { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(-50%)' } },
         fadeUp:   { from: { opacity: 0, transform: 'translateY(30px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
-        pulse2:   { '0%': { boxShadow: '0 0 0 0 rgba(53,178,159,.6)' }, '70%': { boxShadow: '0 0 0 10px rgba(53,178,159,0)' }, '100%': { boxShadow: '0 0 0 0 rgba(53,178,159,0)' } },
+        pulse2:   { '0%': { boxShadow: '0 0 0 0 rgba(41,171,226,.6)' }, '70%': { boxShadow: '0 0 0 10px rgba(41,171,226,0)' }, '100%': { boxShadow: '0 0 0 0 rgba(41,171,226,0)' } },
         gridMove: { '0%': { backgroundPosition: '0 0' }, '100%': { backgroundPosition: '50px 50px' } },
       },
     },

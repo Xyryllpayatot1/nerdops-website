@@ -24,7 +24,7 @@ export default function Footer() {
       {/* Top CTA strip */}
       <div
         className="text-white text-center py-4 px-5"
-        style={{ background: 'linear-gradient(90deg,#2271a1,#35b29f)' }}
+        style={{ background: 'linear-gradient(90deg,#1e5fa0,#29abe2)' }}
       >
         <p className="font-semibold text-sm tracking-wide">
           Claim Your Free Cyber Security Audit —{' '}
@@ -58,7 +58,7 @@ export default function Footer() {
                 <svg className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
-                <span>2626 Spring Cypress Rd, Suite 64<br />Spring, TX 77384</span>
+                <span>750 SW 9th Ave<br />Portland, OR 97205</span>
               </div>
               <div className="flex items-center gap-2 text-gray text-xs">
                 <svg className="w-4 h-4 text-teal flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

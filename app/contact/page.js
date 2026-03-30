@@ -86,7 +86,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-gray text-xs mb-0.5">Office Address</p>
-                    <p className="font-semibold text-white leading-snug">2626 Spring Cypress Rd, Suite 64<br />Spring, TX 77384</p>
+                    <p className="font-semibold text-white leading-snug">750 SW 9th Ave<br />Portland, OR 97205</p>
                   </div>
                 </div>
 

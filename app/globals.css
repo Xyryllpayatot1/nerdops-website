@@ -7,7 +7,7 @@
 @layer base {
   html { scroll-behavior: smooth; }
   body {
-    background-color: #12102a;
+    background-color: #0d1530;
     color: #f0f4f8;
     font-family: 'Roboto', sans-serif;
     overflow-x: hidden;
@@ -18,8 +18,8 @@
   /* Grid animated background */
   .hero-grid-bg {
     background-image:
-      linear-gradient(rgba(53,178,159,.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(53,178,159,.07) 1px, transparent 1px);
+      linear-gradient(rgba(41,171,226,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(41,171,226,.07) 1px, transparent 1px);
     background-size: 50px 50px;
     animation: gridMove 20s linear infinite;
   }
@@ -45,7 +45,7 @@
 
   /* Gradient text */
   .grad-text {
-    background: linear-gradient(135deg, #35b29f, #5cf2f2);
+    background: linear-gradient(135deg, #29abe2, #5dd5f7);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -57,7 +57,7 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #35b29f;
+    color: #29abe2;
     margin-bottom: .5rem;
     display: block;
   }
@@ -68,7 +68,7 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #35b29f, #5cf2f2);
+    background: linear-gradient(90deg, #29abe2, #5dd5f7);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform .3s;
@@ -78,7 +78,7 @@
   /* Pulse dot */
   .pulse-dot {
     width: 10px; height: 10px;
-    background: #35b29f;
+    background: #29abe2;
     border-radius: 50%;
     animation: pulse2 2s infinite;
   }
@@ -87,7 +87,7 @@
   .month-block {
     height: 32px;
     border-radius: 3px;
-    background: #35b29f;
+    background: #29abe2;
   }
 }
 
@@ -100,9 +100,9 @@
   to   { transform: translateX(-50%); }
 }
 @keyframes pulse2 {
-  0%   { box-shadow: 0 0 0 0 rgba(53,178,159,.6); }
-  70%  { box-shadow: 0 0 0 10px rgba(53,178,159,0); }
-  100% { box-shadow: 0 0 0 0 rgba(53,178,159,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(41,171,226,.6); }
+  70%  { box-shadow: 0 0 0 10px rgba(41,171,226,0); }
+  100% { box-shadow: 0 0 0 0 rgba(41,171,226,0); }
 }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }

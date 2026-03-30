@@ -202,7 +202,7 @@ export default function SolutionsPage() {
       {/* CTA */}
       <section
         className="py-24 px-5 text-center"
-        style={{ background: 'linear-gradient(135deg,#0d2e24,#1b1736,#0a2233)' }}
+        style={{ background: 'linear-gradient(135deg,#091a33,#0d1530,#0a1828)' }}
       >
         <div className="reveal max-w-xl mx-auto">
           <span className="section-label block text-center mb-4">Not Sure Where to Start?</span>

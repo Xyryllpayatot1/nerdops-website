@@ -254,15 +254,18 @@ export default function HomePage() {
           <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center mb-20">
             <a
               href="tel:+19366486488"
-              className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/25 text-sm tracking-wide"
+              className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/25 text-sm tracking-wide inline-flex items-center gap-2"
             >
-              Call For IT Services
+              <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+              </svg>
+              Get Instant Help
             </a>
             <Link
               href="/contact"
               className="border border-teal/50 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all duration-200 text-sm tracking-wide"
             >
-              Schedule Managed IT Services
+              Get Free Quote
             </Link>
           </div>
 
@@ -278,7 +281,7 @@ export default function HomePage() {
       </section>
 
       {/* ── TICKER ── */}
-      <div className="ticker-wrap py-3 overflow-hidden" style={{ background: 'linear-gradient(90deg,#2271a1,#35b29f)' }}>
+      <div className="ticker-wrap py-3 overflow-hidden" style={{ background: 'linear-gradient(90deg,#1e5fa0,#29abe2)' }}>
         <div className="ticker-inner">
           {TICKER_ITEMS.map((item, i) => (
             <span key={i} className="text-white text-xs font-semibold tracking-widest uppercase opacity-90">
@@ -380,7 +383,7 @@ export default function HomePage() {
               <p className="text-gray text-sm">Average Client Uptime — Last 12 Months</p>
             </div>
             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
-              <div className="h-full rounded-full" style={{ width: '99.98%', background: 'linear-gradient(90deg,#35b29f,#5cf2f2)' }} />
+              <div className="h-full rounded-full" style={{ width: '99.98%', background: 'linear-gradient(90deg,#29abe2,#5dd5f7)' }} />
             </div>
             <div className="grid grid-cols-12 gap-1 mt-4">
               {[1,1,1,1,.6,1,1,1,1,1,.6,1].map((op, i) => (
@@ -474,7 +477,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-3 border-t border-white/5 pt-4">
                   <div
                     className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg,#35b29f,#2271a1)' }}
+                    style={{ background: 'linear-gradient(135deg,#29abe2,#1e5fa0)' }}
                   >
                     {t.initials}
                   </div>
@@ -508,7 +511,7 @@ export default function HomePage() {
       {/* ── FINAL CTA ── */}
       <section
         className="py-24 px-5 text-center"
-        style={{ background: 'linear-gradient(135deg,#0d2e24,#1b1736,#0a2233)' }}
+        style={{ background: 'linear-gradient(135deg,#091a33,#0d1530,#0a1828)' }}
       >
         <div className="reveal max-w-2xl mx-auto">
           <span className="section-label block text-center mb-4">Get Started</span>
