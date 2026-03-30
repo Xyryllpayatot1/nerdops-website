@@ -58,39 +58,75 @@ const STATS = [
 const TESTIMONIALS = [
   {
     stars: 5,
-    text: 'Affable IT is the absolute best IT service around. Very fast response time with a dedicated and educated team.',
+    text: 'NerdOps is the absolute best IT service around. Very fast response time with a dedicated and educated team. They can solve any issue that occurs, leaving us with less downtime than ever before.',
     name: 'Kate LaMare',
     initials: 'KL',
   },
   {
     stars: 5,
-    text: 'Out of all the firms I\'ve hired, nothing compares to the level of expertise and sense of urgency as Daniel and his Team.',
+    text: 'Out of all the firms I\'ve hired, and even dedicated techs as employees, nothing compares to the level of expertise and sense of urgency as Daniel and his Team. Amazing Service, Integrity and Knowledge in all aspects of the craft. The patience and ability to break nomenclature down to means that non-technical folks can understand is extremely helpful.',
     name: 'Chris Wilson',
     initials: 'CW',
   },
   {
     stars: 5,
-    text: 'The best IT services I have ever encountered. Quick to respond and always resolves any issues we are having.',
+    text: 'The best IT services I have ever encountered. Quick to respond and always resolves any issues we are having. Danny and his team are the best at what they do.',
     name: 'Katelyn',
     initials: 'KT',
   },
   {
     stars: 5,
-    text: 'Danny/Affable is an incredible IT support. Danny is super knowledgeable and works to get your company to the level you need.',
+    text: 'Danny is an incredible IT support. Danny is super knowledgeable and works to get your company to the level you need to be and takes your budget into account. He is also accessible when an IT event happens no matter when. Your IT needs are in good hands with Danny and his team.',
     name: 'Lisa Cook',
     initials: 'LC',
   },
   {
     stars: 5,
-    text: 'Danny and his team at Affable IT have been awesome to work with. Their passion and dedication to their craft is very apparent.',
+    text: 'Danny and his team at NerdOps have been awesome to work with. Their passion and dedication to their craft is very apparent. I look forward to further interactions and collaboration with them.',
     name: 'Robbie Myers',
     initials: 'RM',
   },
   {
     stars: 5,
-    text: 'Love working with Affable IT! Quick, efficient, knowledgeable, overall great Team!',
+    text: 'Love working with NerdOps! Quick, efficient, knowledgeable, overall great Team!',
     name: 'Nicole Nelson',
     initials: 'NN',
+  },
+  {
+    stars: 5,
+    text: 'Daniel is awesome, so helpful and on top of everything. During our company change over, Daniel was integral in making sure we were set up and running smoothly. He helped me most any time day or night. I cannot say enough about Daniel, and I appreciate him and the whole team at NerdOps!',
+    name: 'Robert Moore',
+    initials: 'RMO',
+  },
+  {
+    stars: 5,
+    text: 'We love NerdOps! Daniel and his team are so helpful!',
+    name: 'Laura Brown',
+    initials: 'LB',
+  },
+  {
+    stars: 5,
+    text: 'Daniel and his team are AWESOME! Professional, friendly, and knowledgeable. Great communication on the status of issues. Any issues I\'ve had have been resolved quickly. Overall, a very positive experience with NerdOps!',
+    name: 'Jill Lee',
+    initials: 'JL',
+  },
+  {
+    stars: 5,
+    text: 'Bridgewell Building Materials has partnered with Danny and NerdOps for the migration of all of our business IT infrastructure and I could not have asked for a better partner. We have completed week one and every day the business is running more efficiently. Thank you Danny and your team for your dedication and hard work in this transition.',
+    name: 'David Routt JR',
+    initials: 'DR',
+  },
+  {
+    stars: 5,
+    text: 'These guys are terrific, responsible, and lovely to work with. We have a difficult house with lots of impediments and they helped us design a working home network, and followed up to help us tweak it. Great group and we will be calling again if we need it. So far everything has worked great since installed!',
+    name: 'Laura Capper',
+    initials: 'LCA',
+  },
+  {
+    stars: 5,
+    text: 'Danny and the team at NerdOps are awesome! I know next to nothing about IT stuff, so having someone knowledgeable is a must when issues come up. The fact that they handled my issues quickly and completely the first time, is a massive bonus! You won\'t go wrong working with the team at NerdOps!',
+    name: 'Robert Smart',
+    initials: 'RS',
   },
 ];
 

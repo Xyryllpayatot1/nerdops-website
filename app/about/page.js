@@ -25,7 +25,7 @@ const VALUES = [
   },
   {
     title: 'Clear Communication',
-    desc: 'We explain solutions in simple terms and maintain transparency. Clients trust our accountability and responsiveness.',
+    desc: 'We explain solutions in simple terms and maintain transparency. Businesses in Spring, TX trust our accountability and responsiveness.',
   },
 ];
 
@@ -58,18 +58,27 @@ export default function AboutPage() {
             </h2>
             <div className="space-y-5 text-gray text-sm leading-relaxed">
               <p>
-                We founded this company with a clear purpose: simplify and humanize technology support
+                We founded NerdOps with a clear purpose: simplify and humanize technology support
                 for businesses that were frustrated with confusing and impersonal IT experiences.
               </p>
               <p>
-                With 11 years of experience in IT services and infrastructure management, we focus on
-                prevention, responsiveness, and accountability. As an established IT support company
-                serving Spring, TX, and businesses across the country, we act as a dependable extension
-                of your team.
+                Technology should move your business forward, not hold it back. When systems are unstable,
+                cybersecurity gaps go unnoticed, or support requests go unanswered, productivity suffers.
+                That is why working with a dependable IT support company in Spring, TX makes a measurable
+                difference. We focus on proactive IT services that reduce downtime, strengthen security, and
+                create long-term infrastructure stability for both homeowners and commercial organizations.
               </p>
               <p>
-                We monitor systems 24/7, apply proactive updates, and strengthen cybersecurity controls
-                before issues impact operations. Technology should support your business, not create obstacles.
+                From managed IT services and help desk services to cloud infrastructure management, incident
+                response services, data backup services, and cybersecurity services, we provide structured
+                solutions designed to keep operations running smoothly. Our 24/7 monitoring, preventive
+                maintenance strategies, and layered security controls ensure your technology environment
+                remains secure and reliable.
+              </p>
+              <p>
+                As an established IT support company in Spring, TX, we take responsibility for your
+                infrastructure so you can focus on growth and daily operations. Every service we provide
+                is grounded in reliability, accountability, and clear communication.
               </p>
             </div>
           </div>
