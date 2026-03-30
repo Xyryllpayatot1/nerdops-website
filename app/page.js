@@ -1,0 +1,504 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
+const SERVICES = [
+  {
+    id: 'managed-it',
+    title: 'Managed IT Services',
+    tagline: 'Proactive System Oversight',
+    desc: 'Continuous monitoring and proactive system care that reduces outages and maintains reliable infrastructure performance.',
+    href: '/solutions#managed-it',
+  },
+  {
+    id: 'help-desk',
+    title: 'IT Support & Help Desk',
+    tagline: 'Responsive Technical Support',
+    desc: 'Fast remote IT support that keeps your team productive and systems operating efficiently with structured tracking and clear communication.',
+    href: '/solutions#help-desk',
+  },
+  {
+    id: 'cloud',
+    title: 'Cloud Server Hosting & Management',
+    tagline: 'Secure Cloud Infrastructure',
+    desc: 'Strengthen system stability and scalability while protecting your cloud infrastructure through proactive monitoring and optimization.',
+    href: '/solutions#cloud',
+  },
+  {
+    id: 'incident-response',
+    title: 'Incident Response Services',
+    tagline: 'Continuous Monitoring and Protection',
+    desc: 'Real-time server monitoring, structured security configuration, and performance optimization that prevents disruptions before they impact operations.',
+    href: '/solutions#incident-response',
+  },
+  {
+    id: 'backup',
+    title: 'Backup & Disaster Recovery',
+    tagline: 'Protect Data and Maintain Continuity',
+    desc: 'Automated cloud backups and structured recovery planning that protect critical data and restore operations quickly.',
+    href: '/solutions#backup',
+  },
+  {
+    id: 'cybersecurity',
+    title: 'Cybersecurity & Infrastructure Protection',
+    tagline: 'Advanced Protection for Business Systems',
+    desc: 'Layered security controls that defend networks, endpoints, and servers through 24/7 monitoring and structured threat response.',
+    href: '/solutions#cybersecurity',
+  },
+];
+
+const STATS = [
+  { num: '11+',    label: 'Years of Experience' },
+  { num: '99.98%', label: 'Average Uptime' },
+  { num: '500+',   label: 'Businesses Served' },
+  { num: '24/7',   label: 'Infrastructure Monitoring' },
+];
+
+const TESTIMONIALS = [
+  {
+    stars: 5,
+    text: 'Affable IT is the absolute best IT service around. Very fast response time with a dedicated and educated team.',
+    name: 'Kate LaMare',
+    initials: 'KL',
+  },
+  {
+    stars: 5,
+    text: 'Out of all the firms I\'ve hired, nothing compares to the level of expertise and sense of urgency as Daniel and his Team.',
+    name: 'Chris Wilson',
+    initials: 'CW',
+  },
+  {
+    stars: 5,
+    text: 'The best IT services I have ever encountered. Quick to respond and always resolves any issues we are having.',
+    name: 'Katelyn',
+    initials: 'KT',
+  },
+  {
+    stars: 5,
+    text: 'Danny/Affable is an incredible IT support. Danny is super knowledgeable and works to get your company to the level you need.',
+    name: 'Lisa Cook',
+    initials: 'LC',
+  },
+  {
+    stars: 5,
+    text: 'Danny and his team at Affable IT have been awesome to work with. Their passion and dedication to their craft is very apparent.',
+    name: 'Robbie Myers',
+    initials: 'RM',
+  },
+  {
+    stars: 5,
+    text: 'Love working with Affable IT! Quick, efficient, knowledgeable, overall great Team!',
+    name: 'Nicole Nelson',
+    initials: 'NN',
+  },
+];
+
+const FAQS = [
+  {
+    q: 'What does an IT support company provide?',
+    a: 'An IT support company delivers proactive monitoring, troubleshooting, cybersecurity protection, and infrastructure management to maintain uptime and operational stability.',
+  },
+  {
+    q: 'How do managed IT services reduce downtime?',
+    a: 'Managed services include continuous monitoring, system updates, and infrastructure management that prevent outages before they impact productivity.',
+  },
+  {
+    q: 'Do you support small businesses in Spring, TX?',
+    a: 'Yes, we provide business IT support and cybersecurity services for growing organizations in Spring, TX, and across the United States.',
+  },
+  {
+    q: 'How does cloud monitoring improve performance?',
+    a: 'Cloud monitoring ensures stable cloud infrastructure management, identifies performance issues early, and protects data with high availability configurations.',
+  },
+  {
+    q: 'What is included in disaster recovery solutions?',
+    a: 'Our disaster recovery solutions include automated cloud backups, encrypted storage, and structured recovery planning to restore operations quickly.',
+  },
+  {
+    q: 'How quickly can we get started?',
+    a: 'After a free IT assessment, we typically have your environment fully onboarded and monitored within 48 hours with no long-term contracts required.',
+  },
+];
+
+const TICKER_ITEMS = [
+  'Managed IT Services', 'Cloud Monitoring', 'Cybersecurity Protection', '24/7 Help Desk',
+  'Network Infrastructure', 'Disaster Recovery', 'Microsoft 365 Support', 'Incident Response',
+  'Managed IT Services', 'Cloud Monitoring', 'Cybersecurity Protection', '24/7 Help Desk',
+  'Network Infrastructure', 'Disaster Recovery', 'Microsoft 365 Support', 'Incident Response',
+];
+
+function useReveal() {
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+}
+
+function Stars({ n }) {
+  return <div className="text-yellow-400 text-sm mb-3">{'★'.repeat(n)}</div>;
+}
+
+function FAQItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-white/8 rounded-xl overflow-hidden">
+      <button
+        className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-white/3 transition-colors gap-4"
+        onClick={() => setOpen(!open)}
+      >
+        <span className="font-medium text-sm leading-snug">{q}</span>
+        <svg
+          className={`w-4 h-4 text-teal flex-shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="px-6 pb-5 text-gray text-sm leading-relaxed border-t border-white/5 pt-4">
+          {a}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function HomePage() {
+  useReveal();
+
+  return (
+    <>
+      {/* ── HERO ── */}
+      <section className="relative min-h-screen flex items-center justify-center text-center px-5 py-28 overflow-hidden bg-navy2">
+        <div className="absolute inset-0 hero-grid-bg opacity-80 pointer-events-none" />
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: 700, height: 700,
+            background: 'radial-gradient(circle, rgba(53,178,159,.15) 0%, transparent 70%)',
+            top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        />
+
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <div className="animate-fade-in-up inline-flex items-center gap-2 bg-teal/10 border border-teal/30 text-cyan text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full mb-8">
+            IT Managed Services &amp; 24/7 Support — Spring, TX
+          </div>
+
+          <h1
+            className="animate-fade-in-up-1 font-serif font-bold leading-[1.08] mb-6"
+            style={{ fontSize: 'clamp(2.6rem, 6.5vw, 5.2rem)' }}
+          >
+            <span className="grad-text">Near Zero Downtime.</span>
+            <br />
+            Your Team of Nerds
+            <br />
+            24/7/365
+          </h1>
+
+          <p
+            className="animate-fade-in-up-2 text-gray leading-relaxed mx-auto mb-8"
+            style={{ fontSize: 'clamp(.95rem, 2vw, 1.15rem)', maxWidth: 560 }}
+          >
+            We provide proactive IT services, cloud management, and cybersecurity that reduce downtime
+            and protect your systems from disruption.
+          </p>
+
+          <div className="animate-fade-in-up-2 flex items-center justify-center gap-2.5 text-teal font-semibold text-sm mb-9">
+            <span className="pulse-dot" />
+            Systems monitored continuously — 24 hours a day, 365 days a year
+          </div>
+
+          <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center mb-20">
+            <a
+              href="tel:+19366486488"
+              className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/25 text-sm tracking-wide"
+            >
+              Call For IT Services
+            </a>
+            <Link
+              href="/contact"
+              className="border border-teal/50 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all duration-200 text-sm tracking-wide"
+            >
+              Schedule Managed IT Services
+            </Link>
+          </div>
+
+          <div className="animate-fade-in-up-4 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-2xl mx-auto">
+            {STATS.map((s) => (
+              <div key={s.label} className="text-center">
+                <div className="font-serif font-bold text-white" style={{ fontSize: '2.1rem', lineHeight: 1 }}>{s.num}</div>
+                <div className="text-gray text-xs uppercase tracking-wider mt-2">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TICKER ── */}
+      <div className="ticker-wrap py-3 overflow-hidden" style={{ background: 'linear-gradient(90deg,#2271a1,#35b29f)' }}>
+        <div className="ticker-inner">
+          {TICKER_ITEMS.map((item, i) => (
+            <span key={i} className="text-white text-xs font-semibold tracking-widest uppercase opacity-90">
+              &mdash;&ensp;{item}&ensp;
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── ABOUT INTRO ── */}
+      <section className="bg-navy py-20 px-5">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          <div className="reveal">
+            <span className="section-label">Who We Are</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-5">
+              A Reliable IT Support Company in Spring, TX and Surrounding Areas
+            </h2>
+            <p className="text-gray text-sm leading-relaxed mb-4">
+              We are a trusted IT support company serving Spring, TX, and businesses nationwide.
+              With 11 years of experience, we deliver proactive IT services, cybersecurity protection,
+              and structured infrastructure support that keep systems stable and secure.
+            </p>
+            <p className="text-gray text-sm leading-relaxed mb-4">
+              We act as a dependable extension of your team — monitoring systems 24/7, applying
+              proactive updates, and strengthening cybersecurity controls before issues impact operations.
+            </p>
+            <p className="text-gray text-sm leading-relaxed mb-8">
+              Technology should support your business, not create obstacles.
+            </p>
+            <Link href="/about" className="inline-block bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
+              Get To Know Us
+            </Link>
+          </div>
+
+          <div className="reveal grid grid-cols-2 gap-4">
+            {[
+              { num: '11+',    label: 'Years of Experience' },
+              { num: '500+',   label: 'Businesses Served' },
+              { num: '99.98%', label: 'Average Uptime' },
+              { num: '24/7',   label: 'System Monitoring' },
+            ].map((s) => (
+              <div key={s.label} className="bg-navy2 border border-teal/10 rounded-xl p-6 text-center">
+                <div className="font-serif font-bold grad-text leading-none" style={{ fontSize: '2.4rem' }}>{s.num}</div>
+                <div className="text-gray text-xs uppercase tracking-wider mt-2">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES ── */}
+      <section className="bg-navy2 py-20 px-5" id="services">
+        <div className="max-w-7xl mx-auto">
+          <div className="reveal text-center mb-14 max-w-2xl mx-auto">
+            <span className="section-label">Our Solutions</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+              Dependable IT That Delivers
+            </h2>
+            <p className="text-gray text-sm leading-relaxed">
+              Technology built for reliability and growth. Six core service areas
+              designed to keep your business running without interruption.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {SERVICES.map((s) => (
+              <Link
+                key={s.id}
+                href={s.href}
+                className="reveal card-bar relative bg-navy border border-white/6 rounded-xl p-7 overflow-hidden hover:-translate-y-1 hover:border-teal/30 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group"
+              >
+                <span className="section-label block mb-2 group-hover:text-cyan transition-colors">{s.tagline}</span>
+                <h3 className="font-serif font-bold text-base mb-3 text-white leading-snug">{s.title}</h3>
+                <p className="text-gray text-sm leading-relaxed">{s.desc}</p>
+                <span className="mt-5 inline-flex items-center gap-1 text-teal text-xs font-bold tracking-wide uppercase">
+                  Learn More
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="reveal text-center mt-10">
+            <Link href="/solutions" className="border border-teal/40 text-teal hover:bg-teal hover:text-white font-bold px-8 py-3 rounded-lg transition-all duration-200 text-sm">
+              View All Solutions
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY US ── */}
+      <section className="bg-navy py-20 px-5">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          <div className="reveal bg-navy2 border border-teal/10 rounded-2xl p-8">
+            <div className="text-center mb-7">
+              <div className="font-serif font-bold grad-text leading-none mb-2" style={{ fontSize: '4.5rem' }}>99.98%</div>
+              <p className="text-gray text-sm">Average Client Uptime — Last 12 Months</p>
+            </div>
+            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
+              <div className="h-full rounded-full" style={{ width: '99.98%', background: 'linear-gradient(90deg,#35b29f,#5cf2f2)' }} />
+            </div>
+            <div className="grid grid-cols-12 gap-1 mt-4">
+              {[1,1,1,1,.6,1,1,1,1,1,.6,1].map((op, i) => (
+                <div key={i} className="month-block" style={{ opacity: op }} />
+              ))}
+            </div>
+            <p className="text-gray/50 text-xs text-center mt-2">Jan – Dec 2025 · All monitored clients</p>
+            <div className="mt-7 grid grid-cols-2 gap-3">
+              {[
+                { val: '< 15 min', label: 'Avg Response Time' },
+                { val: '4 hrs',    label: 'On-Site SLA' },
+                { val: '11+',      label: 'Years Active' },
+                { val: '100%',     label: 'Proactive Coverage' },
+              ].map((m) => (
+                <div key={m.label} className="bg-navy border border-teal/10 rounded-lg p-4 text-center">
+                  <div className="font-serif font-bold text-cyan text-xl">{m.val}</div>
+                  <div className="text-gray text-xs mt-1">{m.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="reveal">
+            <span className="section-label">Why NerdOps</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-5 leading-tight">
+              Prevention-Focused Infrastructure Management
+            </h2>
+            <p className="text-gray text-sm leading-relaxed mb-5">
+              With 11 years of experience supporting business technology environments, we understand
+              how to build reliable systems that remain stable under pressure.
+            </p>
+            <p className="text-gray text-sm leading-relaxed mb-7">
+              We focus on prevention, responsiveness, and accountability — monitoring your
+              infrastructure continuously, applying structured updates, and responding before
+              issues disrupt operations.
+            </p>
+            <ul className="space-y-3.5 mb-8">
+              {[
+                '24/7 infrastructure monitoring and alerting',
+                'Proactive patch management and system updates',
+                'Flat-rate pricing with no surprise invoices',
+                'Certified engineers across Microsoft, Cisco, AWS, and Google Cloud',
+                'Structured incident response and root cause analysis',
+                'On-site dispatch available within 4 hours in service areas',
+                'Month-to-month agreements — no long-term lock-in',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-sm text-gray">
+                  <svg className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/about" className="bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm">
+                About Our Company
+              </Link>
+              <Link href="/contact" className="border border-teal/40 text-teal hover:border-teal hover:bg-teal/8 font-bold px-6 py-3 rounded-lg transition-all text-sm">
+                Schedule Assessment
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="bg-navy2 py-20 px-5">
+        <div className="max-w-7xl mx-auto">
+          <div className="reveal text-center mb-14 max-w-xl mx-auto">
+            <span className="section-label">Client Reviews</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">
+              What Our Clients Say
+            </h2>
+            <p className="text-gray text-sm">Verified reviews from businesses across Spring, TX and surrounding areas.</p>
+          </div>
+
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+            {TESTIMONIALS.map((t) => (
+              <div key={t.name} className="reveal break-inside-avoid mb-4 bg-navy border border-white/6 rounded-xl p-6 relative overflow-hidden">
+                <span
+                  className="absolute top-3 right-4 text-white/5 font-serif select-none pointer-events-none leading-none"
+                  style={{ fontSize: '5rem' }}
+                >
+                  &ldquo;
+                </span>
+                <Stars n={t.stars} />
+                <p className="text-gray text-sm leading-relaxed mb-5 relative z-10">
+                  &ldquo;{t.text}&rdquo;
+                </p>
+                <div className="flex items-center gap-3 border-t border-white/5 pt-4">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg,#35b29f,#2271a1)' }}
+                  >
+                    {t.initials}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm">{t.name}</div>
+                    <div className="text-gray/60 text-xs">via Google Reviews</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="bg-navy py-20 px-5">
+        <div className="max-w-3xl mx-auto">
+          <div className="reveal text-center mb-12">
+            <span className="section-label">FAQ</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
+            <p className="text-gray text-sm">Common questions about our IT services and how we work.</p>
+          </div>
+          <div className="reveal space-y-2">
+            {FAQS.map((faq) => (
+              <FAQItem key={faq.q} q={faq.q} a={faq.a} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ── */}
+      <section
+        className="py-24 px-5 text-center"
+        style={{ background: 'linear-gradient(135deg,#0d2e24,#1b1736,#0a2233)' }}
+      >
+        <div className="reveal max-w-2xl mx-auto">
+          <span className="section-label block text-center mb-4">Get Started</span>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-5 leading-tight">
+            Identify Vulnerabilities Before<br />They Cause Downtime
+          </h2>
+          <p className="text-gray text-sm leading-relaxed mb-9 max-w-md mx-auto">
+            Secure your Free Cyber Security Audit today. No commitment, no sales pressure —
+            just clear, honest advice from a team that has been doing this for 11 years.
+          </p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Link
+              href="/contact"
+              className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm tracking-wide"
+            >
+              Claim Your Free Cyber Security Audit
+            </Link>
+            <a
+              href="tel:+19366486488"
+              className="border border-teal/40 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all text-sm tracking-wide"
+            >
+              Call Us — (936) 648-6488
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
