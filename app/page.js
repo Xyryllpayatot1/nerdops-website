@@ -197,6 +197,41 @@ function FAQItem({ q, a }) {
   );
 }
 
+// Per-image tuning: scale + object-position to hide removebg edge artifacts
+const TEAM_CONFIG = {
+  1: { scale: 1.18, pos: 'center 8%'  },
+  2: { scale: 1.22, pos: 'center 5%'  },
+  3: { scale: 1.20, pos: 'center 6%'  },
+  4: { scale: 1.18, pos: 'center 8%'  },
+  5: { scale: 1.18, pos: 'center 8%'  },
+  6: { scale: 1.15, pos: 'center 5%'  },
+  7: { scale: 1.18, pos: 'center 6%'  },
+  8: { scale: 1.18, pos: 'center 8%'  },
+};
+
+function TeamCircle({ n }) {
+  const { scale, pos } = TEAM_CONFIG[n] || { scale: 1.18, pos: 'center 8%' };
+  return (
+    <div
+      className="flex-shrink-0 relative rounded-full overflow-hidden border-2 md:border-4 border-white shadow-xl"
+      style={{ width: 'clamp(90px, 22vw, 170px)', height: 'clamp(90px, 22vw, 170px)' }}
+    >
+      {/* Image scaled up so jagged removebg edges are pushed outside the circle clip */}
+      <img
+        src={`/team/team${n}.png`}
+        alt="Team member"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ objectPosition: pos, transform: `scale(${scale})`, transformOrigin: 'center top' }}
+      />
+      {/* Radial vignette — fades rough edges to the section bg color */}
+      <div
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at center, transparent 52%, rgba(13,21,48,0.55) 80%, rgba(13,21,48,0.85) 100%)' }}
+      />
+    </div>
+  );
+}
+
 function MobileStickyCTA({ show }) {
   return (
     <div
@@ -303,55 +338,44 @@ export default function HomePage() {
       </div>
 
       {/* ── TEAM FACES ── */}
-      <section className="bg-navy2 py-16 px-5 overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center mb-8">
+      <section className="bg-navy2 pt-16 overflow-hidden">
+        <div className="max-w-5xl mx-auto text-center mb-10 px-5">
           <span className="section-label block text-center">Meet the Team</span>
           <h2 className="font-serif text-2xl md:text-3xl font-bold mt-2">The People Behind Your IT</h2>
+          <p className="text-gray text-sm mt-3 leading-relaxed max-w-sm mx-auto">Real people. Real expertise. Ready when you need us.</p>
         </div>
 
-        {/* Scrolling faces — row 1 scrolls left */}
-        <div className="relative overflow-hidden mb-4" style={{ height: 'clamp(110px, 26vw, 196px)' }}>
+        {/* Scrolling row 1 — left */}
+        <div className="relative overflow-hidden mb-4" style={{ height: 'clamp(110px, 26vw, 200px)' }}>
           <div className="flex items-center gap-3 md:gap-6 absolute" style={{ animation: 'teamScrollL 30s linear infinite', width: 'max-content' }}>
             {[0,1,2].flatMap((set) =>
-              [1,2,3,4,5,6,7].map((n) => (
-                <div
-                  key={`r1-${set}-${n}`}
-                  className="flex-shrink-0 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-xl"
-                  style={{ width: 'clamp(90px, 22vw, 170px)', height: 'clamp(90px, 22vw, 170px)' }}
-                >
-                  <img src={`/faces/face${n}.png`} alt="Team member" className="w-full h-full object-cover object-center" />
-                </div>
+              [1,2,3,4].map((n) => (
+                <TeamCircle key={`r1-${set}-${n}`} n={n} />
               ))
             )}
           </div>
-          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right, #0d1530, transparent)' }} />
-          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left, #0d1530, transparent)' }} />
+          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right,#0d1530,transparent)' }} />
+          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left,#0d1530,transparent)' }} />
         </div>
 
-        {/* Scrolling faces — row 2 scrolls right */}
-        <div className="relative overflow-hidden mb-8" style={{ height: 'clamp(110px, 26vw, 196px)' }}>
+        {/* Scrolling row 2 — right */}
+        <div className="relative overflow-hidden mb-8" style={{ height: 'clamp(110px, 26vw, 200px)' }}>
           <div className="flex items-center gap-3 md:gap-6 absolute" style={{ animation: 'teamScrollR 36s linear infinite', width: 'max-content' }}>
             {[0,1,2].flatMap((set) =>
-              [8,9,10,11,12,13].map((n) => (
-                <div
-                  key={`r2-${set}-${n}`}
-                  className="flex-shrink-0 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-xl"
-                  style={{ width: 'clamp(90px, 22vw, 170px)', height: 'clamp(90px, 22vw, 170px)' }}
-                >
-                  <img src={`/faces/face${n}.png`} alt="Team member" className="w-full h-full object-cover object-center" />
-                </div>
+              [5,6,7,8].map((n) => (
+                <TeamCircle key={`r2-${set}-${n}`} n={n} />
               ))
             )}
           </div>
-          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right, #0d1530, transparent)' }} />
-          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left, #0d1530, transparent)' }} />
+          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right,#0d1530,transparent)' }} />
+          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left,#0d1530,transparent)' }} />
         </div>
 
-        {/* Big CTA button */}
-        <div className="text-center">
+        {/* CTA */}
+        <div className="text-center pb-10 px-5">
           <a
             href="tel:+15033137121"
-            className="inline-flex items-center justify-center gap-3 bg-teal hover:bg-teal/90 text-white font-bold text-lg px-14 py-5 rounded-xl transition-all shadow-xl shadow-teal/25 w-full max-w-lg"
+            className="inline-flex items-center justify-center gap-3 bg-teal hover:bg-teal/90 text-white font-bold text-base md:text-lg px-10 md:px-14 py-4 md:py-5 rounded-xl transition-all shadow-xl shadow-teal/25 w-full max-w-lg"
           >
             <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
@@ -361,18 +385,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── WHO WE ARE + WHY US ── */}
+      {/* ── WHO WE ARE ── */}
       <section className="bg-navy py-24 px-5">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-          {/* Left — Who We Are */}
+        <div className="max-w-3xl mx-auto">
           <div className="reveal">
             <span className="section-label">Who We Are</span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mt-3 mb-5">
               A Reliable IT Support Company in Portland, OR and Surrounding Areas
             </h2>
             <p className="text-gray text-sm leading-relaxed mb-8">
-              We are a trusted IT support company with 11 years of experience serving businesses in Portland, OR and nationwide. We deliver proactive managed IT, cybersecurity protection, and 24/7 infrastructure monitoring that keep systems stable, secure, and running without interruption.
+              We are a trusted IT support company with 11 years of experience serving businesses in Portland, OR and nationwide. ZERO NERDS delivers proactive managed IT, cybersecurity protection, and 24/7 infrastructure monitoring that keep systems stable, secure, and running without interruption.
             </p>
             <div className="flex flex-wrap items-center gap-5">
               <Link href="/about" className="inline-block bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
@@ -386,42 +408,6 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-
-          {/* Right — Why ZERO NERDS feature card */}
-          <div className="reveal">
-            <div className="bg-navy2 border border-white/6 rounded-2xl p-8">
-              <span className="section-label block mb-3">Why ZERO NERDS</span>
-              <h3 className="font-serif font-bold text-xl mb-6 leading-snug">
-                Prevention-Focused Infrastructure Management
-              </h3>
-              <div className="space-y-5">
-                {[
-                  { icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Flat-rate pricing', desc: 'No surprise invoices — one predictable monthly rate.' },
-                  { icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', label: '24/7 Infrastructure Monitoring', desc: 'Continuous oversight with real-time alerting and response.' },
-                  { icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z', label: 'Certified Engineers', desc: 'Experienced technicians across networking, cloud, and security.' },
-                  { icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', label: 'No Long-Term Lock-In', desc: 'Month-to-month agreements — stay because it works, not because you\'re stuck.' },
-                ].map((item) => (
-                  <div key={item.label} className="flex items-start gap-4">
-                    <div className="w-9 h-9 rounded-lg bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <svg className="w-4.5 h-4.5 text-teal" style={{ width: 18, height: 18 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={item.icon} />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm text-white mb-0.5">{item.label}</div>
-                      <div className="text-gray text-xs leading-relaxed">{item.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-7 pt-6 border-t border-white/5">
-                <Link href="/contact" className="inline-block bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm">
-                  Schedule Free Assessment
-                </Link>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
 
