@@ -94,9 +94,6 @@ export default function PortlandPage() {
           }}
         />
         <div className="relative z-10 max-w-3xl mx-auto">
-          <div className="animate-fade-in-up inline-flex items-center gap-2 bg-teal/10 border border-teal/30 text-cyan text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full mb-8">
-            IT Support Company — Portland, OR
-          </div>
           <h1
             className="animate-fade-in-up-1 font-serif font-bold leading-[1.08] mb-6"
             style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4.4rem)' }}
@@ -166,18 +163,33 @@ export default function PortlandPage() {
             </div>
           </div>
 
-          <div className="reveal grid grid-cols-2 gap-4">
-            {[
-              { num: '11+',    label: 'Years of Experience' },
-              { num: '500+',   label: 'Businesses Served' },
-              { num: '99.98%', label: 'Average Uptime' },
-              { num: '24/7',   label: 'System Monitoring' },
-            ].map((s) => (
-              <div key={s.label} className="bg-navy2 border border-teal/10 rounded-xl p-6 text-center">
-                <div className="font-serif font-bold grad-text leading-none" style={{ fontSize: '2.4rem' }}>{s.num}</div>
-                <div className="text-gray text-xs uppercase tracking-wider mt-2">{s.label}</div>
+          <div className="reveal bg-navy2 border border-teal/10 rounded-2xl p-8">
+            <span className="section-label block mb-4">Our Portland Office</span>
+            <h3 className="font-serif font-bold text-xl mb-6">Visit or Call Us</h3>
+            <div className="space-y-5">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-teal/10 border border-teal/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-teal" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-gray text-xs mb-0.5">Office Address</p>
+                  <p className="font-semibold text-white leading-snug">750 SW 9th Ave<br />Portland, OR 97205</p>
+                </div>
               </div>
-            ))}
+              <a href="tel:+15033137121" className="flex items-start gap-4 group">
+                <div className="w-10 h-10 bg-teal/10 border border-teal/15 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-teal" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-gray text-xs mb-0.5">Phone</p>
+                  <p className="font-semibold text-white group-hover:text-teal transition-colors">(503) 313-7121</p>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -195,12 +207,12 @@ export default function PortlandPage() {
             </p>
           </div>
 
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {SERVICES.map((s) => (
               <Link
                 key={s.title}
                 href={s.href}
-                className="reveal break-inside-avoid mb-4 card-bar relative bg-navy border border-white/6 rounded-xl p-7 overflow-hidden hover:-translate-y-1 hover:border-teal/30 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group inline-block w-full"
+                className="reveal card-bar relative bg-navy border border-white/6 rounded-xl p-7 overflow-hidden hover:border-teal/30 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group flex flex-col"
               >
                 <span className="section-label block mb-2 group-hover:text-cyan transition-colors">{s.tagline}</span>
                 <h3 className="font-serif font-bold text-base mb-3 text-white leading-snug">{s.title}</h3>

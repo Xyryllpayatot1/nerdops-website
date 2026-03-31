@@ -14,24 +14,23 @@ function useReveal() {
   }, []);
 }
 
-// Heights drive the masonry visual rhythm — vary them intentionally
 const GALLERY_ITEMS = [
-  { id: 1,  label: 'Server Room Installation',       category: 'Infrastructure', height: 280 },
-  { id: 2,  label: 'Network Rack Configuration',      category: 'Infrastructure', height: 200 },
-  { id: 3,  label: 'Workstation Deployment',          category: 'Setup',          height: 240 },
-  { id: 4,  label: 'Cloud Migration Project',         category: 'Cloud',          height: 200 },
-  { id: 5,  label: 'Security Audit Session',          category: 'Cybersecurity',  height: 260 },
-  { id: 6,  label: 'Structured Cabling Project',      category: 'Infrastructure', height: 220 },
-  { id: 7,  label: 'On-Site Client Support',          category: 'Support',        height: 240 },
-  { id: 8,  label: 'Data Center Infrastructure',      category: 'Infrastructure', height: 200 },
-  { id: 9,  label: 'Employee IT Training',            category: 'Training',       height: 280 },
-  { id: 10, label: 'Wireless Network Deployment',     category: 'Infrastructure', height: 220 },
-  { id: 11, label: 'Firewall Configuration',          category: 'Cybersecurity',  height: 240 },
-  { id: 12, label: 'Disaster Recovery Testing',       category: 'Backup',         height: 200 },
-  { id: 13, label: 'Help Desk Operations Center',     category: 'Support',        height: 260 },
-  { id: 14, label: 'Microsoft 365 Migration',         category: 'Cloud',          height: 220 },
-  { id: 15, label: 'Infrastructure Assessment',       category: 'Support',        height: 240 },
-  { id: 16, label: 'UPS and Power Management',        category: 'Infrastructure', height: 200 },
+  { id: 1,  label: 'Server Room Installation',       category: 'Infrastructure', aspect: '16/9' },
+  { id: 2,  label: 'Network Rack Configuration',      category: 'Infrastructure', aspect: '3/4'  },
+  { id: 3,  label: 'Workstation Deployment',          category: 'Setup',          aspect: '3/4'  },
+  { id: 4,  label: 'Cloud Migration Project',         category: 'Cloud',          aspect: '16/9' },
+  { id: 5,  label: 'Security Audit Session',          category: 'Cybersecurity',  aspect: '16/9' },
+  { id: 6,  label: 'Structured Cabling Project',      category: 'Infrastructure', aspect: '3/4'  },
+  { id: 7,  label: 'On-Site Client Support',          category: 'Support',        aspect: '3/4'  },
+  { id: 8,  label: 'Data Center Infrastructure',      category: 'Infrastructure', aspect: '16/9' },
+  { id: 9,  label: 'Employee IT Training',            category: 'Training',       aspect: '16/9' },
+  { id: 10, label: 'Wireless Network Deployment',     category: 'Infrastructure', aspect: '3/4'  },
+  { id: 11, label: 'Firewall Configuration',          category: 'Cybersecurity',  aspect: '3/4'  },
+  { id: 12, label: 'Disaster Recovery Testing',       category: 'Backup',         aspect: '16/9' },
+  { id: 13, label: 'Help Desk Operations Center',     category: 'Support',        aspect: '3/4'  },
+  { id: 14, label: 'Microsoft 365 Migration',         category: 'Cloud',          aspect: '16/9' },
+  { id: 15, label: 'Infrastructure Assessment',       category: 'Support',        aspect: '3/4'  },
+  { id: 16, label: 'UPS and Power Management',        category: 'Infrastructure', aspect: '16/9' },
 ];
 
 const MUTED_PALETTE = [
@@ -44,15 +43,10 @@ const MUTED_PALETTE = [
 export default function GalleryPage() {
   useReveal();
 
-  // Split items into 3 columns for masonry
-  const col1 = GALLERY_ITEMS.filter((_, i) => i % 3 === 0);
-  const col2 = GALLERY_ITEMS.filter((_, i) => i % 3 === 1);
-  const col3 = GALLERY_ITEMS.filter((_, i) => i % 3 === 2);
-
   const GalleryCard = ({ item }) => (
     <div
       className="relative rounded-xl overflow-hidden group cursor-default"
-      style={{ height: item.height, background: MUTED_PALETTE[item.id % MUTED_PALETTE.length] }}
+      style={{ aspectRatio: item.aspect, background: MUTED_PALETTE[item.id % MUTED_PALETTE.length] }}
     >
       {/* Placeholder content area */}
       <div className="absolute inset-0 flex items-center justify-center">

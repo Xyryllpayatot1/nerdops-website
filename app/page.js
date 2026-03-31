@@ -48,17 +48,10 @@ const SERVICES = [
   },
 ];
 
-const STATS = [
-  { num: '11+',    label: 'Years of Experience' },
-  { num: '99.98%', label: 'Average Uptime' },
-  { num: '500+',   label: 'Businesses Served' },
-  { num: '24/7',   label: 'Infrastructure Monitoring' },
-];
-
 const TESTIMONIALS = [
   {
     stars: 5,
-    text: 'NerdOps is the absolute best IT service around. Very fast response time with a dedicated and educated team. They can solve any issue that occurs, leaving us with less downtime than ever before.',
+    text: 'ZERO NERDS is the absolute best IT service around. Very fast response time with a dedicated and educated team. They can solve any issue that occurs, leaving us with less downtime than ever before.',
     name: 'Kate LaMare',
     initials: 'KL',
   },
@@ -82,37 +75,37 @@ const TESTIMONIALS = [
   },
   {
     stars: 5,
-    text: 'Danny and his team at NerdOps have been awesome to work with. Their passion and dedication to their craft is very apparent. I look forward to further interactions and collaboration with them.',
+    text: 'Danny and his team at ZERO NERDS have been awesome to work with. Their passion and dedication to their craft is very apparent. I look forward to further interactions and collaboration with them.',
     name: 'Robbie Myers',
     initials: 'RM',
   },
   {
     stars: 5,
-    text: 'Love working with NerdOps! Quick, efficient, knowledgeable, overall great Team!',
+    text: 'Love working with ZERO NERDS! Quick, efficient, knowledgeable, overall great Team!',
     name: 'Nicole Nelson',
     initials: 'NN',
   },
   {
     stars: 5,
-    text: 'Daniel is awesome, so helpful and on top of everything. During our company change over, Daniel was integral in making sure we were set up and running smoothly. He helped me most any time day or night. I cannot say enough about Daniel, and I appreciate him and the whole team at NerdOps!',
+    text: 'Daniel is awesome, so helpful and on top of everything. During our company change over, Daniel was integral in making sure we were set up and running smoothly. He helped me most any time day or night. I cannot say enough about Daniel, and I appreciate him and the whole team at ZERO NERDS!',
     name: 'Robert Moore',
     initials: 'RMO',
   },
   {
     stars: 5,
-    text: 'We love NerdOps! Daniel and his team are so helpful!',
+    text: 'We love ZERO NERDS! Daniel and his team are so helpful!',
     name: 'Laura Brown',
     initials: 'LB',
   },
   {
     stars: 5,
-    text: 'Daniel and his team are AWESOME! Professional, friendly, and knowledgeable. Great communication on the status of issues. Any issues I\'ve had have been resolved quickly. Overall, a very positive experience with NerdOps!',
+    text: 'Daniel and his team are AWESOME! Professional, friendly, and knowledgeable. Great communication on the status of issues. Any issues I\'ve had have been resolved quickly. Overall, a very positive experience with ZERO NERDS!',
     name: 'Jill Lee',
     initials: 'JL',
   },
   {
     stars: 5,
-    text: 'Bridgewell Building Materials has partnered with Danny and NerdOps for the migration of all of our business IT infrastructure and I could not have asked for a better partner. We have completed week one and every day the business is running more efficiently. Thank you Danny and your team for your dedication and hard work in this transition.',
+    text: 'Bridgewell Building Materials has partnered with Danny and ZERO NERDS for the migration of all of our business IT infrastructure and I could not have asked for a better partner. We have completed week one and every day the business is running more efficiently. Thank you Danny and your team for your dedication and hard work in this transition.',
     name: 'David Routt JR',
     initials: 'DR',
   },
@@ -124,7 +117,7 @@ const TESTIMONIALS = [
   },
   {
     stars: 5,
-    text: 'Danny and the team at NerdOps are awesome! I know next to nothing about IT stuff, so having someone knowledgeable is a must when issues come up. The fact that they handled my issues quickly and completely the first time, is a massive bonus! You won\'t go wrong working with the team at NerdOps!',
+    text: 'Danny and the team at ZERO NERDS are awesome! I know next to nothing about IT stuff, so having someone knowledgeable is a must when issues come up. The fact that they handled my issues quickly and completely the first time, is a massive bonus! You won\'t go wrong working with the team at ZERO NERDS!',
     name: 'Robert Smart',
     initials: 'RS',
   },
@@ -204,13 +197,48 @@ function FAQItem({ q, a }) {
   );
 }
 
+function MobileStickyCTA({ show }) {
+  return (
+    <div
+      className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-transform duration-300 ${show ? 'translate-y-0' : 'translate-y-full'}`}
+    >
+      <div className="bg-navy2/95 backdrop-blur-md border-t border-white/10 p-3 flex gap-2">
+        <a
+          href="tel:+15033137121"
+          className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2"
+        >
+          <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+          </svg>
+          Get Instant Help
+        </a>
+        <Link
+          href="/contact"
+          className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center"
+        >
+          Get Free Quote
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   useReveal();
+
+  const [stickyVisible, setStickyVisible] = useState(false);
+  useEffect(() => {
+    const hero = document.getElementById('hero-section');
+    if (!hero) return;
+    const obs = new IntersectionObserver(([e]) => setStickyVisible(!e.isIntersecting), { threshold: 0 });
+    obs.observe(hero);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative min-h-screen flex items-center justify-center text-center px-5 py-28 overflow-hidden bg-navy2">
+      <section id="hero-section" className="relative min-h-screen flex items-center justify-center text-center px-5 py-28 overflow-hidden bg-navy2">
         <div className="absolute inset-0 hero-grid-bg opacity-80 pointer-events-none" />
         <div
           className="absolute pointer-events-none"
@@ -223,15 +251,11 @@ export default function HomePage() {
         />
 
         <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="animate-fade-in-up inline-flex items-center gap-2 bg-teal/10 border border-teal/30 text-cyan text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full mb-8">
-            IT Managed Services &amp; 24/7 Support — Portland, OR
-          </div>
-
           <h1
             className="animate-fade-in-up-1 font-serif font-bold leading-[1.08] mb-6"
             style={{ fontSize: 'clamp(2.6rem, 6.5vw, 5.2rem)' }}
           >
-            <span className="grad-text">Near Zero Downtime.</span>
+            <span className="grad-text"><span style={{ fontSize: '80%' }}>Near Zero Downtime.</span></span>
             <br />
             Your Team of Nerds
             <br />
@@ -246,12 +270,7 @@ export default function HomePage() {
             and protect your systems from disruption.
           </p>
 
-          <div className="animate-fade-in-up-2 flex items-center justify-center gap-2.5 text-teal font-semibold text-sm mb-9">
-            <span className="pulse-dot" />
-            Systems monitored continuously — 24 hours a day, 365 days a year
-          </div>
-
-          <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center mb-20">
+          <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center mb-4">
             <a
               href="tel:+15033137121"
               className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/25 text-sm tracking-wide inline-flex items-center gap-2"
@@ -269,14 +288,6 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="animate-fade-in-up-4 grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-2xl mx-auto">
-            {STATS.map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="font-serif font-bold text-white" style={{ fontSize: '2.1rem', lineHeight: 1 }}>{s.num}</div>
-                <div className="text-gray text-xs uppercase tracking-wider mt-2">{s.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -285,55 +296,137 @@ export default function HomePage() {
         <div className="ticker-inner">
           {TICKER_ITEMS.map((item, i) => (
             <span key={i} className="text-white text-xs font-semibold tracking-widest uppercase opacity-90">
-              &mdash;&ensp;{item}&ensp;
+              {item}<span className="mx-4 opacity-40">·</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ── ABOUT INTRO ── */}
-      <section className="bg-navy py-20 px-5">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+      {/* ── TEAM FACES ── */}
+      <section className="bg-navy2 py-16 px-5 overflow-hidden">
+        <div className="max-w-5xl mx-auto text-center mb-8">
+          <span className="section-label block text-center">Meet the Team</span>
+          <h2 className="font-serif text-2xl md:text-3xl font-bold mt-2">The People Behind Your IT</h2>
+        </div>
+
+        {/* Scrolling faces — row 1 scrolls left */}
+        <div className="relative overflow-hidden mb-4" style={{ height: 'clamp(110px, 26vw, 196px)' }}>
+          <div className="flex items-center gap-3 md:gap-6 absolute" style={{ animation: 'teamScrollL 30s linear infinite', width: 'max-content' }}>
+            {[0,1,2].flatMap((set) =>
+              [1,2,3,4,5,6,7].map((n) => (
+                <div
+                  key={`r1-${set}-${n}`}
+                  className="flex-shrink-0 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-xl"
+                  style={{ width: 'clamp(90px, 22vw, 170px)', height: 'clamp(90px, 22vw, 170px)' }}
+                >
+                  <img src={`/faces/face${n}.png`} alt="Team member" className="w-full h-full object-cover object-center" />
+                </div>
+              ))
+            )}
+          </div>
+          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right, #0d1530, transparent)' }} />
+          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left, #0d1530, transparent)' }} />
+        </div>
+
+        {/* Scrolling faces — row 2 scrolls right */}
+        <div className="relative overflow-hidden mb-8" style={{ height: 'clamp(110px, 26vw, 196px)' }}>
+          <div className="flex items-center gap-3 md:gap-6 absolute" style={{ animation: 'teamScrollR 36s linear infinite', width: 'max-content' }}>
+            {[0,1,2].flatMap((set) =>
+              [8,9,10,11,12,13].map((n) => (
+                <div
+                  key={`r2-${set}-${n}`}
+                  className="flex-shrink-0 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-xl"
+                  style={{ width: 'clamp(90px, 22vw, 170px)', height: 'clamp(90px, 22vw, 170px)' }}
+                >
+                  <img src={`/faces/face${n}.png`} alt="Team member" className="w-full h-full object-cover object-center" />
+                </div>
+              ))
+            )}
+          </div>
+          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right, #0d1530, transparent)' }} />
+          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left, #0d1530, transparent)' }} />
+        </div>
+
+        {/* Big CTA button */}
+        <div className="text-center">
+          <a
+            href="tel:+15033137121"
+            className="inline-flex items-center justify-center gap-3 bg-teal hover:bg-teal/90 text-white font-bold text-lg px-14 py-5 rounded-xl transition-all shadow-xl shadow-teal/25 w-full max-w-lg"
+          >
+            <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            Get Instant Help
+          </a>
+        </div>
+      </section>
+
+      {/* ── WHO WE ARE + WHY US ── */}
+      <section className="bg-navy py-24 px-5">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+          {/* Left — Who We Are */}
           <div className="reveal">
             <span className="section-label">Who We Are</span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-5">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mt-3 mb-5">
               A Reliable IT Support Company in Portland, OR and Surrounding Areas
             </h2>
-            <p className="text-gray text-sm leading-relaxed mb-4">
-              We are a trusted IT support company serving Portland, OR, and businesses nationwide.
-              With 11 years of experience, we deliver proactive IT services, cybersecurity protection,
-              and structured infrastructure support that keep systems stable and secure.
-            </p>
-            <p className="text-gray text-sm leading-relaxed mb-4">
-              We act as a dependable extension of your team — monitoring systems 24/7, applying
-              proactive updates, and strengthening cybersecurity controls before issues impact operations.
-            </p>
             <p className="text-gray text-sm leading-relaxed mb-8">
-              Technology should support your business, not create obstacles.
+              We are a trusted IT support company with 11 years of experience serving businesses in Portland, OR and nationwide. We deliver proactive managed IT, cybersecurity protection, and 24/7 infrastructure monitoring that keep systems stable, secure, and running without interruption.
             </p>
-            <Link href="/about" className="inline-block bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
-              Get To Know Us
-            </Link>
+            <div className="flex flex-wrap items-center gap-5">
+              <Link href="/about" className="inline-block bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
+                Get To Know Us
+              </Link>
+              <Link href="/about" className="text-teal hover:text-cyan text-sm font-semibold transition-colors inline-flex items-center gap-1.5">
+                About Our Company
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </div>
 
-          <div className="reveal grid grid-cols-2 gap-4">
-            {[
-              { num: '11+',    label: 'Years of Experience' },
-              { num: '500+',   label: 'Businesses Served' },
-              { num: '99.98%', label: 'Average Uptime' },
-              { num: '24/7',   label: 'System Monitoring' },
-            ].map((s) => (
-              <div key={s.label} className="bg-navy2 border border-teal/10 rounded-xl p-6 text-center">
-                <div className="font-serif font-bold grad-text leading-none" style={{ fontSize: '2.4rem' }}>{s.num}</div>
-                <div className="text-gray text-xs uppercase tracking-wider mt-2">{s.label}</div>
+          {/* Right — Why ZERO NERDS feature card */}
+          <div className="reveal">
+            <div className="bg-navy2 border border-white/6 rounded-2xl p-8">
+              <span className="section-label block mb-3">Why ZERO NERDS</span>
+              <h3 className="font-serif font-bold text-xl mb-6 leading-snug">
+                Prevention-Focused Infrastructure Management
+              </h3>
+              <div className="space-y-5">
+                {[
+                  { icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', label: 'Flat-rate pricing', desc: 'No surprise invoices — one predictable monthly rate.' },
+                  { icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', label: '24/7 Infrastructure Monitoring', desc: 'Continuous oversight with real-time alerting and response.' },
+                  { icon: 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z', label: 'Certified Engineers', desc: 'Experienced technicians across networking, cloud, and security.' },
+                  { icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', label: 'No Long-Term Lock-In', desc: 'Month-to-month agreements — stay because it works, not because you\'re stuck.' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-start gap-4">
+                    <div className="w-9 h-9 rounded-lg bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <svg className="w-4.5 h-4.5 text-teal" style={{ width: 18, height: 18 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={item.icon} />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm text-white mb-0.5">{item.label}</div>
+                      <div className="text-gray text-xs leading-relaxed">{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+              <div className="mt-7 pt-6 border-t border-white/5">
+                <Link href="/contact" className="inline-block bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm">
+                  Schedule Free Assessment
+                </Link>
+              </div>
+            </div>
           </div>
+
         </div>
       </section>
 
       {/* ── SERVICES ── */}
-      <section className="bg-navy2 py-20 px-5" id="services">
+      <section className="bg-[#0f1d38] py-20 px-5" id="services">
         <div className="max-w-7xl mx-auto">
           <div className="reveal text-center mb-14 max-w-2xl mx-auto">
             <span className="section-label">Our Solutions</span>
@@ -346,22 +439,25 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
+          <div className="grid grid-cols-2 gap-3 md:gap-4">
             {SERVICES.map((s) => (
               <Link
                 key={s.id}
                 href={s.href}
-                className="reveal break-inside-avoid mb-4 card-bar relative bg-navy border border-white/6 rounded-xl p-7 overflow-hidden hover:-translate-y-1 hover:border-teal/30 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group inline-block w-full"
+                className="reveal card-bar relative bg-navy border border-white/6 rounded-xl overflow-hidden hover:border-teal/30 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group flex flex-col"
               >
-                <span className="section-label block mb-2 group-hover:text-cyan transition-colors">{s.tagline}</span>
-                <h3 className="font-serif font-bold text-base mb-3 text-white leading-snug">{s.title}</h3>
-                <p className="text-gray text-sm leading-relaxed">{s.desc}</p>
-                <span className="mt-5 inline-flex items-center gap-1 text-teal text-xs font-bold tracking-wide uppercase">
-                  Learn More
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
+                <div className="bg-gradient-to-r from-amber-400 to-teal h-[3px]" />
+                <div className="p-4 md:p-7 flex flex-col flex-1">
+                  <span className="text-amber-400 text-[10px] md:text-xs font-bold uppercase tracking-widest block mb-2 group-hover:text-amber-300 transition-colors">{s.tagline}</span>
+                  <h3 className="font-serif font-bold text-sm md:text-base mb-2 md:mb-3 text-white leading-snug">{s.title}</h3>
+                  <p className="text-gray text-xs md:text-sm leading-relaxed flex-1 hidden sm:block">{s.desc}</p>
+                  <span className="mt-5 inline-flex items-center gap-1 text-teal text-xs font-bold tracking-wide uppercase">
+                    Learn More
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
@@ -370,82 +466,6 @@ export default function HomePage() {
             <Link href="/solutions" className="border border-teal/40 text-teal hover:bg-teal hover:text-white font-bold px-8 py-3 rounded-lg transition-all duration-200 text-sm">
               View All Solutions
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHY US ── */}
-      <section className="bg-navy py-20 px-5">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-          <div className="reveal bg-navy2 border border-teal/10 rounded-2xl p-8">
-            <div className="text-center mb-7">
-              <div className="font-serif font-bold grad-text leading-none mb-2" style={{ fontSize: '4.5rem' }}>99.98%</div>
-              <p className="text-gray text-sm">Average Client Uptime — Last 12 Months</p>
-            </div>
-            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
-              <div className="h-full rounded-full" style={{ width: '99.98%', background: 'linear-gradient(90deg,#29abe2,#5dd5f7)' }} />
-            </div>
-            <div className="grid grid-cols-12 gap-1 mt-4">
-              {[1,1,1,1,.6,1,1,1,1,1,.6,1].map((op, i) => (
-                <div key={i} className="month-block" style={{ opacity: op }} />
-              ))}
-            </div>
-            <p className="text-gray/50 text-xs text-center mt-2">Jan – Dec 2025 · All monitored clients</p>
-            <div className="mt-7 grid grid-cols-2 gap-3">
-              {[
-                { val: '< 15 min', label: 'Avg Response Time' },
-                { val: '4 hrs',    label: 'On-Site SLA' },
-                { val: '11+',      label: 'Years Active' },
-                { val: '100%',     label: 'Proactive Coverage' },
-              ].map((m) => (
-                <div key={m.label} className="bg-navy border border-teal/10 rounded-lg p-4 text-center">
-                  <div className="font-serif font-bold text-cyan text-xl">{m.val}</div>
-                  <div className="text-gray text-xs mt-1">{m.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="reveal">
-            <span className="section-label">Why NerdOps</span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-5 leading-tight">
-              Prevention-Focused Infrastructure Management
-            </h2>
-            <p className="text-gray text-sm leading-relaxed mb-5">
-              With 11 years of experience supporting business technology environments, we understand
-              how to build reliable systems that remain stable under pressure.
-            </p>
-            <p className="text-gray text-sm leading-relaxed mb-7">
-              We focus on prevention, responsiveness, and accountability — monitoring your
-              infrastructure continuously, applying structured updates, and responding before
-              issues disrupt operations.
-            </p>
-            <ul className="space-y-3.5 mb-8">
-              {[
-                '24/7 infrastructure monitoring and alerting',
-                'Proactive patch management and system updates',
-                'Flat-rate pricing with no surprise invoices',
-                'Certified engineers across Microsoft, Cisco, AWS, and Google Cloud',
-                'Structured incident response and root cause analysis',
-                'On-site dispatch available within 4 hours in service areas',
-                'Month-to-month agreements — no long-term lock-in',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm text-gray">
-                  <svg className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/about" className="bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm">
-                About Our Company
-              </Link>
-              <Link href="/contact" className="border border-teal/40 text-teal hover:border-teal hover:bg-teal/8 font-bold px-6 py-3 rounded-lg transition-all text-sm">
-                Schedule Assessment
-              </Link>
-            </div>
           </div>
         </div>
       </section>
@@ -538,6 +558,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <MobileStickyCTA show={stickyVisible} />
     </>
   );
 }

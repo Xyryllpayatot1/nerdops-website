@@ -58,7 +58,7 @@ export default function AboutPage() {
             </h2>
             <div className="space-y-5 text-gray text-sm leading-relaxed">
               <p>
-                We founded NerdOps with a clear purpose: simplify and humanize technology support
+                We founded ZERO NERDS with a clear purpose: simplify and humanize technology support
                 for businesses that were frustrated with confusing and impersonal IT experiences.
               </p>
               <p>
@@ -83,18 +83,23 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="reveal grid grid-cols-2 gap-4">
-            {[
-              { num: '11+',    label: 'Years of Experience' },
-              { num: '500+',   label: 'Businesses Served' },
-              { num: '99.98%', label: 'Average Uptime' },
-              { num: '24/7',   label: 'Continuous Monitoring' },
-            ].map((s) => (
-              <div key={s.label} className="bg-navy2 border border-teal/10 rounded-xl p-7 text-center">
-                <div className="font-serif font-bold grad-text leading-none" style={{ fontSize: '2.4rem' }}>{s.num}</div>
-                <div className="text-gray text-xs uppercase tracking-wider mt-2">{s.label}</div>
+          <div className="reveal">
+            <div className="bg-navy2 border border-teal/10 rounded-2xl p-8">
+              <span className="section-label block mb-3">Our Commitment</span>
+              <p className="text-gray text-sm leading-relaxed">
+                Every engagement is grounded in reliability, accountability, and clear communication. We act as a dependable extension of your team — available when you need us and proactive when you don't.
+              </p>
+              <div className="mt-6 flex flex-col gap-3">
+                {['24/7 infrastructure monitoring and alerting','Flat-rate pricing — no surprise invoices','Month-to-month agreements, no lock-in','On-site dispatch within the Portland metro area'].map((item) => (
+                  <div key={item} className="flex items-start gap-3 text-sm text-gray">
+                    <svg className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    {item}
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

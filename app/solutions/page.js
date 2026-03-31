@@ -19,10 +19,7 @@ const SOLUTIONS = [
     id: 'managed-it',
     title: 'Managed IT Services',
     tagline: 'Proactive Infrastructure Oversight',
-    headline: 'Strengthen Operations with Reliable Managed IT Services in Portland, OR and Surrounding Areas',
-    problem: 'Unexpected downtime, slow systems, and recurring technical issues can disrupt your entire operation. Many businesses rely on reactive fixes, waiting until servers fail or networks crash before taking action.',
-    challenge: 'Without structured monitoring and maintenance, vulnerabilities go unnoticed. Missed patches, outdated configurations, and unmanaged devices create opportunities for security threats and system failures.',
-    solution: 'Our managed IT services provide a structured, prevention-focused solution. We continuously monitor your infrastructure, maintain system health, and optimize performance before issues disrupt operations. With 11 years of experience supporting business technology environments, we understand how to build reliable systems that remain stable under pressure.',
+    desc: '24/7 infrastructure monitoring, patch management, and proactive system maintenance that keeps your business running without interruption.',
     features: [
       '24/7 Infrastructure Monitoring',
       'Server Management Services',
@@ -37,10 +34,7 @@ const SOLUTIONS = [
     id: 'help-desk',
     title: 'IT Support & Help Desk Services',
     tagline: 'Fast Technical Support When You Need It',
-    headline: 'Restore Productivity with Reliable Help Desk Services in Portland, OR and Surrounding Areas',
-    problem: 'Technical issues rarely happen at a convenient time. Slow computers, email failures, login problems, and network interruptions can quickly disrupt your workflow. When employees cannot access systems or applications, productivity declines and frustration increases.',
-    challenge: 'Many businesses attempt to manage support internally or rely on inconsistent third-party assistance. This reactive approach often results in long wait times, unclear communication, and recurring technical problems.',
-    solution: 'Our help desk services are built to resolve issues quickly while preventing repeat disruptions. We combine responsive remote IT support with proactive monitoring to maintain stability. Whether your team needs Microsoft 365 support, desktop support, email support, or network troubleshooting, we deliver dependable business IT support that keeps operations moving.',
+    desc: 'Fast remote IT support with structured ticketing that resolves issues quickly and keeps your team productive.',
     features: [
       'Remote IT Support — Secure remote access for fast issue resolution',
       'Help Desk Ticketing System — Structured tracking ensuring documentation and accountability',
@@ -55,10 +49,7 @@ const SOLUTIONS = [
     id: 'cloud',
     title: 'Cloud Server Hosting & Management',
     tagline: 'Secure and Scalable Cloud Infrastructure',
-    headline: 'Optimize Infrastructure with Reliable Cloud Monitoring in Portland, OR and Surrounding Areas',
-    problem: 'Unstable servers, slow cloud performance, and unexpected outages can disrupt your entire organization. Businesses relying on outdated systems or poorly configured cloud environments experience performance bottlenecks, inconsistent access, and increased security exposure.',
-    challenge: 'Cloud environments that are not properly designed for high availability can lead to data access interruptions and operational delays. Without structured management, performance tuning, and continuous oversight, organizations risk downtime that impacts productivity and customer trust.',
-    solution: 'Our cloud monitoring services provide the structured oversight required to maintain reliable performance. We design, implement, and maintain managed cloud infrastructure supporting business continuity through proactive monitoring, secure cloud migration strategies, and ongoing optimization. We build high-availability cloud environments with redundancy and performance safeguards.',
+    desc: 'Scalable, high-availability cloud infrastructure with continuous monitoring and secure migration support.',
     features: [
       'Cloud Server Hosting',
       'Managed Cloud Infrastructure',
@@ -73,10 +64,7 @@ const SOLUTIONS = [
     id: 'incident-response',
     title: 'Incident Response Services',
     tagline: 'Continuous Monitoring and Protection',
-    headline: 'Protect Infrastructure with Reliable Incident Response Services in Portland, OR and Surrounding Areas',
-    problem: 'Server instability can disrupt operations without warning. Performance slowdowns, failed updates, and unpatched vulnerabilities often go unnoticed until they cause outages.',
-    challenge: 'Without structured server monitoring and maintenance oversight, minor configuration issues can escalate into costly downtime. Delayed patch deployment, weak security configuration, and insufficient performance tracking create exposure to cyber threats and hardware failure.',
-    solution: 'Our incident response services provide proactive remote server management designed to maintain uptime and reduce risk. We combine real-time server monitoring, structured security configuration, and performance optimization to prevent disruptions before they impact operations. We maintain continuous visibility into your server environment through 24/7 monitoring tools and structured reporting.',
+    desc: 'Real-time server monitoring and structured security configuration that prevents disruptions before they impact operations.',
     features: [
       'Real-Time Server Monitoring Service',
       'Server Maintenance Services',
@@ -91,10 +79,7 @@ const SOLUTIONS = [
     id: 'backup',
     title: 'Backup & Disaster Recovery Services',
     tagline: 'Protect Data and Maintain Continuity',
-    headline: 'Protect Operations with Reliable Data Backup Services in Portland, OR and Surrounding Areas',
-    problem: 'Data loss can bring business operations to a halt. Hardware failure, ransomware, or natural disasters can strike without warning and without structured recovery planning, restoration can take days — or longer.',
-    challenge: 'Many businesses mistakenly assume basic cloud backups are sufficient without recovery testing or encrypted offsite storage. Untested backup systems and incomplete continuity plans leave organizations exposed when they are needed most.',
-    solution: 'Our layered backup and disaster recovery service strategies include automated cloud backups, encrypted storage, and ransomware recovery protocols with consistent monitoring and validation through recovery testing. We build structured plans that restore operations quickly regardless of the cause.',
+    desc: 'Automated cloud backups, encrypted offsite storage, and tested recovery planning that protects critical data and restores operations fast.',
     features: [
       'Automated Cloud Backups',
       'Encrypted Offsite Storage Solutions',
@@ -109,10 +94,7 @@ const SOLUTIONS = [
     id: 'cybersecurity',
     title: 'Cybersecurity & Infrastructure Protection',
     tagline: 'Advanced Protection for Business Systems',
-    headline: 'Defend Operations with Reliable Cybersecurity Services in Portland, OR and Surrounding Areas',
-    problem: 'Cyber threats are no longer isolated incidents. Ransomware attacks, phishing campaigns, unauthorized access attempts, and network breaches affect businesses of all sizes. Without layered protection and structured monitoring, a single vulnerability can expose sensitive data and disrupt operations.',
-    challenge: 'Security gaps often result from outdated firewall configurations, inconsistent endpoint security, weak access control solutions, or insufficient monitoring. Even strong infrastructure can become vulnerable without continuous oversight.',
-    solution: 'Our cybersecurity services are built to prevent disruption before it occurs. We implement structured, layered security strategies that protect servers, endpoints, and networks. Our approach combines proactive monitoring, security configuration management, and infrastructure protection to reduce exposure. Cybersecurity is not a one-time implementation — it requires ongoing monitoring and layered defenses that evolve alongside emerging threats.',
+    desc: 'Layered security controls — firewall management, endpoint protection, MFA, and 24/7 network monitoring — to defend your infrastructure.',
     features: [
       'Firewall Management — Configuration and oversight that control network traffic and block unauthorized access',
       'Endpoint Security — Protection for workstations, servers, and mobile devices to prevent malware and unauthorized intrusion',
@@ -146,24 +128,30 @@ export default function SolutionsPage() {
       </section>
 
       {/* Solutions */}
-      <section className="bg-navy py-6 px-5">
-        <div className="max-w-7xl mx-auto divide-y divide-white/5">
-          {SOLUTIONS.map((s, i) => (
-            <div key={s.id} id={s.id} className="py-20">
-              <div className={`reveal grid grid-cols-1 lg:grid-cols-2 gap-14 items-start ${i % 2 === 1 ? '' : ''}`}>
+      <section className="bg-navy py-16 px-5">
+        <div className="max-w-7xl mx-auto">
+          <div className="reveal grid grid-cols-1 md:grid-cols-2 gap-6">
+            {SOLUTIONS.map((s) => (
+              <div key={s.id} id={s.id} className="bg-navy2 border border-white/6 rounded-2xl overflow-hidden flex flex-col">
+                {/* Accent bar */}
+                <div className="bg-gradient-to-r from-amber-400 to-teal h-[3px]" />
+                <div className="p-8 flex flex-col flex-1">
+                  <span className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-2">{s.tagline}</span>
+                  <h2 className="font-serif text-xl font-bold mb-3 leading-snug text-white">{s.title}</h2>
+                  <p className="text-gray text-sm leading-relaxed mb-6">{s.desc}</p>
 
-                {/* Text side */}
-                <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
-                  <span className="section-label block mb-2">{s.tagline}</span>
-                  <h2 className="font-serif text-2xl md:text-3xl font-bold mb-5 leading-snug">{s.title}</h2>
+                  <ul className="space-y-3 mb-7 flex-1">
+                    {s.features.map((f) => (
+                      <li key={f} className="flex items-start gap-3 text-sm text-gray">
+                        <svg className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-                  <div className="space-y-4 text-gray text-sm leading-relaxed mb-7">
-                    <p>{s.problem}</p>
-                    <p>{s.challenge}</p>
-                    <p className="text-white/80">{s.solution}</p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-3 mt-auto">
                     <a
                       href="tel:+15033137121"
                       className="bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm"
@@ -178,24 +166,9 @@ export default function SolutionsPage() {
                     </Link>
                   </div>
                 </div>
-
-                {/* Features */}
-                <div className={`bg-navy2 border border-white/6 rounded-2xl p-8 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <p className="text-xs font-bold text-teal uppercase tracking-widest mb-5">Service Components</p>
-                  <ul className="space-y-4">
-                    {s.features.map((f) => (
-                      <li key={f} className="flex items-start gap-3 text-sm text-gray">
-                        <svg className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

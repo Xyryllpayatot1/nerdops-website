@@ -24,6 +24,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   return (
     <>
       {/* Announcement banner */}
@@ -43,9 +48,9 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-5 flex items-center justify-between h-16">
 
-          {/* Logo */}
+          {/* Logo — left on both mobile and desktop */}
           <Link href="/" className="select-none flex items-center">
-            <Image src="/logo.png" alt="ZERO NERDS" width={120} height={67} priority />
+            <Image src="/logo.png" alt="ZERO NERDS" width={155} height={87} priority />
           </Link>
 
           {/* Desktop nav */}
@@ -126,6 +131,22 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
+            {/* Hamburger — right on mobile only */}
+            <button
+              className="lg:hidden text-navy hover:text-teal p-1"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle navigation"
+            >
+              {menuOpen ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
             <a
               href="tel:+15033137121"
               className="hidden md:inline-flex items-center gap-2 bg-teal hover:bg-teal/90 text-white text-sm font-bold px-4 py-2 rounded-lg transition-all duration-200 shadow-sm shadow-teal/20"
@@ -142,63 +163,68 @@ export default function Navbar() {
               Get Free Quote
             </Link>
 
-            {/* Hamburger */}
-            <button
-              className="lg:hidden text-navy hover:text-teal p-1"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle navigation"
-            >
-              {menuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile drawer */}
         {menuOpen && (
-          <div className="lg:hidden border-t border-[#c8d4e8] px-5 py-4" style={{ backgroundColor: '#dce6f5' }}>
-            {[
-              { href: '/',          label: 'Home' },
-              { href: '/about',     label: 'Get To Know Us' },
-              { href: '/solutions', label: 'Our Solutions' },
-              { href: '/areas',     label: 'Areas We Serve' },
-              { href: '/gallery',   label: 'Our Gallery' },
-              { href: '/portland',  label: 'Portland, OR' },
-              { href: '/contact',   label: 'Contact Us' },
-            ].map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block py-3 text-navy/70 hover:text-teal border-b border-gray/10 text-sm font-medium transition-colors"
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <div className="mt-4 space-y-3">
-              <a
-                href="tel:+15033137121"
-                className="flex items-center justify-center gap-2 bg-teal text-white font-bold py-2.5 rounded-lg text-sm"
-              >
-                <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-                Get Instant Help
-              </a>
-              <Link
-                href="/contact"
-                className="block text-center border border-teal/50 text-teal font-bold py-2.5 rounded-lg text-sm"
-                onClick={() => setMenuOpen(false)}
-              >
-                Get Free Quote
-              </Link>
+          <div className="fixed inset-0 z-40 lg:hidden">
+            {/* Blurred backdrop — website still visible behind */}
+            <div
+              className="absolute inset-0 bg-navy2/60 backdrop-blur-md"
+              onClick={() => setMenuOpen(false)}
+            />
+            {/* Slide-in panel from right */}
+            <div
+              className="absolute top-0 right-0 h-full w-4/5 max-w-xs flex flex-col pt-6 px-6 pb-8 overflow-y-auto shadow-2xl border-l border-white/10"
+              style={{ backgroundColor: '#dce6f5', animation: 'drawerSlideIn 0.28s cubic-bezier(0.32,0.72,0,1) both' }}
+            >
+              {/* Close button */}
+              <div className="flex justify-end mb-6">
+                <button onClick={() => setMenuOpen(false)} className="text-navy hover:text-teal p-1">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {[
+                { href: '/',          label: 'Home' },
+                { href: '/about',     label: 'Get To Know Us' },
+                { href: '/solutions', label: 'Our Solutions' },
+                { href: '/areas',     label: 'Areas We Serve' },
+                { href: '/gallery',   label: 'Our Gallery' },
+                { href: '/portland',  label: 'Portland, OR' },
+                { href: '/contact',   label: 'Contact Us' },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block py-4 text-navy font-semibold border-b border-navy/10 text-base transition-colors hover:text-teal"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+
+              <div className="mt-6 space-y-3">
+                <a
+                  href="tel:+15033137121"
+                  className="flex items-center justify-center gap-2 bg-teal text-white font-bold py-3.5 rounded-lg text-sm"
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                  Get Instant Help
+                </a>
+                <Link
+                  href="/contact"
+                  className="block text-center border border-teal/50 text-teal font-bold py-3.5 rounded-lg text-sm"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Get Free Quote
+                </Link>
+              </div>
             </div>
           </div>
         )}
