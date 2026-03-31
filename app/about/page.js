@@ -56,31 +56,9 @@ export default function AboutPage() {
             <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 leading-tight">
               Built to Simplify and Humanize Technology Support
             </h2>
-            <div className="space-y-5 text-gray text-sm leading-relaxed">
-              <p>
-                We founded ZERO NERDS with a clear purpose: simplify and humanize technology support
-                for businesses that were frustrated with confusing and impersonal IT experiences.
-              </p>
-              <p>
-                Technology should move your business forward, not hold it back. When systems are unstable,
-                cybersecurity gaps go unnoticed, or support requests go unanswered, productivity suffers.
-                That is why working with a dependable IT support company in Portland, OR makes a measurable
-                difference. We focus on proactive IT services that reduce downtime, strengthen security, and
-                create long-term infrastructure stability for both homeowners and commercial organizations.
-              </p>
-              <p>
-                From managed IT services and help desk services to cloud infrastructure management, incident
-                response services, data backup services, and cybersecurity services, we provide structured
-                solutions designed to keep operations running smoothly. Our 24/7 monitoring, preventive
-                maintenance strategies, and layered security controls ensure your technology environment
-                remains secure and reliable.
-              </p>
-              <p>
-                As an established IT support company in Portland, OR, we take responsibility for your
-                infrastructure so you can focus on growth and daily operations. Every service we provide
-                is grounded in reliability, accountability, and clear communication.
-              </p>
-            </div>
+            <p className="text-gray text-sm leading-relaxed">
+              We founded ZERO NERDS to simplify and humanize technology support for businesses frustrated with confusing, impersonal IT experiences. As a trusted IT support company in Portland, OR, we take responsibility for your infrastructure — delivering proactive managed IT, cybersecurity, cloud management, and 24/7 monitoring so you can focus on running your business.
+            </p>
           </div>
 
           <div className="reveal">

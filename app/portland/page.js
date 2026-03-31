@@ -137,22 +137,9 @@ export default function PortlandPage() {
             <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-5">
               IT Support Company Serving Portland, OR and Surrounding Areas
             </h2>
-            <div className="space-y-4 text-gray text-sm leading-relaxed">
-              <p>
-                We are a trusted IT support company serving businesses throughout Portland, OR.
-                From downtown Portland to the surrounding metro area, we provide proactive IT services
-                that reduce downtime, strengthen cybersecurity, and keep operations running smoothly.
-              </p>
-              <p>
-                Our team monitors your infrastructure 24/7, applies proactive updates, and responds
-                to incidents before they disrupt your business. Whether you need managed IT services,
-                cloud infrastructure support, or a responsive help desk, we are here.
-              </p>
-              <p>
-                Located at 750 SW 9th Ave, Portland, OR 97205 — we are accessible to businesses
-                throughout the Portland metro area for both remote and on-site support.
-              </p>
-            </div>
+            <p className="text-gray text-sm leading-relaxed">
+              We are a trusted IT support company serving businesses throughout Portland, OR. From downtown Portland to the surrounding metro area, we provide proactive IT services that reduce downtime, strengthen cybersecurity, and keep operations running smoothly. Located at 750 SW 9th Ave, Portland, OR 97205 — available for both remote and on-site support.
+            </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/contact" className="bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
                 Schedule IT Assessment
@@ -238,9 +225,7 @@ export default function PortlandPage() {
               Portland's Trusted IT Partner
             </h2>
             <p className="text-gray text-sm leading-relaxed mb-5">
-              Businesses across Portland trust us to keep their technology infrastructure secure,
-              stable, and performing at its best. We understand the demands of operating in a
-              fast-moving business environment and deliver IT support that keeps pace.
+              Businesses across Portland trust us to keep their technology secure, stable, and performing at its best.
             </p>
             <ul className="space-y-3.5 mb-8">
               {[
