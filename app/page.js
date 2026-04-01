@@ -197,36 +197,51 @@ function FAQItem({ q, a }) {
   );
 }
 
-// Per-image tuning: scale + object-position to hide removebg edge artifacts
-const TEAM_CONFIG = {
-  1: { scale: 1.18, pos: 'center 8%'  },
-  2: { scale: 1.22, pos: 'center 5%'  },
-  3: { scale: 1.20, pos: 'center 6%'  },
-  4: { scale: 1.18, pos: 'center 8%'  },
-  5: { scale: 1.18, pos: 'center 8%'  },
-  6: { scale: 1.15, pos: 'center 5%'  },
-  7: { scale: 1.18, pos: 'center 6%'  },
-  8: { scale: 1.18, pos: 'center 8%'  },
-};
+// Sticker heights per image for natural variation
+const STICKER_H = { 1: 160, 2: 145, 3: 155, 4: 150, 5: 162, 6: 140, 7: 158, 8: 148 };
 
-function TeamCircle({ n }) {
-  const { scale, pos } = TEAM_CONFIG[n] || { scale: 1.18, pos: 'center 8%' };
+// Slight rotation per image for playful sticker feel
+const STICKER_ROT = { 1: -2, 2: 1.5, 3: -1, 4: 2.5, 5: 1, 6: -2.5, 7: 2, 8: -1.5 };
+
+// SVG filter — feMorphology dilate expands the alpha channel outward,
+// filling inner holes (gaps between arms/body) before drawing the white border.
+function StickerFilterDef() {
+  return (
+    <svg width="0" height="0" style={{ position: 'absolute' }}>
+      <defs>
+        <filter id="sticker-border" x="-15%" y="-15%" width="130%" height="130%">
+          {/* Expand every non-transparent pixel outward by 10px — fills inner gaps */}
+          <feMorphology in="SourceAlpha" operator="dilate" radius="10" result="dilated" />
+          {/* Fill the expanded shape with solid white */}
+          <feFlood floodColor="white" floodOpacity="1" result="white" />
+          <feComposite in="white" in2="dilated" operator="in" result="whiteBorder" />
+          {/* Place white border behind the original image */}
+          <feMerge>
+            <feMergeNode in="whiteBorder" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+  );
+}
+
+function TeamSticker({ n }) {
   return (
     <div
-      className="flex-shrink-0 relative rounded-full overflow-hidden border-2 md:border-4 border-white shadow-xl"
-      style={{ width: 'clamp(90px, 22vw, 170px)', height: 'clamp(90px, 22vw, 170px)' }}
+      className="flex-shrink-0 relative"
+      style={{
+        width: 'clamp(80px, 18vw, 130px)',
+        height: STICKER_H[n] || 150,
+        transform: `rotate(${STICKER_ROT[n] || 0}deg)`,
+        // SVG filter handles white border + hole-filling; CSS drop-shadow adds depth
+        filter: 'url(#sticker-border) drop-shadow(0 6px 20px rgba(0,0,0,0.7))',
+      }}
     >
-      {/* Image scaled up so jagged removebg edges are pushed outside the circle clip */}
       <img
         src={`/team/team${n}.png`}
         alt="Team member"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ objectPosition: pos, transform: `scale(${scale})`, transformOrigin: 'center top' }}
-      />
-      {/* Radial vignette — fades rough edges to the section bg color */}
-      <div
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, transparent 52%, rgba(13,21,48,0.55) 80%, rgba(13,21,48,0.85) 100%)' }}
+        className="w-full h-full object-contain object-bottom"
       />
     </div>
   );
@@ -338,37 +353,46 @@ export default function HomePage() {
       </div>
 
       {/* ── TEAM FACES ── */}
-      <section className="bg-navy2 pt-16 overflow-hidden">
+      <section className="bg-navy2 pt-16">
+        <StickerFilterDef />
         <div className="max-w-5xl mx-auto text-center mb-10 px-5">
           <span className="section-label block text-center">Meet the Team</span>
           <h2 className="font-serif text-2xl md:text-3xl font-bold mt-2">The People Behind Your IT</h2>
           <p className="text-gray text-sm mt-3 leading-relaxed max-w-sm mx-auto">Real people. Real expertise. Ready when you need us.</p>
         </div>
 
-        {/* Scrolling row 1 — left */}
-        <div className="relative overflow-hidden mb-4" style={{ height: 'clamp(110px, 26vw, 200px)' }}>
-          <div className="flex items-center gap-3 md:gap-6 absolute" style={{ animation: 'teamScrollL 30s linear infinite', width: 'max-content' }}>
-            {[0,1,2].flatMap((set) =>
+        {/* Scrolling row 1 — left
+            Outer div is taller (+ 24px padding top/bottom) so overflow:hidden
+            doesn't clip the white drop-shadow sticker border */}
+        <div className="relative overflow-hidden mb-4" style={{ height: 'calc(clamp(120px, 22vw, 180px) + 24px)' }}>
+          <div
+            className="flex items-end gap-4 md:gap-8 absolute bottom-0"
+            style={{ animation: 'teamScrollL 30s linear infinite', width: 'max-content', paddingTop: 14, paddingBottom: 14 }}
+          >
+            {[0,1,2,3].flatMap((set) =>
               [1,2,3,4].map((n) => (
-                <TeamCircle key={`r1-${set}-${n}`} n={n} />
+                <TeamSticker key={`r1-${set}-${n}`} n={n} />
               ))
             )}
           </div>
-          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right,#0d1530,transparent)' }} />
-          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left,#0d1530,transparent)' }} />
+          <div className="absolute inset-y-0 left-0 w-20 md:w-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to right,#0d1530 40%,transparent)' }} />
+          <div className="absolute inset-y-0 right-0 w-20 md:w-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to left,#0d1530 40%,transparent)' }} />
         </div>
 
         {/* Scrolling row 2 — right */}
-        <div className="relative overflow-hidden mb-8" style={{ height: 'clamp(110px, 26vw, 200px)' }}>
-          <div className="flex items-center gap-3 md:gap-6 absolute" style={{ animation: 'teamScrollR 36s linear infinite', width: 'max-content' }}>
-            {[0,1,2].flatMap((set) =>
+        <div className="relative overflow-hidden mb-8" style={{ height: 'calc(clamp(120px, 22vw, 180px) + 24px)' }}>
+          <div
+            className="flex items-end gap-4 md:gap-8 absolute bottom-0"
+            style={{ animation: 'teamScrollR 36s linear infinite', width: 'max-content', paddingTop: 14, paddingBottom: 14 }}
+          >
+            {[0,1,2,3].flatMap((set) =>
               [5,6,7,8].map((n) => (
-                <TeamCircle key={`r2-${set}-${n}`} n={n} />
+                <TeamSticker key={`r2-${set}-${n}`} n={n} />
               ))
             )}
           </div>
-          <div className="absolute inset-y-0 left-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to right,#0d1530,transparent)' }} />
-          <div className="absolute inset-y-0 right-0 w-12 md:w-24 pointer-events-none z-10" style={{ background: 'linear-gradient(to left,#0d1530,transparent)' }} />
+          <div className="absolute inset-y-0 left-0 w-20 md:w-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to right,#0d1530 40%,transparent)' }} />
+          <div className="absolute inset-y-0 right-0 w-20 md:w-32 pointer-events-none z-10" style={{ background: 'linear-gradient(to left,#0d1530 40%,transparent)' }} />
         </div>
 
         {/* CTA */}

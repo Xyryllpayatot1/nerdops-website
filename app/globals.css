@@ -105,10 +105,10 @@
 }
 @keyframes teamScrollL {
   from { transform: translateX(0); }
-  to   { transform: translateX(-33.3334%); }
+  to   { transform: translateX(-25%); }
 }
 @keyframes teamScrollR {
-  from { transform: translateX(-33.3334%); }
+  from { transform: translateX(-25%); }
   to   { transform: translateX(0%); }
 }
 @keyframes pulse2 {
