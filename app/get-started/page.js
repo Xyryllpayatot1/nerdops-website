@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -135,26 +135,111 @@ function BellCurveChart() {
 /* ─── FUNNEL NAVBAR ─────────────────────────────────────── */
 
 function FunnelNavbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDesktopDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const mainLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Sign up as a pro', href: '/contact' },
+    { label: 'Plan', href: '/solutions' },
+    { label: 'Team', href: '/about' },
+    { label: 'Inbox', href: '/contact' },
+  ];
+
+  const bottomLinks = [
+    { label: 'Profile', href: '/profile' },
+    { label: 'Log out', href: '/logout' },
+  ];
+
   return (
-    <nav style={{ position: 'sticky', top: 0, zIndex: 50, backgroundColor: '#fff', borderBottom: '1px solid #e5e7eb', color: '#374151' }}>
-      <div style={{ width: '100%', padding: '0 20px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link href="/">
-          <Image src="/logo.png" alt="ZERO NERDS" width={240} height={72} style={{ height: 68, width: 'auto', objectFit: 'contain' }} priority />
-        </Link>
-        <div className="hidden md:flex" style={{ alignItems: 'center', gap: 32, fontSize: 15, color: '#374151', fontWeight: 400 }}>
-          <Link href="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Sign up as a pro</Link>
-          <Link href="/solutions" style={{ color: 'inherit', textDecoration: 'none' }}>Services</Link>
-          <Link href="/about" style={{ color: 'inherit', textDecoration: 'none' }}>About</Link>
-          <Link href="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Inbox</Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-            <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#29abe2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>ZN</div>
-            <span style={{ fontSize: 15, color: '#374151' }}>Client</span>
-            <svg style={{ width: 14, height: 14, color: '#6b7280' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+    <>
+      <style>{`
+        @media (min-width: 768px) {
+          .mobile-menu-btn { display: none !important; }
+        }
+      `}</style>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 50, backgroundColor: '#fff', borderBottom: '1px solid #e5e7eb', color: '#374151' }}>
+        <div style={{ width: '100%', padding: '0 20px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="md:hidden" style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', background: 'transparent' }}>
+              <Image src="/logo.png" alt="ZERO NERDS" width={240} height={72} style={{ height: 68, width: 'auto', objectFit: 'contain', background: 'transparent' }} priority />
+            </Link>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden mobile-menu-btn"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 0 0 4px', display: 'flex', alignItems: 'center', color: '#374151' }}
+            >
+              <svg style={{ width: 20, height: 20, transform: menuOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={menuOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+              </svg>
+            </button>
+          </div>
+          <div className="hidden md:flex" style={{ alignItems: 'center', gap: 32, fontSize: 15, color: '#374151', fontWeight: 400 }}>
+            <Link href="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Sign up as a pro</Link>
+            <Link href="/solutions" style={{ color: 'inherit', textDecoration: 'none' }}>Services</Link>
+            <Link href="/about" style={{ color: 'inherit', textDecoration: 'none' }}>About</Link>
+            <Link href="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Inbox</Link>
+            <div ref={dropdownRef} style={{ position: 'relative' }}>
+              <button
+                onClick={() => setDesktopDropdownOpen(!desktopDropdownOpen)}
+                className="hidden md:flex"
+                style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}
+              >
+                <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#29abe2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>ZN</div>
+                <span style={{ fontSize: 15, color: '#374151' }}>Client</span>
+                <svg style={{ width: 14, height: 14, color: '#6b7280', transform: desktopDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {desktopDropdownOpen && (
+                <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 8, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', minWidth: 150, overflow: 'hidden', zIndex: 60 }}>
+                  <Link href="/profile" onClick={() => setDesktopDropdownOpen(false)} style={{ display: 'block', padding: '12px 16px', fontSize: 14, color: '#111827', textDecoration: 'none', borderBottom: '1px solid #f3f4f6' }}>Profile</Link>
+                  <Link href="/logout" onClick={() => setDesktopDropdownOpen(false)} style={{ display: 'block', padding: '12px 16px', fontSize: 14, color: '#111827', textDecoration: 'none' }}>Log out</Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        <a href="tel:+15033137121" className="md:hidden" style={{ color: '#29abe2', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>Call us</a>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile Dropdown Menu */}
+      {menuOpen && (
+        <div className="md:hidden" style={{ position: 'fixed', top: 64, left: 0, right: 0, bottom: 0, backgroundColor: '#fff', zIndex: 49, overflowY: 'auto', borderTop: '1px solid #e5e7eb' }}>
+          <div style={{ padding: '8px 0' }}>
+            {mainLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                style={{ display: 'block', padding: '18px 20px', fontSize: 17, fontWeight: 700, color: '#111827', textDecoration: 'none', borderBottom: '1px solid #f3f4f6' }}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div style={{ height: 8, backgroundColor: '#f9fafb', borderTop: '1px solid #e5e7eb' }} />
+            {bottomLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                style={{ display: 'block', padding: '18px 20px', fontSize: 17, fontWeight: 700, color: '#111827', textDecoration: 'none', borderBottom: '1px solid #f3f4f6' }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -393,7 +478,7 @@ export default function GetStartedPage() {
             stars: 5,
             reviews: 273,
             topPro: true,
-            badges: [{ label: '$ Great value', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
+            badges: [{ label: 'Great value', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
             hires: '437 hires on ZERO NERDS',
             area: 'Serves Portland, OR + Vancouver, WA',
             quote: 'Amy F. says, "They were ',
@@ -409,7 +494,7 @@ export default function GetStartedPage() {
             stars: 4,
             reviews: 94,
             topPro: false,
-            badges: [{ label: '🏆 In high demand', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
+            badges: [{ label: 'In high demand', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
             hires: '224 hires on ZERO NERDS',
             area: '13 similar jobs done near you',
             quote: 'Mark L. says, "',
@@ -425,7 +510,7 @@ export default function GetStartedPage() {
             stars: 5,
             reviews: 1,
             topPro: false,
-            badges: [{ label: '🏆 In high demand', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
+            badges: [{ label: 'In high demand', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
             hires: '1 hire on ZERO NERDS',
             area: 'Serves Vancouver, WA',
             quote: 'Sahkidad E. says, "Their expertise, patience, and clear explanations made the ',
