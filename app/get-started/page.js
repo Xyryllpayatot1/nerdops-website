@@ -15,7 +15,7 @@ function CustomDropdown({ label, options, value, onChange }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1.5px solid #9ca3af', borderRadius: 8, padding: '14px 16px', background: '#fff', cursor: 'pointer', fontSize: 16, fontWeight: 600, color: value ? '#111827' : '#9ca3af', minHeight: 52 }}
+        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1.5px solid #9ca3af', borderRadius: 8, padding: '14px 16px', background: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700, color: '#111827', minHeight: 52 }}
       >
         <span>{value || label}</span>
         <svg style={{ width: 18, height: 18, color: '#374151', flexShrink: 0 }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
@@ -301,7 +301,7 @@ export default function GetStartedPage() {
         {/* Mobile — form below image */}
         <div className="md:hidden" style={{ background: '#fff', padding: '20px', borderBottom: '1px solid #f3f4f6' }}>
           <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 16 }}>Give us a few details and we'll match you with the right pro.</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #d1d5db', borderRadius: 10, padding: '14px 16px', marginBottom: 12, background: '#fff', height: 52 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #9ca3af', borderRadius: 8, padding: '14px 16px', marginBottom: 12, background: '#fff', height: 52 }}>
             <svg style={{ width: 20, height: 20, color: '#9ca3af', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
             </svg>
