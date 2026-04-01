@@ -4,16 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+/* ─── DATA ─────────────────────────────────────────────── */
+
 const REVIEWS = [
-  { name: 'Kate LaMare',    initials: 'KL',  stars: 5, text: 'ZERO NERDS is the absolute best IT service around. Very fast response time with a dedicated and educated team. They can solve any issue that occurs, leaving us with less downtime than ever before.' },
-  { name: 'Chris Wilson',   initials: 'CW',  stars: 5, text: 'Out of all the firms I\'ve hired, nothing compares to the level of expertise and sense of urgency as Daniel and his team. Amazing service, integrity, and knowledge in all aspects of the craft.' },
-  { name: 'Lisa Cook',      initials: 'LC',  stars: 5, text: 'Danny is an incredible IT support. Super knowledgeable and works to get your company to the level you need to be, taking your budget into account. Accessible no matter when an IT event happens.' },
-  { name: 'Robbie Myers',   initials: 'RM',  stars: 5, text: 'Danny and his team at ZERO NERDS have been awesome to work with. Their passion and dedication to their craft is very apparent. I look forward to further interactions and collaboration with them.' },
-  { name: 'Jill Lee',       initials: 'JL',  stars: 5, text: 'Professional, friendly, and knowledgeable. Great communication on the status of issues. Any issues I\'ve had have been resolved quickly. Overall, a very positive experience with ZERO NERDS!' },
-  { name: 'David Routt JR', initials: 'DR',  stars: 5, text: 'We partnered with ZERO NERDS for the migration of all our business IT infrastructure and could not have asked for a better partner. Every day the business is running more efficiently.' },
-  { name: 'Nicole Nelson',  initials: 'NN',  stars: 5, text: 'Love working with ZERO NERDS! Quick, efficient, knowledgeable, overall great team!' },
-  { name: 'Robert Smart',   initials: 'RS',  stars: 5, text: 'They handled my issues quickly and completely the first time — a massive bonus! You won\'t go wrong working with the team at ZERO NERDS.' },
-  { name: 'Laura Brown',    initials: 'LB',  stars: 5, text: 'We love ZERO NERDS! Daniel and his team are so helpful!' },
+  { from: 'Kate L.',  company: 'ZERO NERDS', initials: 'KL', stars: 5, text: 'ZERO NERDS is the absolute best IT service around. Very fast response time with a dedicated and educated team. They can solve any issue that occurs, leaving us with less downtime than ever before.' },
+  { from: 'Chris W.', company: 'ZERO NERDS', initials: 'CW', stars: 5, text: 'Nothing compares to the level of expertise and sense of urgency as Daniel and his team. Amazing service, integrity, and knowledge in all aspects of the craft.' },
+  { from: 'Lisa C.',  company: 'ZERO NERDS', initials: 'LC', stars: 5, text: 'Danny is an incredible IT support. Super knowledgeable and works to get your company to the level you need to be, taking your budget into account.' },
 ];
 
 const FAQS = [
@@ -21,328 +17,548 @@ const FAQS = [
   { q: 'How quickly can ZERO NERDS respond to an issue?', a: 'Remote issues are typically addressed within 15 minutes. On-site support throughout the Portland metro area is available same-day or next-day depending on urgency.' },
   { q: 'Do you offer 24/7 IT support?',                   a: 'Yes. We provide 24/7 infrastructure monitoring and an emergency support line available around the clock for critical issues.' },
   { q: 'What areas do you serve?',                        a: 'We serve Portland, OR and the entire metro area including Vancouver, WA, Gresham, Hillsboro, Beaverton, Lake Oswego, and surrounding cities.' },
-  { q: 'Do you require long-term contracts?',             a: 'No. All our agreements are month-to-month. You stay because the service works, not because you\'re locked in.' },
+  { q: 'Do you require long-term contracts?',             a: "No. All our agreements are month-to-month. You stay because the service works, not because you're locked in." },
   { q: 'What industries do you support?',                 a: 'We support businesses across professional services, healthcare, retail, construction, non-profits, and more — any organization that depends on reliable IT infrastructure.' },
   { q: 'Can you support remote or hybrid teams?',         a: 'Absolutely. Our cloud management and remote IT support infrastructure is built for distributed teams regardless of where employees work.' },
-  { q: 'How do I get started with ZERO NERDS?',           a: 'Call us at (503) 313-7121 or fill out our contact form to schedule a free IT assessment. We\'ll review your infrastructure and recommend next steps — no obligation.' },
+  { q: 'How do I get started with ZERO NERDS?',           a: "Call us at (503) 313-7121 or fill out our contact form to schedule a free IT assessment. We'll review your infrastructure and recommend next steps — no obligation." },
+  { q: 'Is it worth switching IT providers?',             a: "If you're experiencing frequent downtime, slow response times, or unclear billing, switching providers can dramatically improve operations. We offer a free assessment to help you decide." },
 ];
 
-const SERVICES = [
-  { label: 'Managed IT Services',              href: '/solutions#managed-it',        price: 'From $99/mo per user' },
-  { label: 'IT Support & Help Desk',            href: '/solutions#help-desk',         price: 'From $75/mo per user' },
-  { label: 'Cloud Server Hosting & Management', href: '/solutions#cloud',             price: 'Custom quote' },
-  { label: 'Cybersecurity & Infrastructure',    href: '/solutions#cybersecurity',     price: 'From $49/mo per user' },
-  { label: 'Backup & Disaster Recovery',        href: '/solutions#backup',            price: 'From $25/mo' },
-  { label: 'Incident Response Services',        href: '/solutions#incident-response', price: 'Custom quote' },
-];
+/* ─── COMPONENTS ────────────────────────────────────────── */
 
-function Stars({ n }) {
-  return <span className="text-yellow-400 text-sm">{'★'.repeat(n)}</span>;
+function Stars({ n, color = '#22c55e' }) {
+  return (
+    <span style={{ color, fontSize: 14, letterSpacing: -0.5 }}>
+      {'★'.repeat(n)}{'☆'.repeat(5 - n)}
+    </span>
+  );
 }
 
 function FAQItem({ q, a }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-white/8 rounded-xl overflow-hidden">
-      <button className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-white/3 transition-colors gap-4" onClick={() => setOpen(!open)}>
-        <span className="font-medium text-sm leading-snug text-white">{q}</span>
-        <svg className={`w-4 h-4 text-teal flex-shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <button
+        style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 0', textAlign: 'left', gap: 16, background: 'none', border: 'none', cursor: 'pointer' }}
+        onClick={() => setOpen(!open)}
+      >
+        <span style={{ color: '#111827', fontSize: 16, fontWeight: 700, lineHeight: 1.5 }}>{q}</span>
+        <svg style={{ width: 16, height: 16, color: '#9ca3af', flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      {open && <div className="px-6 pb-5 text-gray text-sm leading-relaxed border-t border-white/5 pt-4">{a}</div>}
+      {open && <div style={{ paddingBottom: 20, color: '#6b7280', fontSize: 14, lineHeight: 1.6 }}>{a}</div>}
     </div>
   );
 }
 
+/* Bell curve matching Thumbtack's exact style:
+   - Light mint (#86efac) for the full outer curve
+   - Darker green (#10b981) for the middle portion (between dashed lines)
+   - Diagonal hatching fill between the dashed lines
+   - Dashed gray vertical lines
+*/
+function BellCurveChart() {
+  const allPoints = "30,148 60,145 90,140 120,131 150,118 175,103 195,87 215,68 230,52 245,38 258,27 270,19 283,14 295,11 307,10 319,10 330,12 341,16 353,22 364,30 375,40 390,55 408,74 427,93 447,110 468,124 490,136 513,143 540,148 570,150";
+  const middlePath = "M230,52 L245,38 L258,27 L270,19 L283,14 L295,11 L307,10 L319,10 L330,12 L341,16 L353,22 L364,30 L375,40";
+  const shadedArea = "M230,52 L245,38 L258,27 L270,19 L283,14 L295,11 L307,10 L319,10 L330,12 L341,16 L353,22 L364,30 L375,40 L375,152 L230,152 Z";
+
+  return (
+    <svg viewBox="0 0 600 185" style={{ width: '100%', maxWidth: 420, display: 'block', margin: '0 auto' }}>
+      <defs>
+        <pattern id="diag" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#6ee7b7" strokeWidth="2" />
+        </pattern>
+      </defs>
+
+      {/* Baseline */}
+      <line x1="20" y1="152" x2="580" y2="152" stroke="#e5e7eb" strokeWidth="1" />
+
+      {/* Diagonal hatched shaded area */}
+      <path d={shadedArea} fill="url(#diag)" />
+
+      {/* Full bell curve — light mint */}
+      <polyline points={allPoints} fill="none" stroke="#86efac" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />
+
+      {/* Middle portion overlay — darker green */}
+      <path d={middlePath} fill="none" stroke="#10b981" strokeWidth="3.5" strokeLinejoin="round" strokeLinecap="round" />
+
+      {/* Dashed vertical lines */}
+      <line x1="230" y1="8" x2="230" y2="152" stroke="#9ca3af" strokeWidth="1.5" strokeDasharray="5,4" />
+      <line x1="375" y1="8" x2="375" y2="152" stroke="#9ca3af" strokeWidth="1.5" strokeDasharray="5,4" />
+
+      {/* X-axis labels */}
+      <text x="85"  y="174" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#111827">$</text>
+      <text x="230" y="174" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#111827">$$</text>
+      <text x="375" y="174" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#111827">$$$</text>
+      <text x="515" y="174" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#111827">$$$$</text>
+    </svg>
+  );
+}
+
+/* ─── FUNNEL NAVBAR ─────────────────────────────────────── */
+
+function FunnelNavbar() {
+  return (
+    <nav style={{ position: 'sticky', top: 0, zIndex: 50, backgroundColor: '#fff', borderBottom: '1px solid #e5e7eb', color: '#374151' }}>
+      <div style={{ width: '100%', padding: '0 20px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Link href="/">
+          <Image src="/logo.png" alt="ZERO NERDS" width={240} height={72} style={{ height: 68, width: 'auto', objectFit: 'contain' }} priority />
+        </Link>
+        <div className="hidden md:flex" style={{ alignItems: 'center', gap: 32, fontSize: 15, color: '#374151', fontWeight: 400 }}>
+          <Link href="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Sign up as a pro</Link>
+          <Link href="/solutions" style={{ color: 'inherit', textDecoration: 'none' }}>Services</Link>
+          <Link href="/about" style={{ color: 'inherit', textDecoration: 'none' }}>About</Link>
+          <Link href="/contact" style={{ color: 'inherit', textDecoration: 'none' }}>Inbox</Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+            <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#29abe2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>ZN</div>
+            <span style={{ fontSize: 15, color: '#374151' }}>Client</span>
+            <svg style={{ width: 14, height: 14, color: '#6b7280' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+          </div>
+        </div>
+        <a href="tel:+15033137121" className="md:hidden" style={{ color: '#29abe2', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>Call us</a>
+      </div>
+    </nav>
+  );
+}
+
+/* ─── FUNNEL FOOTER ─────────────────────────────────────── */
+
+function FunnelFooter() {
+  const row1 = [
+    {
+      title: 'Related cost information',
+      links: ['Managed IT prices','Computer support costs','Network setup cost','Cloud hosting prices','Cybersecurity costs'],
+      href: '/solutions',
+    },
+    {
+      title: 'Popular in Portland',
+      links: ['IT support Portland','Networking Portland','Computer help Portland','Cloud services Portland','Cybersecurity Portland'],
+      href: '/portland',
+    },
+    {
+      title: 'You might also like',
+      links: ['IT support near me','Managed IT near me','Computer repair near me','Network setup near me','Cybersecurity near me'],
+      href: '/areas',
+    },
+    {
+      title: 'In other nearby areas',
+      links: ['Vancouver WA IT support','Gresham IT support','Hillsboro IT support','Beaverton IT support','Milwaukie IT support'],
+      href: '/areas',
+    },
+  ];
+
+  return (
+    <footer style={{ backgroundColor: '#fff', borderTop: '1px solid #e5e7eb', color: '#111827', marginTop: 64 }}>
+      {/* Row 1 — link columns */}
+      <div className="grid grid-cols-1 md:grid-cols-4" style={{ maxWidth: 1152, margin: '0 auto', padding: '40px 20px', gap: 32 }}>
+        {row1.map((col) => (
+          <div key={col.title}>
+            <p style={{ fontWeight: 700, fontSize: 14, color: '#111827', marginBottom: 12 }}>{col.title}</p>
+            {col.links.map((l) => (
+              <Link key={l} href={col.href} style={{ display: 'block', fontSize: 13, color: '#6b7280', textDecoration: 'none', marginBottom: 8 }}>{l}</Link>
+            ))}
+            <Link href={col.href} style={{ display: 'block', fontSize: 13, color: '#29abe2', fontWeight: 600, textDecoration: 'none', marginTop: 4 }}>Show more</Link>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ borderTop: '1px solid #e5e7eb' }} />
+
+      {/* Row 2 — brand columns */}
+      <div className="grid grid-cols-1 md:grid-cols-4" style={{ maxWidth: 1152, margin: '0 auto', padding: '40px 20px', gap: 32 }}>
+        {/* Brand column */}
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: '#111827', marginBottom: 2 }}>ZERO NERDS</p>
+          <p style={{ fontWeight: 700, fontSize: 14, color: '#111827', marginBottom: 16 }}>Consider it done.</p>
+          {['About','Partner with us','For developers','Careers','Press','Blog'].map((l) => (
+            <Link key={l} href="/about" style={{ display: 'block', fontSize: 13, color: '#6b7280', textDecoration: 'none', marginBottom: 8 }}>{l}</Link>
+          ))}
+          {/* Social icons */}
+          <div style={{ display: 'flex', gap: 14, marginTop: 16 }}>
+            {[
+              { label: 'Instagram', path: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z' },
+              { label: 'X', path: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' },
+              { label: 'Pinterest', path: 'M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z' },
+              { label: 'Facebook', path: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' },
+            ].map((s) => (
+              <svg key={s.label} style={{ width: 18, height: 18, fill: '#6b7280', cursor: 'pointer' }} viewBox="0 0 24 24">
+                <path d={s.path} />
+              </svg>
+            ))}
+          </div>
+        </div>
+
+        {/* Customers */}
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: '#111827', marginBottom: 16 }}>Customers</p>
+          {['How to use ZERO NERDS','Get the app','Services near me','Cost estimates','Home resource center'].map((l) => (
+            <Link key={l} href="/contact" style={{ display: 'block', fontSize: 13, color: '#6b7280', textDecoration: 'none', marginBottom: 8 }}>{l}</Link>
+          ))}
+        </div>
+
+        {/* Pros */}
+        <div>
+          <p style={{ fontWeight: 700, fontSize: 14, color: '#111827', marginBottom: 16 }}>Pros</p>
+          {['ZERO NERDS for pros','Sign up as a pro','Community','Pro Resources','Pro reviews','IT support app','Android app for pros'].map((l) => (
+            <Link key={l} href="/solutions" style={{ display: 'block', fontSize: 13, color: '#29abe2', textDecoration: 'none', marginBottom: 8 }}>{l}</Link>
+          ))}
+        </div>
+
+        {/* Support */}
+        <div>
+          <p style={{ fontWeight: 600, fontSize: 14, color: '#111827', marginBottom: 16 }}>Support</p>
+          {['Help','Safety','Terms of Use','Privacy Policy','CA Notice at Collection','Do not Sell or Share My Personal Information'].map((l) => (
+            <Link key={l} href="/contact" style={{ display: 'block', fontSize: 13, color: '#6b7280', textDecoration: 'none', marginBottom: 8 }}>{l}</Link>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─── PAGE ──────────────────────────────────────────────── */
+
 export default function GetStartedPage() {
   return (
-    <>
+    <div style={{ backgroundColor: '#fff', minHeight: '100vh', color: '#111827' }}>
+      <FunnelNavbar />
+
       {/* ── HERO ── */}
-      <section className="relative w-full" style={{ backgroundColor: '#0d1530' }}>
+      <section style={{ position: 'relative', width: '100%', backgroundColor: '#0d1530' }}>
+        <div className="relative w-full h-[260px] md:h-[55vh] md:max-h-[560px]">
+          <img src="/hero-bg.jpg" alt="IT Support" className="w-full h-full object-cover md:object-contain" style={{ backgroundColor: '#0d1530' }} />
+          <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.35)' }} />
 
-        {/* Image — mobile: 260px tall / desktop: 55vh, object-contain so no zoom-in crop */}
-        <div className="relative w-full h-[260px] md:h-[55vh] md:max-h-[580px]">
-          <img
-            src="/hero-bg.jpg"
-            alt="IT Support"
-            className="w-full h-full object-cover md:object-contain"
-            style={{ backgroundColor: '#0d1530' }}
-          />
-          <div className="absolute inset-0 bg-black/35 md:bg-black/30" />
-
-          {/* Mobile only — title + badge overlaid at bottom of image */}
-          <div
-            className="md:hidden absolute bottom-0 left-0 right-0 px-5 pb-5 pt-14"
-            style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%)' }}
-          >
-            <div className="flex items-end justify-between gap-3">
-              <h1 className="font-bold text-white text-2xl leading-tight">Find IT support in your area</h1>
-              <span className="flex-shrink-0 bg-teal text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap">18 near you</span>
+          {/* Mobile — title at bottom of image */}
+          <div className="md:hidden absolute bottom-0 left-0 right-0" style={{ padding: '56px 20px 20px', background: 'linear-gradient(to top, rgba(0,0,0,0.72), transparent)' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12 }}>
+              <h1 style={{ fontWeight: 700, color: '#fff', fontSize: 28, lineHeight: 1.3, margin: 0 }}>Find IT support in your area</h1>
+              <span style={{ flexShrink: 0, background: '#4f46e5', color: '#fff', fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999, whiteSpace: 'nowrap' }}>18 near you</span>
             </div>
           </div>
 
-          {/* Desktop only — glassmorphism card overlaid on image */}
-          <div className="hidden md:flex absolute inset-0 items-center px-10 lg:px-16">
-            <div className="rounded-2xl shadow-2xl p-7 w-full max-w-md border border-white/10"
-                 style={{ background: 'rgba(13,21,48,0.92)', backdropFilter: 'blur(12px)' }}>
-              <div className="flex items-start justify-between gap-3 mb-2">
-                <h1 className="font-bold text-white text-2xl leading-tight">Find IT support in your area</h1>
-                <span className="flex-shrink-0 bg-teal text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap mt-0.5">18 near you</span>
+          {/* Desktop — white card */}
+          <div className="hidden md:flex absolute inset-0 items-center" style={{ padding: '0 60px', justifyContent: 'flex-start' }}>
+            <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 20px 60px rgba(0,0,0,0.25)', padding: '28px 32px', width: 420, flexShrink: 0, border: '1px solid #f3f4f6' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
+                <h1 style={{ fontWeight: 700, color: '#111827', fontSize: 28, lineHeight: 1.3, margin: 0 }}>Find IT support in your area</h1>
+                <span style={{ flexShrink: 0, background: '#29abe2', color: '#fff', fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 999, whiteSpace: 'nowrap', marginTop: 2 }}>18 near you</span>
               </div>
-              <p className="text-white/60 text-sm mb-5">Confirm your location to see quality pros near you.</p>
-              <div className="flex items-center gap-2 border border-white/15 rounded-lg px-4 py-3 mb-3 bg-white/5 focus-within:border-teal/50 transition-colors">
-                <svg className="w-4 h-4 text-white/40 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <p style={{ color: '#9ca3af', fontSize: 13, marginBottom: 20, marginTop: 4 }}>Confirm your location to see quality pros near you.</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #e5e7eb', borderRadius: 8, padding: '12px 16px', marginBottom: 12, background: '#fff' }}>
+                <svg style={{ width: 16, height: 16, color: '#9ca3af', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-white/40 text-sm mr-1">Zip code</span>
-                <input type="text" defaultValue="97205" className="flex-1 text-sm text-white outline-none bg-transparent" />
+                <span style={{ color: '#9ca3af', fontSize: 13, marginRight: 4 }}>Zip code</span>
+                <input type="text" defaultValue="97205" style={{ flex: 1, fontSize: 13, color: '#111827', outline: 'none', background: 'transparent', border: 'none' }} />
               </div>
-              <a href="tel:+15033137121" className="w-full flex items-center justify-center bg-teal hover:bg-teal/90 text-white font-bold py-3.5 rounded-lg text-sm transition-all shadow-lg shadow-teal/20">
+              <a href="tel:+15033137121" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '14px 0', borderRadius: 8, fontSize: 14, textDecoration: 'none', width: '100%' }}>
                 Find a pro
               </a>
             </div>
           </div>
         </div>
 
-        {/* Mobile only — form below image */}
-        <div className="md:hidden bg-navy2 px-5 py-6 border-b border-white/6">
-          <p className="text-gray/70 text-sm mb-4">Give us a few details and we'll match you with the right pro.</p>
-
-          {/* Zip code */}
-          <div className="flex items-center gap-2 border border-white/15 rounded-lg px-4 py-3 mb-3 bg-white/5">
-            <svg className="w-4 h-4 text-white/40 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        {/* Mobile — form below image */}
+        <div className="md:hidden" style={{ background: '#fff', padding: '24px 20px', borderBottom: '1px solid #f3f4f6', color: '#111827' }}>
+          <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 16 }}>Give us a few details and we'll match you with the right pro.</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #e5e7eb', borderRadius: 8, padding: '12px 16px', marginBottom: 12, background: '#fff' }}>
+            <svg style={{ width: 16, height: 16, color: '#9ca3af', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
             </svg>
-            <span className="text-white/40 text-sm mr-1">Zip code</span>
-            <input type="text" defaultValue="97205" className="flex-1 text-sm text-white outline-none bg-transparent" />
+            <span style={{ color: '#9ca3af', fontSize: 13, marginRight: 4 }}>Zip code</span>
+            <input type="text" defaultValue="97205" style={{ flex: 1, fontSize: 13, color: '#111827', outline: 'none', background: 'transparent', border: 'none' }} />
           </div>
-
-          {/* IT issue */}
-          <div className="relative mb-3">
-            <select className="w-full appearance-none border border-white/15 rounded-lg px-4 py-3 bg-navy text-sm text-white/80 outline-none focus:border-teal/50 transition-colors cursor-pointer">
-              <option value="" disabled selected>IT issue</option>
-              <option>Network / Internet issues</option>
-              <option>Software troubleshooting</option>
-              <option>Virus &amp; malware removal</option>
-              <option>Data backup &amp; recovery</option>
-              <option>Hardware issues</option>
-              <option>Cloud setup &amp; migration</option>
-              <option>General IT support</option>
-            </select>
-            <svg className="w-4 h-4 text-white/40 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-
-          {/* Computer type */}
-          <div className="relative mb-3">
-            <select className="w-full appearance-none border border-white/15 rounded-lg px-4 py-3 bg-navy text-sm text-white/80 outline-none focus:border-teal/50 transition-colors cursor-pointer">
-              <option value="" disabled selected>Computer type</option>
-              <option>PC (Windows)</option>
-              <option>Mac (Apple)</option>
-              <option>Linux</option>
-              <option>Mixed / Multiple</option>
-            </select>
-            <svg className="w-4 h-4 text-white/40 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-
-          {/* Device type */}
-          <div className="relative mb-4">
-            <select className="w-full appearance-none border border-white/15 rounded-lg px-4 py-3 bg-navy text-sm text-white/80 outline-none focus:border-teal/50 transition-colors cursor-pointer">
-              <option value="" disabled selected>Desktop or laptop</option>
-              <option>Desktop</option>
-              <option>Laptop</option>
-              <option>Server</option>
-              <option>Multiple devices</option>
-            </select>
-            <svg className="w-4 h-4 text-white/40 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-
-          <a href="tel:+15033137121" className="w-full flex items-center justify-center bg-teal hover:bg-teal/90 text-white font-bold py-3.5 rounded-lg text-sm transition-all shadow-lg shadow-teal/20">
-            Find a pro
-          </a>
-        </div>
-
-      </section>
-
-      {/* ── BREADCRUMB + TITLE ── */}
-      <section className="bg-navy2 px-6 md:px-16 pt-8 pb-6 border-b border-white/6">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-1.5 text-xs text-gray/50 mb-4">
-            <Link href="/" className="hover:text-teal transition-colors">ZERO NERDS</Link>
-            <span>›</span>
-            <Link href="/areas" className="hover:text-teal transition-colors">OR</Link>
-            <span>›</span>
-            <Link href="/portland" className="hover:text-teal transition-colors">Portland</Link>
-            <span>›</span>
-            <span className="text-gray font-semibold">IT Support</span>
-          </div>
-          <h2 className="font-serif font-bold text-2xl md:text-3xl text-white mb-3">IT support technicians near Portland, OR</h2>
-          <p className="text-gray text-sm leading-relaxed max-w-2xl">
-            IT support pros in Portland, OR manage cloud infrastructure, monitor systems 24/7, and keep your business secure. They handle network setup, help desk support, and data backup so you spend less time troubleshooting and more time growing.
-          </p>
-        </div>
-      </section>
-
-      {/* ── PRO CARD ── */}
-      <section className="bg-navy2 px-6 md:px-16 py-8 border-b border-white/6">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h3 className="font-bold text-lg text-white">Top pros for your project</h3>
-              <p className="text-gray text-xs mt-0.5">These highly recommended pros are experts, ready to help with your project.</p>
-            </div>
-            <div className="flex items-center gap-2 border border-white/10 bg-white/5 rounded-lg px-4 py-2 text-sm text-gray cursor-pointer">
-              Recommended
-              <svg className="w-4 h-4 text-gray/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {[
+            { placeholder: 'IT issue', options: ['Network / Internet issues','Software troubleshooting','Virus & malware removal','Data backup & recovery','Hardware issues','Cloud setup & migration','General IT support'] },
+            { placeholder: 'Computer type', options: ['PC (Windows)','Mac (Apple)','Linux','Mixed / Multiple'] },
+            { placeholder: 'Desktop or laptop', options: ['Desktop','Laptop','Server','Multiple devices'] },
+          ].map((sel) => (
+            <div key={sel.placeholder} style={{ position: 'relative', marginBottom: 12 }}>
+              <select style={{ width: '100%', appearance: 'none', border: '1px solid #e5e7eb', borderRadius: 8, padding: '12px 40px 12px 16px', background: '#fff', fontSize: 13, color: '#374151', outline: 'none', cursor: 'pointer' }}>
+                <option value="" disabled>{sel.placeholder}</option>
+                {sel.options.map((o) => <option key={o}>{o}</option>)}
+              </select>
+              <svg style={{ width: 16, height: 16, color: '#9ca3af', position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-          </div>
+          ))}
+          <a href="tel:+15033137121" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '14px 0', borderRadius: 8, fontSize: 14, textDecoration: 'none', width: '100%', marginTop: 4 }}>
+            Find a pro
+          </a>
+        </div>
+      </section>
 
-          <div className="bg-navy border border-white/6 rounded-2xl p-6 flex flex-col sm:flex-row gap-5 hover:border-teal/30 transition-all">
-            <div className="flex-shrink-0">
-              <div className="w-20 h-20 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center bg-[#dce6f5]">
-                <Image src="/logo.png" alt="ZERO NERDS" width={72} height={72} className="object-contain p-1" />
+      {/* ── BREADCRUMB + TITLE ── */}
+      <section style={{ padding: '32px 20px 24px', borderBottom: '1px solid #f3f4f6', maxWidth: 1152, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#9ca3af', marginBottom: 16, flexWrap: 'wrap' }}>
+          <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>ZERO NERDS</Link>
+          <span>›</span>
+          <Link href="/areas" style={{ color: 'inherit', textDecoration: 'none' }}>OR</Link>
+          <span>›</span>
+          <Link href="/portland" style={{ color: 'inherit', textDecoration: 'none' }}>Portland</Link>
+          <span>›</span>
+          <span style={{ color: '#374151', fontWeight: 500 }}>IT Support</span>
+        </div>
+        <h2 style={{ fontWeight: 700, fontSize: 32, color: '#111827', marginBottom: 12 }}>IT support technicians near Portland, OR</h2>
+        <p style={{ color: '#6b7280', fontSize: 14, lineHeight: 1.6, maxWidth: 680 }}>
+          IT support pros in Portland, OR manage cloud infrastructure, monitor systems 24/7, and keep your business secure. They handle network setup, help desk support, and data backup so you spend less time troubleshooting and more time growing.
+        </p>
+      </section>
+
+      {/* ── TOP PROS ── */}
+      <section style={{ padding: '32px 20px', borderBottom: '1px solid #f3f4f6', maxWidth: 1152, margin: '0 auto' }}>
+        <div style={{ marginBottom: 16 }}>
+          <h3 style={{ fontWeight: 700, fontSize: 24, color: '#111827', marginBottom: 4 }}>Top pros for your project</h3>
+        </div>
+
+        {/* Scrollable sort tabs */}
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', marginBottom: 12 }}>
+          <div style={{ display: 'flex', gap: 8, paddingBottom: 4, minWidth: 'max-content' }}>
+            {[
+              { label: 'Recommended', icon: true },
+              { label: 'Highest rated' },
+              { label: 'Most hires' },
+              { label: 'Fastest response' },
+            ].map((tab, i) => (
+              <button key={tab.label} style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, border: '1px solid #e5e7eb', borderRadius: 999, padding: '8px 16px', fontSize: 14, color: '#111827', background: '#fff', cursor: 'pointer', whiteSpace: 'nowrap', fontWeight: i === 0 ? 600 : 400 }}>
+                {tab.icon && (
+                  <svg style={{ width: 14, height: 14, color: '#374151' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M6 12h12M9 17h6" />
+                  </svg>
+                )}
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 8 }}>These highly recommended pros are experts, ready to help with your project.</p>
+
+        {/* Pro listings */}
+        {[
+          {
+            num: 1,
+            name: 'Aquilante Computers (prev. Aquilis)',
+            logo: '/pros/aquilante.jpg',
+            ratingLabel: 'Great 4.8',
+            ratingColor: '#22c55e',
+            stars: 5,
+            reviews: 273,
+            topPro: true,
+            badges: [{ label: '$ Great value', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
+            hires: '437 hires on ZERO NERDS',
+            area: 'Serves Portland, OR + Vancouver, WA',
+            quote: 'Amy F. says, "They were ',
+            bold: 'amazing',
+            quoteEnd: '. I would recommend them to Family and Friends as well as use them again."',
+          },
+          {
+            num: 2,
+            name: 'Right Click Computer & Networking Service Portland',
+            logo: '/pros/rightclick.jpg',
+            ratingLabel: 'Good 4.4',
+            ratingColor: '#22c55e',
+            stars: 4,
+            reviews: 94,
+            topPro: false,
+            badges: [{ label: '🏆 In high demand', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
+            hires: '224 hires on ZERO NERDS',
+            area: '13 similar jobs done near you',
+            quote: 'Mark L. says, "',
+            bold: 'Responded',
+            quoteEnd: ' and diagnosed promptly."',
+          },
+          {
+            num: 3,
+            name: 'Fixophile',
+            logo: '/pros/fixophile.jpg',
+            ratingLabel: '5.0',
+            ratingColor: '#22c55e',
+            stars: 5,
+            reviews: 1,
+            topPro: false,
+            badges: [{ label: '🏆 In high demand', bg: '#eef2ff', color: '#4338ca', border: '#c7d2fe' }],
+            hires: '1 hire on ZERO NERDS',
+            area: 'Serves Vancouver, WA',
+            quote: 'Sahkidad E. says, "Their expertise, patience, and clear explanations made the ',
+            bold: 'repair',
+            quoteEnd: ' process seamless."',
+            onlineNow: true,
+          },
+          {
+            num: 4,
+            name: 'J3LEgacy Ventures, LLC',
+            logo: '/pros/j3legacy.jpg',
+            ratingLabel: '5.0',
+            ratingColor: '#22c55e',
+            stars: 5,
+            reviews: 1,
+            topPro: false,
+            badges: [],
+            hires: '',
+            area: 'Serves Vancouver, WA',
+            quote: 'Carol Rusinko says, "I recently had my laptop ',
+            bold: 'repaired',
+            quoteEnd: ' by J3Legacy Ventures, LLC. I am very happy with the results."',
+            onlineNow: false,
+          },
+        ].map((pro) => (
+          <div key={pro.num} style={{ display: 'flex', gap: 16, padding: '24px 0', borderBottom: '1px solid #f3f4f6' }}>
+            <div style={{ flexShrink: 0 }}>
+              <div className="w-20 h-20 md:w-[140px] md:h-[140px]" style={{ borderRadius: '50%', overflow: 'hidden', border: '1px solid #e5e7eb', background: '#f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src={pro.logo} alt={pro.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h4 className="font-bold text-white text-base">ZERO NERDS</h4>
-                <span className="bg-teal/10 text-teal text-xs font-bold px-2 py-0.5 rounded-full border border-teal/20">Top Pro</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ color: '#111827', fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{pro.num}. {pro.name}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
+                    {pro.topPro && (
+                      <span style={{ background: '#29abe2', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 999 }}>Top Pro</span>
+                    )}
+                    <span style={{ color: pro.ratingColor, fontWeight: 600, fontSize: 13 }}>{pro.ratingLabel}</span>
+                    <Stars n={pro.stars} color={pro.ratingColor} />
+                    <span style={{ color: '#6b7280', fontSize: 13 }}>({pro.reviews})</span>
+                  </div>
+                  {pro.badges.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
+                      {pro.badges.map((b) => (
+                        <span key={b.label} style={{ background: b.bg, color: b.color, border: `1px solid ${b.border}`, fontSize: 12, fontWeight: 500, padding: '4px 10px', borderRadius: 999 }}>{b.label}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 10 }}>
+                    {pro.hires && (
+                      <span style={{ fontSize: 13, color: '#6b7280', display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <svg style={{ width: 14, height: 14, color: '#9ca3af', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" /></svg>
+                        {pro.hires}
+                      </span>
+                    )}
+                    <span style={{ fontSize: 13, color: '#6b7280', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <svg style={{ width: 14, height: 14, color: '#9ca3af', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
+                      {pro.area}
+                    </span>
+                    {pro.onlineNow && (
+                      <span style={{ fontSize: 13, color: '#6b7280', display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', flexShrink: 0 }} />
+                        Online now
+                      </span>
+                    )}
+                  </div>
+                  {pro.quote && (
+                    <p style={{ fontSize: 13, color: '#374151' }}>
+                      {pro.quote}<strong>{pro.bold}</strong>{pro.quoteEnd}{' '}
+                      <span style={{ color: '#29abe2', cursor: 'pointer', fontSize: 12 }}>See more</span>
+                    </p>
+                  )}
+                </div>
+                <a href="tel:+15033137121" className="hidden md:inline-flex" style={{ flexShrink: 0, alignItems: 'center', background: '#29abe2', color: '#fff', fontWeight: 600, padding: '10px 20px', borderRadius: 6, fontSize: 14, textDecoration: 'none', whiteSpace: 'nowrap', alignSelf: 'flex-start' }}>
+                  View profile
+                </a>
               </div>
-              <div className="flex items-center gap-2 mb-2">
-                <Stars n={5} />
-                <span className="text-sm font-semibold text-white">Exceptional 5.0</span>
-                <span className="text-gray text-sm">(50+ reviews)</span>
-              </div>
-              <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray mb-3">
-                <span className="flex items-center gap-1">
-                  <svg className="w-3.5 h-3.5 text-teal" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
-                  Portland, OR 97205
-                </span>
-                <span className="flex items-center gap-1">
-                  <svg className="w-3.5 h-3.5 text-teal" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg>
-                  Responds within 15 min
-                </span>
-                <span className="flex items-center gap-1">
-                  <svg className="w-3.5 h-3.5 text-teal" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
-                  Serves Portland metro + Vancouver, WA
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-green-900/30 text-green-400 text-xs font-semibold px-2.5 py-1 rounded-full border border-green-700/30">Great value</span>
-                <span className="bg-amber-900/30 text-amber-400 text-xs font-semibold px-2.5 py-1 rounded-full border border-amber-700/30">In high demand</span>
-                <span className="bg-teal/10 text-teal text-xs font-semibold px-2.5 py-1 rounded-full border border-teal/20">24/7 monitoring</span>
-              </div>
-              <blockquote className="text-gray text-sm italic leading-relaxed border-l-2 border-teal/30 pl-3">
-                "ZERO NERDS is the absolute best IT service around. Very fast response time with a dedicated and educated team."
-                <span className="block text-gray/60 text-xs mt-1 not-italic">— Kate LaMare</span>
-              </blockquote>
-            </div>
-            <div className="flex flex-col gap-2 justify-center sm:min-w-[130px]">
-              <a href="tel:+15033137121" className="bg-teal hover:bg-teal/90 text-white font-bold py-2.5 px-5 rounded-lg text-sm text-center transition-all">Call Now</a>
-              <Link href="/contact" className="border border-white/15 hover:border-teal/40 text-gray hover:text-teal font-semibold py-2.5 px-5 rounded-lg text-sm text-center transition-all">View profile</Link>
             </div>
           </div>
+        ))}
+      </section>
+
+      {/* ── COST GUIDE ── */}
+      <section style={{ padding: '40px 20px', borderBottom: '1px solid #f3f4f6', maxWidth: 1152, margin: '0 auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <div style={{ textAlign: 'center', minWidth: 200 }}>
+            <h3 style={{ fontWeight: 700, fontSize: 20, color: '#111827', lineHeight: 1.4, marginBottom: 20 }}>IT Support Services<br />Cost Guide</h3>
+            <a href="tel:+15033137121" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '12px 28px', borderRadius: 6, fontSize: 14, textDecoration: 'none' }}>
+              View cost guide
+            </a>
+          </div>
+          <div style={{ flex: 1, minWidth: 280, maxWidth: 420 }}>
+            <BellCurveChart />
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQs ── */}
+      <section style={{ padding: '40px 20px', borderBottom: '1px solid #f3f4f6', maxWidth: 1152, margin: '0 auto' }}>
+        <h3 style={{ fontWeight: 700, fontSize: 24, color: '#111827', marginBottom: 6 }}>FAQs</h3>
+        <p style={{ fontSize: 15, fontWeight: 700, color: '#111827', marginBottom: 24 }}>
+          Answers to commonly asked questions from the experts on{' '}
+          <span style={{ color: '#29abe2' }}>ZERO NERDS</span>.
+        </p>
+        <div>
+          {FAQS.map((faq) => <FAQItem key={faq.q} q={faq.q} a={faq.a} />)}
         </div>
       </section>
 
       {/* ── REVIEWS ── */}
-      <section className="bg-navy2 px-6 md:px-16 py-16 border-b border-white/6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="section-label block text-center">Client Reviews</span>
-            <h3 className="font-serif font-bold text-2xl md:text-3xl text-white mt-2 mb-2">What Our Clients Say</h3>
-            <p className="text-gray text-sm">Verified reviews from businesses across Portland, OR and surrounding areas.</p>
-          </div>
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-4">
-            {REVIEWS.map((r) => (
-              <div key={r.name} className="break-inside-avoid mb-4 bg-navy border border-white/6 rounded-xl p-6 relative overflow-hidden">
-                <span className="absolute top-3 right-4 text-white/5 font-serif select-none pointer-events-none leading-none" style={{ fontSize: '5rem' }}>&ldquo;</span>
-                <Stars n={r.stars} />
-                <p className="text-gray text-sm leading-relaxed mb-5 relative z-10 mt-1">&ldquo;{r.text}&rdquo;</p>
-                <div className="flex items-center gap-3 border-t border-white/5 pt-4">
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg,#29abe2,#1e5fa0)' }}>{r.initials}</div>
-                  <div>
-                    <div className="font-semibold text-sm text-white">{r.name}</div>
-                    <div className="text-gray/60 text-xs">via Google Reviews</div>
-                  </div>
-                </div>
+      <section style={{ padding: '40px 20px', borderBottom: '1px solid #f3f4f6', maxWidth: 1152, margin: '0 auto' }}>
+        <h3 style={{ fontWeight: 700, fontSize: 20, color: '#111827', marginBottom: 24 }}>Reviews for Portland IT technicians on ZERO NERDS</h3>
+        <div style={{ display: 'flex', gap: 16, overflowX: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 8 }}>
+          {REVIEWS.map((r) => (
+            <div key={r.from} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 20, minWidth: 260, flexShrink: 0 }}>
+              <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 12 }}>From {r.from}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#29abe2,#1e5fa0)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 10, fontWeight: 700, flexShrink: 0 }}>{r.initials}</div>
+                <span style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>{r.company}</span>
               </div>
-            ))}
-          </div>
+              <Stars n={r.stars} />
+              <p style={{ fontSize: 13, color: '#374151', marginTop: 8, lineHeight: 1.5 }}>{r.text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── WHY ZERO NERDS ── */}
-      <section className="bg-navy px-6 md:px-16 py-16 border-b border-white/6">
-        <div className="max-w-5xl mx-auto text-center">
-          <span className="section-label block text-center mb-3">Why Choose Us</span>
-          <h3 className="font-serif font-bold text-2xl md:text-3xl text-white mb-10">Why hire professionals at ZERO NERDS?</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-            {[
-              { icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z', title: 'Flat-rate pricing', desc: 'No hidden fees — clear, predictable pricing upfront. Get cost estimates before committing.' },
-              { icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z', title: 'Certified IT experts', desc: 'Vetted engineers with proven track records across networking, cloud, and security.' },
-              { icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', title: 'Hire with confidence', desc: 'With 50+ verified reviews and 24/7 monitoring, you\'ll have all the info you need.' },
-            ].map((item) => (
-              <div key={item.title} className="flex flex-col items-center">
-                <div className="w-14 h-14 rounded-xl bg-teal/10 flex items-center justify-center mb-4 border border-teal/15">
-                  <svg className="w-7 h-7 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
-                  </svg>
-                </div>
-                <h4 className="font-bold text-white mb-2">{item.title}</h4>
-                <p className="text-gray text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── WHY HIRE ── */}
+      <section style={{ padding: '56px 20px', borderBottom: '1px solid #f3f4f6' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 8 }}>There are 18 five-star IT Technicians near Portland, OR on ZERO NERDS.</p>
+          <h3 style={{ fontWeight: 700, fontSize: 28, color: '#111827', marginBottom: 48, lineHeight: 1.3 }}>Why hire professionals at ZERO NERDS?</h3>
 
-      {/* ── COST GUIDE ── */}
-      <section className="bg-navy2 px-6 md:px-16 py-12 border-b border-white/6">
-        <div className="max-w-5xl mx-auto">
-          <span className="section-label block mb-2">Pricing</span>
-          <h3 className="font-serif font-bold text-xl text-white mb-1">IT Support Cost Guide</h3>
-          <p className="text-gray text-sm mb-8">Transparent pricing for Portland businesses.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {SERVICES.map((s) => (
-              <Link key={s.label} href={s.href} className="group flex items-start justify-between bg-navy hover:bg-navy/80 border border-white/6 hover:border-teal/30 rounded-xl p-4 transition-all">
-                <div>
-                  <p className="font-semibold text-sm text-white group-hover:text-teal transition-colors mb-1">{s.label}</p>
-                  <p className="text-xs text-gray">{s.price}</p>
-                </div>
-                <svg className="w-4 h-4 text-white/20 group-hover:text-teal transition-colors mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          {/* 3-col on desktop, vertical on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: 40, marginBottom: 40 }}>
+            {/* Item 1 */}
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ width: 48, height: 48, borderRadius: '50%', border: '2px solid #6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                <svg style={{ width: 22, height: 22, color: '#6366f1' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              </Link>
-            ))}
+              </div>
+              <h4 style={{ fontWeight: 700, fontSize: 15, color: '#111827', marginBottom: 8 }}>Flat-rate pricing</h4>
+              <p style={{ fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>No hidden fees — clear, predictable pricing upfront. Get cost estimates, contact pros, and even book the job — all with no surprises.</p>
+            </div>
+
+            {/* Item 2 */}
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ width: 48, height: 48, borderRadius: '50%', border: '2px solid #6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                <svg style={{ width: 22, height: 22, color: '#6366f1' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h4 style={{ fontWeight: 700, fontSize: 15, color: '#111827', marginBottom: 8 }}>Compare prices side-by-side</h4>
+              <p style={{ fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>You'll know how much your project costs even before booking a pro.</p>
+            </div>
+
+            {/* Item 3 */}
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                <svg style={{ width: 28, height: 28, color: '#6366f1' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h4 style={{ fontWeight: 700, fontSize: 15, color: '#111827', marginBottom: 8 }}>Hire with confidence</h4>
+              <p style={{ fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>With access to 50+ customer reviews and the pros' work history, you'll have all the info you need to make a hire.</p>
+            </div>
           </div>
-          <div className="mt-5">
-            <Link href="/contact" className="text-teal text-sm font-semibold hover:text-cyan transition-colors">View cost guide →</Link>
-          </div>
+
+          <a href="tel:+15033137121" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '14px 48px', borderRadius: 6, fontSize: 14, textDecoration: 'none' }}>
+            Get started
+          </a>
         </div>
       </section>
 
-      {/* ── FAQ ── */}
-      <section className="bg-navy px-6 md:px-16 py-16">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="section-label block text-center">FAQ</span>
-            <h3 className="font-serif font-bold text-2xl text-white mt-2 mb-2">Frequently Asked Questions</h3>
-            <p className="text-gray text-sm">Common questions about IT support in Portland, OR.</p>
-          </div>
-          <div className="space-y-2">
-            {FAQS.map((faq) => <FAQItem key={faq.q} q={faq.q} a={faq.a} />)}
-          </div>
-        </div>
-      </section>
-    </>
+      <FunnelFooter />
+    </div>
   );
 }

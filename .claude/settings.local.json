@@ -15,7 +15,29 @@
       "Bash(mkdir -p /home/xyryllpanget/Downloads/nerdops-website/public)",
       "Bash(python3:*)",
       "Read(//home/xyryllpanget/Downloads/nerdops-website/**)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(pip3 install:*)",
+      "Bash(apt-cache show:*)",
+      "Bash(sudo apt-get:*)",
+      "Bash(npm install:*)",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json\" -o /home/xyryllpanget/Downloads/nerdops-website/public/us-states.json)",
+      "WebFetch(domain:nerdops-website.vercel.app)",
+      "WebFetch(domain:www.thumbtack.com)",
+      "Bash(ls:*)",
+      "Bash(find /home/xyryllpanget/Downloads -name *.jpg -o -name *.jpeg -o -name *.png -o -name *.webp)",
+      "Bash(find /home/xyryllpanget -maxdepth 3 -newer /home/xyryllpanget/Downloads/nerdops-website/public/team.jpg -type f \\\\\\(-name *.jpg -o -name *.jpeg -o -name *.png -o -name *.webp \\\\\\))",
+      "WebFetch(domain:www.klientboost.com)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:codepen.io)",
+      "WebSearch",
+      "WebFetch(domain:smolcss.dev)",
+      "WebFetch(domain:webcache.googleusercontent.com)",
+      "WebFetch(domain:webartdevelopers.com)",
+      "Bash(mkdir -p /home/xyryllpanget/Downloads/nerdops-website/public/pros)",
+      "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/547786898467520518/desktop/standard/400square-legacy\" -o aquilante.jpg)",
+      "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/391592483043000323/desktop/standard/400square-legacy\" -o rightclick.jpg)",
+      "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/575737278812815363/desktop/standard/400square-legacy\" -o fixophile.jpg)",
+      "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/575070050008834063/desktop/standard/400square-legacy\" -o j3legacy.jpg)"
     ]
   }
 }
