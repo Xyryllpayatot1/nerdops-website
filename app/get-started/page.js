@@ -1,8 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+
+/* ─── CUSTOM DROPDOWN ─────────────────────────────────── */
+
+function CustomDropdown({ label, options, value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1.5px solid #9ca3af', borderRadius: 8, padding: '14px 16px', background: '#fff', cursor: 'pointer', fontSize: 16, fontWeight: 600, color: value ? '#111827' : '#9ca3af', minHeight: 52 }}
+      >
+        <span>{value || label}</span>
+        <svg style={{ width: 18, height: 18, color: '#374151', flexShrink: 0 }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
+      </button>
+      {open && (
+        <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4, background: '#fff', border: '1px solid #d1d5db', borderRadius: 8, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', zIndex: 20, overflow: 'hidden' }}>
+          {options.map((opt, i) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => { onChange(opt); setOpen(false); }}
+              style={{ width: '100%', padding: '14px 16px', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, fontWeight: 500, color: '#374151', borderBottom: i < options.length - 1 ? '1px solid #f3f4f6' : 'none' }}
+              onMouseEnter={(e) => e.target.style.background = '#f5f5f5'}
+              onMouseLeave={(e) => e.target.style.background = 'none'}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ─── DATA ─────────────────────────────────────────────── */
 
@@ -220,20 +256,24 @@ function FunnelFooter() {
 /* ─── PAGE ──────────────────────────────────────────────── */
 
 export default function GetStartedPage() {
+  const [computerIssue, setComputerIssue] = useState('');
+  const [computerType, setComputerType] = useState('');
+  const [desktopLaptop, setDesktopLaptop] = useState('');
+
   return (
     <div style={{ backgroundColor: '#fff', minHeight: '100vh', color: '#111827' }}>
       <FunnelNavbar />
 
       {/* ── HERO ── */}
       <section style={{ position: 'relative', width: '100%', backgroundColor: '#0d1530' }}>
-        <div className="relative w-full h-[280px] md:h-[55vh] md:max-h-[560px]">
-          <img src="https://production-next-images-cdn.thumbtack.com/i/319590363801166026/width/1920.jpeg" alt="IT Support" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%)' }} />
+        <div className="relative w-full h-[300px] md:h-[55vh] md:max-h-[560px]">
+          <img src="https://production-next-images-cdn.thumbtack.com/i/319590363801166026/width/1920.jpeg" alt="IT Support" className="w-full h-full object-cover" />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)' }} />
 
           {/* Mobile — title on image */}
-          <div className="md:hidden" style={{ position: 'absolute', bottom: 24, left: 20, right: 20, zIndex: 10 }}>
-            <h1 style={{ fontFamily: 'Rise, Avenir, Helvetica, Arial, sans-serif', fontWeight: 700, color: '#fff', fontSize: 22, lineHeight: 28, marginBottom: 10 }}>Find IT support in your area</h1>
-            <span style={{ display: 'inline-flex', background: '#6366f1', color: '#fff', fontSize: 12, fontWeight: 700, padding: '8px 14px', borderRadius: 999, whiteSpace: 'nowrap' }}>18 near you</span>
+          <div className="md:hidden" style={{ position: 'absolute', top: 120, left: 20, right: 20, zIndex: 10 }}>
+            <h1 style={{ fontWeight: 700, color: '#fff', fontSize: 22, marginBottom: 10 }}>Find an IT technician in your area</h1>
+            <span style={{ display: 'inline-block', background: '#6366f1', color: '#fff', fontSize: 12, fontWeight: 700, padding: '6px 12px', borderRadius: 20 }}>18 near you</span>
           </div>
 
           {/* Desktop — white card */}
@@ -259,44 +299,38 @@ export default function GetStartedPage() {
         </div>
 
         {/* Mobile — form below image */}
-        <div className="md:hidden" style={{ background: '#fff', padding: '24px 20px', borderBottom: '1px solid #f3f4f6', color: '#111827' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #e5e7eb', borderRadius: 8, padding: '14px 16px', marginBottom: 12, background: '#fff' }}>
+        <div className="md:hidden" style={{ background: '#fff', padding: '20px', borderBottom: '1px solid #f3f4f6' }}>
+          <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 16 }}>Give us a few details and we'll match you with the right pro.</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid #d1d5db', borderRadius: 10, padding: '14px 16px', marginBottom: 12, background: '#fff', height: 52 }}>
             <svg style={{ width: 20, height: 20, color: '#9ca3af', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
             </svg>
-            <span style={{ fontFamily: 'Rise, Avenir, Helvetica, Arial, sans-serif', color: '#6b7280', fontSize: 15 }}>Zip code</span>
-            <input type="text" defaultValue="97205" style={{ flex: 1, fontFamily: 'Rise, Avenir, Helvetica, Arial, sans-serif', fontSize: 15, color: '#111827', outline: 'none', background: 'transparent', border: 'none' }} />
+            <span style={{ color: '#6b7280', fontSize: 15 }}>Zip code</span>
+            <input type="text" defaultValue="97205" style={{ flex: 1, fontSize: 15, color: '#111827', outline: 'none', background: 'transparent', border: 'none' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-            <div style={{ position: 'relative' }}>
-              <select style={{ width: '100%', appearance: 'none', border: '1px solid #e5e7eb', borderRadius: 8, padding: '14px 36px 14px 14px', background: '#fff', fontFamily: 'Rise, Avenir, Helvetica, Arial, sans-serif', fontSize: 14, color: '#374151', outline: 'none', cursor: 'pointer' }}>
-                <option value="" disabled>Computer issue</option>
-                {['Network issues','Software issues','Virus removal','Data recovery','Hardware repair','Cloud setup','Other'].map((o) => <option key={o}>{o}</option>)}
-              </select>
-              <svg style={{ width: 14, height: 14, color: '#9ca3af', position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-            <div style={{ position: 'relative' }}>
-              <select style={{ width: '100%', appearance: 'none', border: '1px solid #e5e7eb', borderRadius: 8, padding: '14px 36px 14px 14px', background: '#fff', fontFamily: 'Rise, Avenir, Helvetica, Arial, sans-serif', fontSize: 14, color: '#374151', outline: 'none', cursor: 'pointer' }}>
-                <option value="" disabled>Computer type</option>
-                {['PC / Windows','Mac / Apple','Linux','Multiple'].map((o) => <option key={o}>{o}</option>)}
-              </select>
-              <svg style={{ width: 14, height: 14, color: '#9ca3af', position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 10 }}>
+            <CustomDropdown
+              label="Computer issue"
+              options={['Network issues', 'Software issues', 'Virus removal', 'Data recovery', 'Hardware repair']}
+              value={computerIssue}
+              onChange={setComputerIssue}
+            />
+            <CustomDropdown
+              label="Computer type"
+              options={['PC / Windows', 'Mac / Apple', 'Linux', 'Multiple']}
+              value={computerType}
+              onChange={setComputerType}
+            />
           </div>
-          <div style={{ position: 'relative', marginBottom: 12 }}>
-            <select style={{ width: '100%', appearance: 'none', border: '1px solid #e5e7eb', borderRadius: 8, padding: '14px 36px 14px 14px', background: '#fff', fontFamily: 'Rise, Avenir, Helvetica, Arial, sans-serif', fontSize: 14, color: '#374151', outline: 'none', cursor: 'pointer' }}>
-              <option value="" disabled>Desktop or laptop</option>
-              {['Desktop','Laptop','Server','Multiple devices'].map((o) => <option key={o}>{o}</option>)}
-            </select>
-            <svg style={{ width: 14, height: 14, color: '#9ca3af', position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
+          <div style={{ marginBottom: 16 }}>
+            <CustomDropdown
+              label="Desktop or laptop"
+              options={['Desktop', 'Laptop', 'Server', 'Multiple devices']}
+              value={desktopLaptop}
+              onChange={setDesktopLaptop}
+            />
           </div>
-          <a href="tel:+15033137121" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#6366f1', color: '#fff', fontFamily: 'Rise, Avenir, Helvetica, Arial, sans-serif', fontWeight: 700, padding: '14px 0', borderRadius: 8, fontSize: 15, textDecoration: 'none', width: '100%', marginTop: 4 }}>
+          <a href="tel:+15033137121" style={{ display: 'block', background: '#0099CC', color: '#fff', fontWeight: 700, padding: '16px', borderRadius: 10, fontSize: 15, textDecoration: 'none', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,153,204,0.3)' }}>
             Find a pro
           </a>
         </div>
@@ -504,24 +538,47 @@ export default function GetStartedPage() {
       </section>
 
       {/* ── REVIEWS ── */}
-      <section style={{ padding: '40px 20px', borderBottom: '1px solid #f3f4f6', maxWidth: 1152, margin: '0 auto' }}>
-        <h3 style={{ fontWeight: 700, fontSize: 20, color: '#111827', marginBottom: 24 }}>Reviews for Portland IT technicians on ZERO NERDS</h3>
-        <div style={{ display: 'flex', gap: 16, overflowX: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 8 }} className="md:grid md:grid-cols-3">
-          {REVIEWS.map((r) => (
-            <div key={r.from} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 20, minWidth: 280, flexShrink: 0, background: '#fff', width: 280 }} className="md:w-auto md:flex-shrink">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#6366f1,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{r.initials}</div>
-                <div>
-                  <p style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 2 }}>{r.from}</p>
-                  <p style={{ fontSize: 12, color: '#9ca3af' }}>{r.company}</p>
-                </div>
-                <div style={{ marginLeft: 'auto' }}>
-                  <Stars n={r.stars} />
-                </div>
-              </div>
-              <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis', wordWrap: 'break-word' }}>{r.text}</p>
+      <section style={{ padding: '40px 20px', borderBottom: '1px solid #f3f4f6' }}>
+        <div style={{ maxWidth: 1152, margin: '0 auto', padding: '0 20px' }}>
+          <h3 style={{ fontWeight: 700, fontSize: 20, color: '#111827', marginBottom: 24 }}>Reviews for Portland IT technicians on ZERO NERDS</h3>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, maxWidth: 1152, margin: '0 auto', padding: '0 20px' }} className="md:!flex-row">
+          <button onClick={() => { const el = document.getElementById('reviews-carousel'); if(el) el.scrollBy({ left: -320, behavior: 'smooth' }); }} style={{ width: 40, height: 40, borderRadius: '50%', border: '1px solid #e5e7eb', background: '#fff', display: 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', flexShrink: 0 }} className="md:!flex">
+            <svg style={{ width: 16, height: 16, color: '#374151' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+          </button>
+          <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+            <div id="reviews-carousel" style={{ display: 'flex', gap: 16, overflowX: 'auto', scrollBehavior: 'smooth', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+              <style>{`#reviews-carousel::-webkit-scrollbar { display: none; } #reviews-carousel { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
+              {[...REVIEWS, null].map((r) => (
+                r ? (
+                  <div key={r.from} style={{ width: 300, flexShrink: 0, scrollSnapAlign: 'start', border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, background: '#fff' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                      <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#6366f1,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{r.initials}</div>
+                      <div>
+                        <p style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 2 }}>{r.from}</p>
+                        <p style={{ fontSize: 12, color: '#9ca3af' }}>{r.company}</p>
+                      </div>
+                    </div>
+                    <div style={{ marginBottom: 8 }}>
+                      <Stars n={r.stars} />
+                    </div>
+                    <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis', wordWrap: 'break-word' }}>{r.text}</p>
+                  </div>
+                ) : (
+                  <div key="cta" style={{ width: 300, flexShrink: 0, scrollSnapAlign: 'start', border: '1px solid #bfdbfe', borderRadius: 12, padding: 24, background: '#eff6ff', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+                    <h4 style={{ fontWeight: 700, fontSize: 16, color: '#111827', marginBottom: 8 }}>Ready to find a pro?</h4>
+                    <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.5, marginBottom: 16 }}>See more reviews, compare prices, and hire your favorite pros all with ZERO NERDS.</p>
+                    <a href="tel:+15033137121" style={{ display: 'block', width: '100%', background: '#2563eb', color: '#fff', fontWeight: 700, padding: '12px 16px', borderRadius: 8, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
+                      Get started
+                    </a>
+                  </div>
+                )
+              ))}
             </div>
-          ))}
+          </div>
+          <button onClick={() => { const el = document.getElementById('reviews-carousel'); if(el) el.scrollBy({ left: 320, behavior: 'smooth' }); }} style={{ width: 40, height: 40, borderRadius: '50%', border: '1px solid #e5e7eb', background: '#fff', display: 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', flexShrink: 0 }} className="md:!flex">
+            <svg style={{ width: 16, height: 16, color: '#374151' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+          </button>
         </div>
       </section>
 
