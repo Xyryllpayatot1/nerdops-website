@@ -376,9 +376,9 @@ export default function GetStartedPage() {
                 <span style={{ color: '#9ca3af', fontSize: 13, marginRight: 4 }}>Zip code</span>
                 <input type="text" defaultValue="97205" style={{ flex: 1, fontSize: 13, color: '#111827', outline: 'none', background: 'transparent', border: 'none' }} />
               </div>
-              <a href="tel:+15033137121" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '14px 0', borderRadius: 8, fontSize: 14, textDecoration: 'none', width: '100%' }}>
+              <Link href="/get-started/wizard" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '14px 0', borderRadius: 8, fontSize: 14, textDecoration: 'none', width: '100%' }}>
                 Find a pro
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -415,9 +415,9 @@ export default function GetStartedPage() {
               onChange={setDesktopLaptop}
             />
           </div>
-          <a href="tel:+15033137121" style={{ display: 'block', background: '#0099CC', color: '#fff', fontWeight: 700, padding: '16px', borderRadius: 10, fontSize: 15, textDecoration: 'none', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,153,204,0.3)' }}>
+          <Link href="/get-started/wizard" style={{ display: 'block', background: '#0099CC', color: '#fff', fontWeight: 700, padding: '16px', borderRadius: 10, fontSize: 15, textDecoration: 'none', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,153,204,0.3)' }}>
             Find a pro
-          </a>
+          </Link>
         </div>
       </section>
 
