@@ -173,7 +173,7 @@ function FunnelNavbar() {
         <div style={{ width: '100%', padding: '0 20px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div className="md:hidden" style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
             <Link href="/" style={{ display: 'flex', alignItems: 'center', background: 'transparent' }}>
-              <Image src="/logo.png" alt="ZERO NERDS" width={240} height={72} style={{ height: 68, width: 'auto', objectFit: 'contain', background: 'transparent' }} priority />
+              <Image src="/mainlogo.png" alt="ZERO NERDS" width={240} height={72} style={{ height: 68, width: 'auto', objectFit: 'contain', background: 'transparent' }} priority />
             </Link>
             <button
               onClick={() => setMenuOpen(!menuOpen)}

@@ -44,9 +44,7 @@ export default function Footer() {
               Trusted IT support for businesses in Portland, OR and nationwide. Proactive managed IT, cybersecurity, and 24/7 help desk support.
             </p>
             <Link href="/" className="inline-block mt-3 mb-1">
-              <div className="bg-white rounded-xl px-4 py-3 inline-block">
-                <img src="/logo-full.jpg" alt="ZERO NERDS — Speak With Nerds Instantly" className="w-36 h-auto block" />
-              </div>
+              <img src="/zeronerdslogo.png" alt="ZERO NERDS — Speak With Nerds Instantly" className="w-[200px] h-auto" />
             </Link>
             <div className="mt-5 space-y-2.5">
               <a href="tel:+15033137121" className="flex items-center gap-2 text-teal hover:text-cyan transition-colors text-sm font-semibold">

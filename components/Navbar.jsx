@@ -50,7 +50,7 @@ export default function Navbar() {
 
           {/* Logo — left on both mobile and desktop */}
           <Link href="/" className="select-none flex items-center">
-            <Image src="/logo.png" alt="ZERO NERDS" width={200} height={112} priority />
+            <Image src="/mainlogo.png" alt="ZERO NERDS" width={200} height={112} priority />
           </Link>
 
           {/* Desktop nav */}
