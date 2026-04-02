@@ -1,5 +1,6 @@
 import './globals.css';
 import ConditionalLayout from '@/components/ConditionalLayout';
+import Providers from './providers';
 
 export const metadata = {
   title: {
@@ -15,7 +16,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ConditionalLayout>{children}</ConditionalLayout>
+        <Providers>
+          <ConditionalLayout>{children}</ConditionalLayout>
+        </Providers>
       </body>
     </html>
   );

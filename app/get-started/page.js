@@ -536,7 +536,8 @@ export default function GetStartedPage() {
             onlineNow: false,
           },
         ].map((pro) => (
-          <div key={pro.num} style={{ display: 'flex', gap: 16, padding: '24px 0', borderBottom: '1px solid #f3f4f6' }}>
+          <div key={pro.num} style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: '24px 0', borderBottom: '1px solid #f3f4f6' }}>
+            <div style={{ display: 'flex', gap: 16 }}>
             <div style={{ flexShrink: 0 }}>
               <div className="w-20 h-20 md:w-[140px] md:h-[140px]" style={{ borderRadius: '50%', overflow: 'hidden', border: '1px solid #e5e7eb', background: '#f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src={pro.logo} alt={pro.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -586,11 +587,20 @@ export default function GetStartedPage() {
                     </p>
                   )}
                 </div>
-                <a href="tel:+15033137121" className="hidden md:inline-flex" style={{ flexShrink: 0, alignItems: 'center', background: '#29abe2', color: '#fff', fontWeight: 600, padding: '10px 20px', borderRadius: 6, fontSize: 14, textDecoration: 'none', whiteSpace: 'nowrap', alignSelf: 'flex-start' }}>
-                  View profile
-                </a>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0, alignSelf: 'flex-start' }}>
+                  <Link href="/get-started/wizard" className="hidden md:inline-flex" style={{ alignItems: 'center', background: '#29abe2', color: '#fff', fontWeight: 600, padding: '10px 20px', borderRadius: 6, fontSize: 14, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                    Get Free Quote
+                  </Link>
+                  <a href="tel:+15033137121" className="hidden md:inline-flex" style={{ alignItems: 'center', background: '#fff', color: '#111827', fontWeight: 600, padding: '10px 20px', borderRadius: 6, fontSize: 14, textDecoration: 'none', whiteSpace: 'nowrap', border: '1px solid #e5e7eb' }}>
+                    View profile
+                  </a>
+                </div>
               </div>
             </div>
+            </div>
+            <Link href="/get-started/wizard" className="md:hidden" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 600, padding: '12px', borderRadius: 6, fontSize: 14, textDecoration: 'none' }}>
+              Get Free Quote
+            </Link>
           </div>
         ))}
       </section>
@@ -653,9 +663,9 @@ export default function GetStartedPage() {
                   <div key="cta" style={{ width: 300, flexShrink: 0, scrollSnapAlign: 'start', border: '1px solid #bfdbfe', borderRadius: 12, padding: 24, background: '#eff6ff', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
                     <h4 style={{ fontWeight: 700, fontSize: 16, color: '#111827', marginBottom: 8 }}>Ready to find a pro?</h4>
                     <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.5, marginBottom: 16 }}>See more reviews, compare prices, and hire your favorite pros all with ZERO NERDS.</p>
-                    <a href="tel:+15033137121" style={{ display: 'block', width: '100%', background: '#2563eb', color: '#fff', fontWeight: 700, padding: '12px 16px', borderRadius: 8, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
-                      Get started
-                    </a>
+                    <Link href="/get-started/wizard" style={{ display: 'block', width: '100%', background: '#2563eb', color: '#fff', fontWeight: 700, padding: '12px 16px', borderRadius: 8, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
+                      Get Free Quote
+                    </Link>
                   </div>
                 )
               ))}
@@ -709,11 +719,26 @@ export default function GetStartedPage() {
             </div>
           </div>
 
-          <a href="tel:+15033137121" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '14px 48px', borderRadius: 6, fontSize: 14, textDecoration: 'none' }}>
-            Get started
-          </a>
+          <Link href="/get-started/wizard" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#29abe2', color: '#fff', fontWeight: 700, padding: '14px 48px', borderRadius: 6, fontSize: 14, textDecoration: 'none' }}>
+            Get Free Quote
+          </Link>
         </div>
       </section>
+
+      {/* Sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ background: '#fff', borderTop: '1px solid #e5e7eb' }}>
+        <div className="flex gap-2 p-3">
+          <a href="tel:+15033137121" className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2">
+            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            Call Now
+          </a>
+          <Link href="/get-started/wizard" className="flex-1 border border-teal text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center">
+            Get Free Quote
+          </Link>
+        </div>
+      </div>
 
       <FunnelFooter />
     </div>

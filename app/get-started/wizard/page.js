@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { saveLeadToAPI } from '@/lib/leads';
 
 const STEPS = [
   {
@@ -96,14 +97,13 @@ export default function WizardPage() {
 
   const handleSelect = (option) => {
     setAnswers({ ...answers, [currentStep]: option });
-  };
-
-  const handleNext = () => {
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      router.push('/get-started/results');
-    }
+    setTimeout(() => {
+      if (currentStep < totalSteps) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        handleSubmit();
+      }
+    }, 300);
   };
 
   const handleBack = () => {
@@ -116,7 +116,34 @@ export default function WizardPage() {
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     } else {
-      router.push('/get-started/results');
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async () => {
+    const leadData = {
+      formType: 'wizard',
+      firstName,
+      lastName,
+      email,
+      phone,
+      zipCode: '97205',
+      mainIssue: answers[1],
+      computerType: answers[2],
+      deviceType: answers[3],
+      workLocation: answers[5],
+      startTime: answers[6],
+      message: textAnswer,
+    };
+    await saveLeadToAPI(leadData);
+    router.push('/get-started/results');
+  };
+
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      handleSubmit();
     }
   };
 
@@ -395,43 +422,60 @@ export default function WizardPage() {
         )}
 
         {/* Buttons */}
-        <div style={{ display: 'flex', gap: 12 }}>
-          {showSkipBtn && (
+        {(!currentStepData.options) && (
+          <div style={{ display: 'flex', gap: 12 }}>
+            {showSkipBtn && (
+              <button
+                onClick={handleSkip}
+                style={{
+                  flex: 1,
+                  padding: '16px 24px',
+                  border: '1.5px solid #d1d5db',
+                  borderRadius: 10,
+                  background: '#fff',
+                  color: '#374151',
+                  fontSize: 16,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Skip
+              </button>
+            )}
             <button
-              onClick={handleSkip}
+              onClick={handleNext}
+              disabled={!isAnswered}
               style={{
-                flex: 1,
+                flex: showSkipBtn ? 1 : 2,
                 padding: '16px 24px',
-                border: '1.5px solid #d1d5db',
+                border: 'none',
                 borderRadius: 10,
-                background: '#fff',
-                color: '#374151',
+                background: isAnswered ? '#0099CC' : '#9ca3af',
+                color: '#fff',
                 fontSize: 16,
                 fontWeight: 600,
-                cursor: 'pointer',
+                cursor: isAnswered ? 'pointer' : 'not-allowed',
+                boxShadow: isAnswered ? '0 2px 8px rgba(0,153,204,0.3)' : 'none',
               }}
             >
-              Skip
+              {isLastStep ? 'Submit' : 'Next'}
             </button>
-          )}
-          <button
-            onClick={handleNext}
-            disabled={!isAnswered}
-            style={{
-              flex: showSkipBtn ? 1 : 2,
-              padding: '16px 24px',
-              border: 'none',
-              borderRadius: 10,
-              background: isAnswered ? '#0099CC' : '#9ca3af',
-              color: '#fff',
-              fontSize: 16,
-              fontWeight: 600,
-              cursor: isAnswered ? 'pointer' : 'not-allowed',
-              boxShadow: isAnswered ? '0 2px 8px rgba(0,153,204,0.3)' : 'none',
-            }}
-          >
-            {isLastStep ? 'Submit' : 'Next'}
-          </button>
+          </div>
+        )}
+      </div>
+
+      {/* Sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ background: '#fff', borderTop: '1px solid #e5e7eb' }}>
+        <div className="flex gap-2 p-3">
+          <a href="tel:+15033137121" className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2">
+            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            Get Instant Help
+          </a>
+          <Link href="/get-started/wizard" className="flex-1 border border-teal text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center">
+            Get Free Quote
+          </Link>
         </div>
       </div>
     </div>

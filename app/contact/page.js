@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
 
 function useReveal() {
   useEffect(() => {
@@ -16,6 +17,7 @@ function useReveal() {
 
 export default function ContactPage() {
   useReveal();
+  const [auditOpen, setAuditOpen] = useState(false);
 
   const [form, setForm] = useState({
     firstName: '',
@@ -149,6 +151,20 @@ export default function ContactPage() {
                   <p className="text-gray text-sm mt-1">Fill out the form below and we will be in touch shortly.</p>
                 </div>
 
+                <button
+                  type="button"
+                  onClick={() => setAuditOpen(true)}
+                  className="w-full bg-teal hover:bg-teal/90 text-white font-bold py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/20 text-sm tracking-wide"
+                >
+                  Schedule Assessment — Quick Form
+                </button>
+
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 h-px bg-white/10" />
+                  <span className="text-gray text-xs">or fill out the form below</span>
+                  <div className="flex-1 h-px bg-white/10" />
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-gray/80 mb-2 uppercase tracking-wide" htmlFor="firstName">
@@ -249,6 +265,55 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <section className="bg-navy2 py-20 px-5">
+        <div className="max-w-3xl mx-auto">
+          <div className="reveal text-center mb-12">
+            <span className="section-label">FAQ</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
+            <p className="text-gray text-sm">Common questions about getting started with ZERO NERDS.</p>
+          </div>
+          <div className="reveal space-y-2">
+            {[
+              { q: 'How do I get started with ZERO NERDS?', a: 'Call us at (503) 313-7121 or fill out our contact form to schedule a free IT assessment. We will review your infrastructure and recommend next steps — no obligation.' },
+              { q: 'What happens during a free IT assessment?', a: 'We will review your current IT infrastructure, identify gaps and vulnerabilities, and recommend the right combination of services for your environment — at no cost and with no obligation.' },
+              { q: 'How much does managed IT support cost?', a: 'Managed IT services typically range from $100–$250 per user per month depending on scope. We offer flat-rate pricing with no surprise invoices — contact us for a custom quote.' },
+              { q: 'Do you require long-term contracts?', a: 'No. All our agreements are month-to-month. You stay because the service works, not because you are locked in.' },
+              { q: 'How quickly can ZERO NERDS respond to an issue?', a: 'Remote issues are typically addressed within 15 minutes. On-site support throughout the Portland metro area is available same-day or next-day depending on urgency.' },
+            ].map((faq, i) => (
+              <div key={i} className="border border-white/8 rounded-xl overflow-hidden">
+                <button
+                  className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-white/3 transition-colors gap-4"
+                  onClick={() => {}}
+                >
+                  <span className="font-medium text-sm leading-snug">{faq.q}</span>
+                  <svg className="w-4 h-4 text-teal flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ background: '#0d1530', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="flex gap-2 p-3">
+          <a href="tel:+15033137121" className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2">
+            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            Call Now
+          </a>
+          <Link href="/get-started/wizard" className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center">
+            Get Free Quote
+          </Link>
+        </div>
+      </div>
+
+      <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
     </>
   );
 }

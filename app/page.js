@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
+import { saveLeadToAPI } from '@/lib/leads';
 
 const SERVICES = [
   {
@@ -247,7 +249,7 @@ function TeamSticker({ n }) {
   );
 }
 
-function MobileStickyCTA({ show }) {
+function MobileStickyCTA({ show, onQuoteClick }) {
   return (
     <div
       className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-transform duration-300 ${show ? 'translate-y-0' : 'translate-y-full'}`}
@@ -262,12 +264,423 @@ function MobileStickyCTA({ show }) {
           </svg>
           Get Instant Help
         </a>
-        <Link
-          href="/contact"
+        <button
+          onClick={onQuoteClick}
           className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center"
         >
           Get Free Quote
-        </Link>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function FloatingReviews() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  
+  const floatingTestimonials = [
+    {
+      name: 'Kate LaMare',
+      text: 'ZERO NERDS is the absolute best IT service around. Very fast response time!',
+      rating: 5,
+    },
+    {
+      name: 'Chris Wilson',
+      text: 'Amazing service, integrity, and knowledge. Nothing compares to this team.',
+      rating: 5,
+    },
+    {
+      name: 'Katelyn',
+      text: 'The best IT services I have ever encountered. Quick to respond!',
+      rating: 5,
+    },
+    {
+      name: 'Robert Moore',
+      text: 'Daniel is awesome, so helpful and on top of everything.',
+      rating: 5,
+    },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % floatingTestimonials.length);
+        setIsAnimating(false);
+      }, 500);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative mx-auto" style={{ maxWidth: 420, height: 140 }}>
+      {floatingTestimonials.map((t, i) => {
+        const isActive = i === activeIndex;
+        const isPrev = i === (activeIndex - 1 + floatingTestimonials.length) % floatingTestimonials.length;
+        
+        return (
+          <div
+            key={i}
+            className="absolute left-0 right-0 rounded-xl p-5 transition-all ease-out"
+            style={{
+              transform: isActive 
+                ? 'translateY(0) scale(1)' 
+                : isPrev 
+                  ? 'translateY(20px) scale(0.95)' 
+                  : 'translateY(40px) scale(0.9)',
+              opacity: isActive ? 1 : isPrev ? 0.4 : 0,
+              zIndex: isActive ? 10 : 1,
+              top: 0,
+              transitionDuration: '700ms',
+              backdropFilter: 'blur(8px)',
+              backgroundColor: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              boxShadow: isActive ? '0 8px 32px rgba(0,0,0,0.3)' : 'none',
+            }}
+          >
+            <div className="flex items-center gap-1 mb-2">
+              {[...Array(t.rating)].map((_, j) => (
+                <svg key={j} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <p className="text-sm font-medium line-clamp-2 mb-2" style={{ color: 'rgba(255,255,255,0.95)' }}>&ldquo;{t.text}&rdquo;</p>
+            <p className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.6)' }}>— {t.name}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function WizardModal({ isOpen, onClose }) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [answers, setAnswers] = useState({});
+  const [textAnswer, setTextAnswer] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [checkbox, setCheckbox] = useState(false);
+
+  const STEPS = [
+    {
+      id: 1,
+      title: 'What is the main issue with your computer?',
+      options: ['Network issues', 'Slow performance', 'Virus or malware', 'System error', 'Hardware repair', 'Software installation', 'Troubleshooting needed'],
+    },
+    {
+      id: 2,
+      title: 'Is your computer a PC or a Mac (Apple)?',
+      options: ['PC / Windows', 'Mac / Apple', 'Linux', 'Multiple devices'],
+    },
+    {
+      id: 3,
+      title: 'Is your computer a desktop or laptop?',
+      options: ['Desktop', 'Laptop', 'Server', 'Multiple devices'],
+    },
+    {
+      id: 4,
+      title: 'Confirm some details',
+      isSummary: true,
+    },
+    {
+      id: 5,
+      title: 'Where will the work be done?',
+      options: ["At the pro's location", 'My home', 'Venue / Office', 'Remotely'],
+    },
+    {
+      id: 6,
+      title: 'When do you need this job to start?',
+      options: ["I haven't decided yet", 'Within 24 hours', 'In the next few days', 'This week', 'This month', 'Flexible'],
+      hasCheckbox: true,
+    },
+    {
+      id: 7,
+      title: 'Send a message to the pro',
+      isText: true,
+      placeholder: 'Describe your issue in more detail...',
+    },
+    {
+      id: 8,
+      title: 'Review the zip and add your contact info',
+      isContact: true,
+    },
+  ];
+
+  const totalSteps = STEPS.length;
+  const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+  const currentStepData = STEPS[currentStep - 1];
+
+  const handleSelect = (option) => {
+    setAnswers({ ...answers, [currentStep]: option });
+    setTimeout(() => {
+      if (currentStep < totalSteps) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        handleSubmit();
+      }
+    }, 300);
+  };
+
+  const handleSubmit = async () => {
+    await saveLeadToAPI({
+      formType: 'wizard',
+      firstName,
+      lastName,
+      email,
+      phone,
+      zipCode: '97205',
+      mainIssue: answers[1],
+      computerType: answers[2],
+      deviceType: answers[3],
+      workLocation: answers[5],
+      startTime: answers[6],
+      message: textAnswer,
+    });
+    onClose();
+  };
+
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      handleSubmit();
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleSkip = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      handleSubmit();
+    }
+  };
+
+  const isAnswered = currentStepData.isText ? true :
+                     currentStepData.isSummary ? true :
+                     currentStepData.isContact ? (firstName.trim() && lastName.trim()) :
+                     answers[currentStep];
+
+  const showSkipBtn = !currentStepData.isSummary && !currentStepData.isContact;
+  const isLastStep = currentStep === totalSteps;
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <div 
+        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Progress Bar */}
+        <div className="h-1 bg-gray-200 sticky top-0 z-10">
+          <div className="h-full bg-teal transition-all duration-300" style={{ width: `${progress}%` }} />
+        </div>
+
+        {/* Header */}
+        <div className="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between z-10">
+          <button
+            onClick={handleBack}
+            className="p-2 -ml-2"
+            style={{ color: currentStep > 1 ? '#374151' : '#d1d5db' }}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <span className="text-sm" style={{ color: '#6b7280' }}>Step {currentStep} of {totalSteps}</span>
+          <button onClick={onClose} className="p-2 -mr-2">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          <h2 className="text-xl font-bold mb-2" style={{ color: '#111827' }}>{currentStepData.title}</h2>
+          <a href="/get-started" className="text-sm mb-6 inline-block" style={{ color: '#0099CC' }}>Change search</a>
+
+          {/* Radio Options */}
+          {!currentStepData.isSummary && !currentStepData.isText && !currentStepData.isContact && (
+            <div className="flex flex-col gap-3 mb-6">
+              {currentStepData.options.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => handleSelect(option)}
+                  className="flex items-center gap-4 p-4 rounded-xl text-left transition-all"
+                  style={{
+                    border: `1.5px solid ${answers[currentStep] === option ? '#0099CC' : '#e5e7eb'}`,
+                    background: answers[currentStep] === option ? '#f0f9ff' : '#fff',
+                  }}
+                >
+                  <div 
+                    className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{
+                      border: `2px solid ${answers[currentStep] === option ? '#0099CC' : '#d1d5db'}`,
+                      background: answers[currentStep] === option ? '#0099CC' : '#fff',
+                    }}
+                  >
+                    {answers[currentStep] === option && (
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-base font-medium" style={{ color: '#111827' }}>{option}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Summary */}
+          {currentStepData.isSummary && (
+            <div className="bg-gray-50 rounded-xl p-5 mb-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between pb-3 border-b border-gray-200">
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Zip code</span>
+                  <span className="text-sm font-semibold" style={{ color: '#111827' }}>97205</span>
+                </div>
+                <div className="flex justify-between pb-3 border-b border-gray-200">
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Main issue</span>
+                  <span className="text-sm font-semibold" style={{ color: '#111827' }}>{answers[1] || 'Not selected'}</span>
+                </div>
+                <div className="flex justify-between pb-3 border-b border-gray-200">
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Computer type</span>
+                  <span className="text-sm font-semibold" style={{ color: '#111827' }}>{answers[2] || 'Not selected'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm" style={{ color: '#6b7280' }}>Device type</span>
+                  <span className="text-sm font-semibold" style={{ color: '#111827' }}>{answers[3] || 'Not selected'}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Checkbox */}
+          {currentStepData.hasCheckbox && (
+            <label className="flex items-start gap-3 mb-6 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={checkbox}
+                onChange={(e) => setCheckbox(e.target.checked)}
+                className="w-5 h-5 mt-0.5 cursor-pointer accent-teal"
+              />
+              <span className="text-sm" style={{ color: '#374151' }}>
+                I can work with the pro&apos;s schedule if they aren&apos;t available at the time I chose
+              </span>
+            </label>
+          )}
+
+          {/* Textarea */}
+          {currentStepData.isText && (
+            <textarea
+              value={textAnswer}
+              onChange={(e) => setTextAnswer(e.target.value)}
+              placeholder={currentStepData.placeholder}
+              className="w-full min-h-32 p-4 rounded-xl text-base outline-none mb-6"
+              style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+            />
+          )}
+
+          {/* Contact Form */}
+          {currentStepData.isContact && (
+            <div className="mb-6">
+              <div className="mb-4">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Zip code</label>
+                <input
+                  type="text"
+                  defaultValue="97205"
+                  className="w-full p-4 rounded-xl text-base outline-none"
+                  style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                />
+              </div>
+              <div className="flex gap-3 mb-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>First name</label>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="John"
+                    className="w-full p-4 rounded-xl text-base outline-none"
+                    style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Last name</label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Doe"
+                    className="w-full p-4 rounded-xl text-base outline-none"
+                    style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                  />
+                </div>
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Email address</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full p-4 rounded-xl text-base outline-none"
+                  style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Phone number</label>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="(503) 000-0000"
+                  className="w-full p-4 rounded-xl text-base outline-none"
+                  style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Buttons */}
+          {(!currentStepData.options) && (
+            <div className="flex gap-3">
+              {showSkipBtn && (
+                <button
+                  onClick={handleSkip}
+                  className="flex-1 p-4 rounded-xl text-base font-semibold border transition-all"
+                  style={{ borderColor: '#d1d5db', color: '#374151' }}
+                >
+                  Skip
+                </button>
+              )}
+              <button
+                onClick={handleNext}
+                disabled={!isAnswered}
+                className="flex-1 p-4 rounded-xl text-base font-semibold border-none transition-all"
+                style={{
+                  background: isAnswered ? '#0099CC' : '#9ca3af',
+                  color: '#fff',
+                  cursor: isAnswered ? 'pointer' : 'not-allowed',
+                }}
+              >
+                {isLastStep ? 'Submit' : 'Next'}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -277,18 +690,28 @@ export default function HomePage() {
   useReveal();
 
   const [stickyVisible, setStickyVisible] = useState(false);
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [auditOpen, setAuditOpen] = useState(false);
+  
   useEffect(() => {
     const hero = document.getElementById('hero-section');
     if (!hero) return;
     const obs = new IntersectionObserver(([e]) => setStickyVisible(!e.isIntersecting), { threshold: 0 });
     obs.observe(hero);
-    return () => obs.disconnect();
+    
+    const handleOpenWizard = () => setWizardOpen(true);
+    window.addEventListener('openWizard', handleOpenWizard);
+    
+    return () => {
+      obs.disconnect();
+      window.removeEventListener('openWizard', handleOpenWizard);
+    };
   }, []);
 
   return (
     <>
       {/* ── HERO ── */}
-      <section id="hero-section" className="relative min-h-screen flex items-center justify-center text-center px-5 py-28 overflow-hidden bg-navy2">
+      <section id="hero-section" className="relative min-h-screen flex items-center justify-center text-center px-5 pt-8 pb-8 overflow-hidden bg-navy2">
         <div className="absolute inset-0 hero-grid-bg opacity-80 pointer-events-none" />
         <div
           className="absolute pointer-events-none"
@@ -320,7 +743,7 @@ export default function HomePage() {
             and protect your systems from disruption.
           </p>
 
-          <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center mb-4">
+          <div className="animate-fade-in-up-3 flex flex-wrap gap-3 justify-center mb-12">
             <a
               href="tel:+15033137121"
               className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/25 text-sm tracking-wide inline-flex items-center gap-2"
@@ -330,12 +753,34 @@ export default function HomePage() {
               </svg>
               Get Instant Help
             </a>
-            <Link
-              href="/contact"
+            <button
+              onClick={() => setWizardOpen(true)}
               className="border border-teal/50 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all duration-200 text-sm tracking-wide"
             >
               Get Free Quote
-            </Link>
+            </button>
+          </div>
+
+          {/* Floating Reviews */}
+          <FloatingReviews />
+
+          {/* Google Rating */}
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            <span className="text-white/90 text-sm font-medium">Google Rating</span>
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <span className="text-white font-bold text-lg">4.8</span>
           </div>
 
         </div>
@@ -420,16 +865,19 @@ export default function HomePage() {
             <p className="text-gray text-sm leading-relaxed mb-8">
               We are a trusted IT support company with 11 years of experience serving businesses in Portland, OR and nationwide. ZERO NERDS delivers proactive managed IT, cybersecurity protection, and 24/7 infrastructure monitoring that keep systems stable, secure, and running without interruption.
             </p>
-            <div className="flex flex-wrap items-center gap-5">
+            <div className="flex flex-wrap items-center gap-4">
               <Link href="/about" className="inline-block bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
                 Get To Know Us
               </Link>
-              <Link href="/about" className="text-teal hover:text-cyan text-sm font-semibold transition-colors inline-flex items-center gap-1.5">
-                About Our Company
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
+              <button
+                onClick={() => {
+                  const event = new CustomEvent('openWizard');
+                  window.dispatchEvent(event);
+                }}
+                className="border border-teal/50 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all duration-200 text-sm tracking-wide inline-block"
+              >
+                Get Free Quote
+              </button>
             </div>
           </div>
         </div>
@@ -449,7 +897,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
             {SERVICES.map((s) => (
               <Link
                 key={s.id}
@@ -553,12 +1001,12 @@ export default function HomePage() {
             just clear, honest advice from a team that has been doing this for 11 years.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Link
-              href="/contact"
+            <button
+              onClick={() => setAuditOpen(true)}
               className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm tracking-wide"
             >
               Claim Your Free Cyber Security Audit
-            </Link>
+            </button>
             <a
               href="tel:+15033137121"
               className="border border-teal/40 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all text-sm tracking-wide"
@@ -569,7 +1017,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <MobileStickyCTA show={stickyVisible} />
+      <MobileStickyCTA show={stickyVisible} onQuoteClick={() => setWizardOpen(true)} />
+      <WizardModal isOpen={wizardOpen} onClose={() => setWizardOpen(false)} />
+      <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
     </>
   );
 }

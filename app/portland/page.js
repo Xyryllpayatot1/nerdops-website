@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
 
 function useReveal() {
   useEffect(() => {
@@ -78,6 +79,7 @@ const FAQS = [
 
 export default function PortlandPage() {
   useReveal();
+  const [auditOpen, setAuditOpen] = useState(false);
 
   return (
     <>
@@ -120,7 +122,7 @@ export default function PortlandPage() {
               Get Instant Help
             </a>
             <Link
-              href="/contact"
+              href="/get-started/wizard"
               className="border border-teal/50 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all duration-200 text-sm tracking-wide"
             >
               Get Free Quote
@@ -141,9 +143,9 @@ export default function PortlandPage() {
               We are a trusted IT support company serving businesses throughout Portland, OR. From downtown Portland to the surrounding metro area, we provide proactive IT services that reduce downtime, strengthen cybersecurity, and keep operations running smoothly. Located at 750 SW 9th Ave, Portland, OR 97205 — available for both remote and on-site support.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact" className="bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
+              <button onClick={() => setAuditOpen(true)} className="bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
                 Schedule IT Assessment
-              </Link>
+              </button>
               <Link href="/about" className="border border-teal/40 text-teal hover:border-teal font-bold px-7 py-3 rounded-lg transition-all text-sm">
                 About Our Company
               </Link>
@@ -321,12 +323,12 @@ export default function PortlandPage() {
             in Portland, OR and surrounding areas — no commitment, no sales pressure.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Link
-              href="/contact"
+            <button
+              onClick={() => setAuditOpen(true)}
               className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm tracking-wide"
             >
               Claim Your Free Cyber Security Audit
-            </Link>
+            </button>
             <a
               href="tel:+15033137121"
               className="border border-teal/40 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all text-sm tracking-wide inline-flex items-center gap-2"
@@ -339,6 +341,55 @@ export default function PortlandPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <section className="bg-navy py-20 px-5">
+        <div className="max-w-3xl mx-auto">
+          <div className="reveal text-center mb-12">
+            <span className="section-label">FAQ</span>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
+            <p className="text-gray text-sm">Common questions about IT services in Portland.</p>
+          </div>
+          <div className="reveal space-y-2">
+            {[
+              { q: 'What IT services do you offer in Portland?', a: 'We offer managed IT services, IT support and help desk, cloud server hosting and management, incident response services, backup and disaster recovery, and cybersecurity and infrastructure protection for businesses in Portland, OR and surrounding areas.' },
+              { q: 'How quickly can you respond to IT issues in Portland?', a: 'Remote issues are typically addressed within 15 minutes. On-site support in the Portland metro area is available with a structured SLA. Emergency support is available 24/7.' },
+              { q: 'Do you offer managed IT services near downtown Portland?', a: 'Yes. Our office is located at 750 SW 9th Ave, Portland, OR 97205. We serve businesses throughout the greater Portland metro area including downtown, the Pearl District, and surrounding neighborhoods.' },
+              { q: 'What industries do you support in Portland?', a: 'We support a wide range of industries in Portland including professional services, healthcare, retail, construction, and non-profits — any organization that depends on reliable IT infrastructure.' },
+              { q: 'Can you support a Portland business that also has remote employees?', a: 'Absolutely. Our cloud management and remote IT support infrastructure is built for distributed teams. We can monitor, secure, and support your workforce regardless of where they work.' },
+            ].map((faq, i) => (
+              <div key={i} className="border border-white/8 rounded-xl overflow-hidden">
+                <button
+                  className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-white/3 transition-colors gap-4"
+                  onClick={() => {}}
+                >
+                  <span className="font-medium text-sm leading-snug">{faq.q}</span>
+                  <svg className="w-4 h-4 text-teal flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sticky CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ background: '#0d1530', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="flex gap-2 p-3">
+          <a href="tel:+15033137121" className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2">
+            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            Call Now
+          </a>
+          <Link href="/get-started/wizard" className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center">
+            Get Free Quote
+          </Link>
+        </div>
+      </div>
+
+      <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
     </>
   );
 }

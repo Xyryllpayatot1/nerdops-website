@@ -50,7 +50,7 @@ export default function Navbar() {
 
           {/* Logo — left on both mobile and desktop */}
           <Link href="/" className="select-none flex items-center">
-            <Image src="/logo.png" alt="ZERO NERDS" width={155} height={87} priority />
+            <Image src="/logo.png" alt="ZERO NERDS" width={200} height={112} priority />
           </Link>
 
           {/* Desktop nav */}
@@ -59,7 +59,7 @@ export default function Navbar() {
               <Link href="/" className="text-navy hover:text-teal transition-colors">Home</Link>
             </li>
             <li>
-              <Link href="/about" className="text-navy/70 hover:text-teal transition-colors">About</Link>
+              <Link href="/about" className="text-navy/70 hover:text-teal transition-colors">About Our Company</Link>
             </li>
             {/* Solutions dropdown */}
             <li className="relative" onMouseEnter={() => setSolutionsOpen(true)} onMouseLeave={() => setSolutionsOpen(false)}>
@@ -113,7 +113,7 @@ export default function Navbar() {
               <svg className="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg>
               Get Instant Help
             </a>
-            <Link href="/get-started" className="hidden lg:inline-block bg-navy hover:bg-navy/90 text-white text-sm font-bold px-4 py-2 rounded-lg transition-all duration-200">
+            <Link href="/get-started/wizard" className="hidden lg:inline-block bg-navy hover:bg-navy/90 text-white text-sm font-bold px-4 py-2 rounded-lg transition-all duration-200">
               Get Started
             </Link>
           </div>
@@ -143,13 +143,13 @@ export default function Navbar() {
 
               {[
                 { href: '/',          label: 'Home' },
-                { href: '/about',     label: 'Get To Know Us' },
+                { href: '/about',     label: 'About Our Company' },
                 { href: '/solutions', label: 'Our Solutions' },
                 { href: '/areas',     label: 'Areas We Serve' },
                 { href: '/gallery',   label: 'Our Gallery' },
                 { href: '/portland',  label: 'Portland, OR' },
                 { href: '/contact',   label: 'Contact Us' },
-                { href: '/get-started', label: 'Get Started' },
+                { href: '/get-started/wizard', label: 'Get Started' },
               ].map((item) => (
                 <Link
                   key={item.href}
