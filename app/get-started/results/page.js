@@ -12,16 +12,19 @@ export default function ResultsPage() {
           </svg>
         </div>
         <h1 style={{ fontSize: 28, fontWeight: 700, color: '#111827', marginBottom: 12 }}>
-          We found 18 IT pros for you!
+          Need Instant Help?
         </h1>
         <p style={{ fontSize: 16, color: '#6b7280', marginBottom: 32, lineHeight: 1.6 }}>
-          Based on your needs, we&apos;ve matched you with top-rated IT technicians in your area. They&apos;ll contact you shortly with quotes.
+          We received your request. Call us now and our IT experts will help you right away.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
-          <Link
-            href="/get-started"
+          <a
+            href="tel:+15033137121"
             style={{
-              display: 'block',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 12,
               padding: '16px 24px',
               border: 'none',
               borderRadius: 10,
@@ -33,8 +36,11 @@ export default function ResultsPage() {
               textAlign: 'center',
             }}
           >
-            View Matching Pros
-          </Link>
+            <svg style={{ width: 20, height: 20 }} fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            Call (503) 313-7121
+          </a>
           <Link
             href="/get-started"
             style={{
@@ -54,9 +60,9 @@ export default function ResultsPage() {
           </Link>
         </div>
         <p style={{ fontSize: 13, color: '#9ca3af' }}>
-          Questions? Call us at{' '}
-          <a href="tel:+15033137121" style={{ color: '#0099CC', textDecoration: 'none' }}>
-            (503) 313-7121
+          Questions? Email us at{' '}
+          <a href="mailto:help@zeronerds.com" style={{ color: '#0099CC', textDecoration: 'none' }}>
+            help@zeronerds.com
           </a>
         </p>
       </div>
