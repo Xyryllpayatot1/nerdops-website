@@ -117,8 +117,8 @@ export default function Footer() {
               </a>
               {/* Thumbtack */}
               <a href="#" aria-label="Thumbtack" className="w-9 h-9 bg-white/5 hover:bg-teal/15 rounded-lg flex items-center justify-center text-gray hover:text-teal transition-all border border-white/5 hover:border-teal/20">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.3 5.3l-1.6-1.6C18.1 3.1 17.4 3 16.8 3H7.2C6.6 3 5.9 3.1 5.3 3.7L3.7 5.3C3.1 5.9 3 6.6 3 7.2v9.6c0 .6.1 1.3.7 1.9l1.6 1.6c.6.6 1.3.7 1.9.7h9.6c.6 0 1.3-.1 1.9-.7l1.6-1.6c.6-.6.7-1.3.7-1.9V7.2c0-.6-.1-1.3-.7-1.9zM12 17c-.6 0-1-.4-1-1v-4H8l4-7 4 7h-3v4c0 .6-.4 1-1 1z"/>
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19.5 5.25L17.25 3H6.75L4.5 5.25C3.84 5.91 3.45 6.81 3.45 7.8V18.45C3.45 19.59 4.41 20.55 5.55 20.55H9L10.5 22.5L12 20.55H18.45C19.59 20.55 20.55 19.59 20.55 18.45V7.8C20.55 6.81 20.16 5.91 19.5 5.25ZM12 16.5C10.62 16.5 9.45 15.33 9.45 13.95C9.45 12.57 10.62 11.4 12 11.4C13.38 11.4 14.55 12.57 14.55 13.95C14.55 15.33 13.38 16.5 12 16.5Z" fill="currentColor"/>
                 </svg>
               </a>
               {/* Facebook */}

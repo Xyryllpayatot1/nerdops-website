@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
+import StickyCTA from '@/components/StickyCTA';
+import { FAQSection } from '@/components/FAQSection';
+import { saveLeadToAPI, trackEvent } from '@/lib/leads';
 
 function useReveal() {
   useEffect(() => {
@@ -28,13 +31,36 @@ export default function ContactPage() {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: wire to backend / CRM / email service
-    setSubmitted(true);
+    setSubmitting(true);
+    
+    trackEvent('form_submitted', { formType: 'contact', service: form.service });
+    
+    try {
+      await saveLeadToAPI({
+        formType: 'contact',
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        companyName: '',
+        service: form.service,
+        message: form.message,
+      });
+      
+      trackEvent('form_completed', { formType: 'contact' });
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Failed to submit contact form:', error);
+      setSubmitted(true); // Still show success since data is saved locally
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const inputClass =
@@ -43,7 +69,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy2 py-24 px-5 overflow-hidden">
+      <section className="relative bg-navy2 py-20 px-5 overflow-hidden">
         <div className="absolute inset-0 hero-grid-bg opacity-40 pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <span className="section-label block text-center">Contact Us</span>
@@ -58,7 +84,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact section */}
-      <section className="bg-navy py-20 px-5">
+      <section className="bg-navy py-16 px-5">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-14">
 
           {/* Info */}
@@ -250,9 +276,20 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-teal hover:bg-teal/90 text-white font-bold py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/20 text-sm tracking-wide"
+                  disabled={submitting}
+                  className="w-full bg-teal hover:bg-teal/90 text-white font-bold py-3.5 rounded-lg transition-all duration-200 shadow-lg shadow-teal/20 text-sm tracking-wide flex items-center justify-center gap-2"
                 >
-                  Send Message
+                  {submitting ? (
+                    <>
+                      <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    'Send Message'
+                  )}
                 </button>
 
                 <p className="text-gray/50 text-xs text-center">
@@ -267,51 +304,26 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-navy2 py-20 px-5">
+      <section className="bg-navy2 py-16 px-5">
         <div className="max-w-3xl mx-auto">
           <div className="reveal text-center mb-12">
             <span className="section-label">FAQ</span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
             <p className="text-gray text-sm">Common questions about getting started with ZERO NERDS.</p>
           </div>
-          <div className="reveal space-y-2">
-            {[
+          <div className="reveal">
+            <FAQSection faqs={[
               { q: 'How do I get started with ZERO NERDS?', a: 'Call us at (503) 313-7121 or fill out our contact form to schedule a free IT assessment. We will review your infrastructure and recommend next steps — no obligation.' },
               { q: 'What happens during a free IT assessment?', a: 'We will review your current IT infrastructure, identify gaps and vulnerabilities, and recommend the right combination of services for your environment — at no cost and with no obligation.' },
               { q: 'How much does managed IT support cost?', a: 'Managed IT services typically range from $100–$250 per user per month depending on scope. We offer flat-rate pricing with no surprise invoices — contact us for a custom quote.' },
               { q: 'Do you require long-term contracts?', a: 'No. All our agreements are month-to-month. You stay because the service works, not because you are locked in.' },
               { q: 'How quickly can ZERO NERDS respond to an issue?', a: 'Remote issues are typically addressed within 15 minutes. On-site support throughout the Portland metro area is available same-day or next-day depending on urgency.' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-white/8 rounded-xl overflow-hidden">
-                <button
-                  className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-white/3 transition-colors gap-4"
-                  onClick={() => {}}
-                >
-                  <span className="font-medium text-sm leading-snug">{faq.q}</span>
-                  <svg className="w-4 h-4 text-teal flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-              </div>
-            ))}
+            ]} />
           </div>
         </div>
       </section>
 
-      {/* Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ background: '#0d1530', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <div className="flex gap-2 p-3">
-          <a href="tel:+15033137121" className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2">
-            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-            </svg>
-            Call Now
-          </a>
-          <Link href="/get-started/wizard" className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center">
-            Get Free Quote
-          </Link>
-        </div>
-      </div>
+      <StickyCTA />
 
       <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
     </>

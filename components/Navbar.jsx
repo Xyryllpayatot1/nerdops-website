@@ -172,7 +172,7 @@ export default function Navbar() {
                   Get Instant Help
                 </a>
                 <Link
-                  href="/contact"
+                  href="/get-started/wizard"
                   className="block text-center border border-teal/50 text-teal font-bold py-3.5 rounded-lg text-sm"
                   onClick={() => setMenuOpen(false)}
                 >

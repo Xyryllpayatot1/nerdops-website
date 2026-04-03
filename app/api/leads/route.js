@@ -3,7 +3,7 @@ import { neon } from '@neondatabase/serverless';
 export async function GET() {
   try {
     if (!process.env.DATABASE_URL) {
-      return Response.json({ error: 'Database not configured' }, { status: 503 });
+      return Response.json({ error: 'Database not configured', leads: [] }, { status: 503 });
     }
 
     const sql = neon(process.env.DATABASE_URL);
@@ -12,8 +12,8 @@ export async function GET() {
     `;
     return Response.json(leads);
   } catch (error) {
-    console.error('Error fetching leads:', error);
-    return Response.json({ error: 'Failed to fetch leads' }, { status: 500 });
+    console.warn('Database unavailable:', error.message);
+    return Response.json({ error: 'Database unavailable', leads: [] }, { status: 503 });
   }
 }
 
@@ -102,5 +102,27 @@ export async function POST(request) {
   } catch (error) {
     console.error('Error saving lead:', error);
     return Response.json({ error: 'Failed to save lead' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  if (!id) {
+    return Response.json({ error: 'Lead ID required' }, { status: 400 });
+  }
+
+  try {
+    if (!process.env.DATABASE_URL) {
+      return Response.json({ error: 'Database not configured' }, { status: 503 });
+    }
+
+    const sql = neon(process.env.DATABASE_URL);
+    await sql`DELETE FROM leads WHERE id = ${id}`;
+    return Response.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting lead:', error);
+    return Response.json({ error: 'Failed to delete lead' }, { status: 500 });
   }
 }

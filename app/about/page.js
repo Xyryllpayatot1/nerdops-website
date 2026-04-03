@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
+import StickyCTA from '@/components/StickyCTA';
+import { FAQSection } from '@/components/FAQSection';
 
 function useReveal() {
   useEffect(() => {
@@ -78,7 +80,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy2 py-12 px-5 overflow-hidden">
+      <section className="relative bg-navy2 py-16 px-5 overflow-hidden">
         <div className="absolute inset-0 hero-grid-bg opacity-40 pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <span className="section-label block text-center">About Us</span>
@@ -92,7 +94,7 @@ export default function AboutPage() {
       </section>
 
       {/* Company Story */}
-      <section className="bg-navy py-10 px-5">
+      <section className="bg-navy py-12 px-5">
         <div className="max-w-3xl mx-auto">
           <div className="reveal">
             <span className="section-label">Our Story</span>
@@ -236,51 +238,26 @@ export default function AboutPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-navy py-14 px-5">
+      <section className="bg-navy py-12 px-5">
         <div className="max-w-3xl mx-auto">
           <div className="reveal text-center mb-8">
             <span className="section-label">FAQ</span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold mt-2">Frequently Asked Questions</h2>
             <p className="text-gray text-sm mt-2">Common questions about working with ZERO NERDS.</p>
           </div>
-          <div className="reveal space-y-2">
-            {[
+          <div className="reveal">
+            <FAQSection faqs={[
               { q: 'What makes ZERO NERDS different from other IT companies?', a: 'We take a proactive approach to IT support rather than waiting for issues to occur. Our team has over 11 years of experience serving businesses in Portland, OR and nationwide, and we are committed to keeping your systems running without interruption.' },
               { q: 'How quickly can you respond to IT emergencies?', a: 'Remote issues are typically addressed within 15 minutes. On-site support throughout the Portland metro area is available with same-day or next-day response depending on urgency.' },
               { q: 'Do you require long-term contracts?', a: 'No. All our agreements are month-to-month. You stay because the service works, not because you are locked in.' },
               { q: 'What industries do you support?', a: 'We support businesses across professional services, healthcare, retail, construction, non-profits, and more — any organization that depends on reliable IT infrastructure.' },
               { q: 'Can you support remote or hybrid teams?', a: 'Absolutely. Our cloud management and remote IT support infrastructure is built for distributed teams regardless of where employees work.' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-white/8 rounded-xl overflow-hidden">
-                <button
-                  className="w-full flex justify-between items-center px-5 py-4 text-left hover:bg-white/3 transition-colors gap-4"
-                  onClick={() => {}}
-                >
-                  <span className="font-medium text-sm leading-snug">{faq.q}</span>
-                  <svg className="w-4 h-4 text-teal flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-              </div>
-            ))}
+            ]} />
           </div>
         </div>
       </section>
 
-      {/* Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ background: '#0d1530', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <div className="flex gap-2 p-3">
-          <a href="tel:+15033137121" className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2">
-            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-            </svg>
-            Call Now
-          </a>
-          <Link href="/get-started/wizard" className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center">
-            Get Free Quote
-          </Link>
-        </div>
-      </div>
+      <StickyCTA />
 
       <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
     </>

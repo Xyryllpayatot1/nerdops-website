@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
@@ -9,28 +9,63 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [locked, setLocked] = useState(false);
   const router = useRouter();
+
+  // Clear error when user types
+  useEffect(() => {
+    if (error) setError('');
+  }, [username, password]);
+
+  // Lock after 5 failed attempts for 30 seconds
+  useEffect(() => {
+    if (attempts >= 5) {
+      setLocked(true);
+      const timer = setTimeout(() => {
+        setLocked(false);
+        setAttempts(0);
+      }, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [attempts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (locked) {
+      setError('Too many attempts. Please wait 30 seconds.');
+      return;
+    }
+
+    if (!username.trim() || !password.trim()) {
+      setError('Please enter both username and password');
+      return;
+    }
+
     setError('');
     setLoading(true);
 
     try {
       const result = await signIn('credentials', {
-        username,
+        username: username.trim(),
         password,
         redirect: false,
       });
 
       if (result?.error) {
-        setError('Invalid username or password');
+        setAttempts(prev => prev + 1);
+        if (attempts >= 4) {
+          setError('Too many attempts. Please wait 30 seconds.');
+        } else {
+          setError('Invalid username or password');
+        }
         setLoading(false);
       } else {
         router.push('/dashboard');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError('Connection error. Please try again.');
       setLoading(false);
     }
   };
@@ -55,8 +90,17 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-start gap-2">
+                <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
                 {error}
+              </div>
+            )}
+
+            {attempts > 0 && attempts < 5 && !locked && (
+              <div className="text-xs text-gray-500 text-center">
+                {5 - attempts} attempts remaining
               </div>
             )}
 
@@ -69,8 +113,10 @@ export default function LoginPage() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                disabled={locked}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal focus:border-teal outline-none transition-colors"
+                autoComplete="username"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal focus:border-teal outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                 style={{ color: '#111827' }}
                 placeholder="Enter username"
               />
@@ -85,8 +131,10 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={locked}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal focus:border-teal outline-none transition-colors"
+                autoComplete="current-password"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal focus:border-teal outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                 style={{ color: '#111827' }}
                 placeholder="Enter password"
               />
@@ -94,18 +142,20 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loading}
-              className="w-full py-3 rounded-lg text-white font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || locked}
+              className="w-full py-3 rounded-lg text-white font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               style={{ backgroundColor: '#0099CC' }}
             >
               {loading ? (
-                <span className="flex items-center justify-center gap-2">
+                <>
                   <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
                   Signing in...
-                </span>
+                </>
+              ) : locked ? (
+                'Please wait...'
               ) : (
                 'Sign In'
               )}
@@ -113,11 +163,18 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <a href="/" className="text-sm text-teal hover:underline">
-              ← Back to website
+            <a href="/" className="text-sm text-teal hover:underline flex items-center justify-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to website
             </a>
           </div>
         </div>
+
+        <p className="text-xs text-gray-400 text-center mt-4">
+          Secured access • All activity is logged
+        </p>
       </div>
     </div>
   );

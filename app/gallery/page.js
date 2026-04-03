@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
+import StickyCTA from '@/components/StickyCTA';
+import { FAQSection } from '@/components/FAQSection';
 
 function useReveal() {
   useEffect(() => {
@@ -80,22 +82,21 @@ export default function GalleryPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy2 py-24 px-5 overflow-hidden">
+      <section className="relative bg-navy2 py-20 px-5 overflow-hidden">
         <div className="absolute inset-0 hero-grid-bg opacity-40 pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <span className="section-label block text-center">Our Gallery</span>
           <h1 className="font-serif text-4xl md:text-5xl font-bold mt-3 mb-5 leading-tight">
-            Gallery Coming Soon
+            IT Projects & Client Work
           </h1>
           <p className="text-gray text-base leading-relaxed max-w-xl mx-auto">
-            Dependable IT services in Portland, OR. We are building out our gallery to showcase
-            infrastructure projects, on-site work, and client environments.
+            Explore our portfolio of managed IT projects, infrastructure implementations, and cybersecurity work across businesses in Portland, OR and beyond.
           </p>
         </div>
       </section>
 
       {/* Masonry grid */}
-      <section className="bg-navy py-20 px-5">
+      <section className="bg-navy py-12 px-5">
         <div className="max-w-7xl mx-auto">
           <div className="reveal text-center mb-12 max-w-xl mx-auto">
             <span className="section-label">Project Showcase</span>
@@ -128,7 +129,7 @@ export default function GalleryPage() {
 
       {/* CTA */}
       <section
-        className="py-24 px-5 text-center"
+        className="py-16 px-5 text-center"
         style={{ background: 'linear-gradient(135deg,#091a33,#0d1530,#0a1828)' }}
       >
         <div className="reveal max-w-xl mx-auto">
@@ -159,44 +160,19 @@ export default function GalleryPage() {
             <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
             <p className="text-gray text-sm">Questions about our IT services and projects.</p>
           </div>
-          <div className="reveal space-y-2">
-            {[
+          <div className="reveal">
+            <FAQSection faqs={[
               { q: 'What types of IT projects do you handle?', a: 'We handle a wide range of IT projects including server room installations, network rack configurations, workstation deployments, cloud migrations, security audits, structured cabling, and more.' },
               { q: 'Do you offer ongoing IT support after a project is completed?', a: 'Yes. We offer managed IT services, 24/7 help desk support, and ongoing maintenance to ensure your systems continue to operate reliably after any project is completed.' },
               { q: 'Can you work with our existing IT infrastructure?', a: 'Absolutely. We assess your current environment and work with existing infrastructure whenever possible, recommending upgrades only when necessary.' },
               { q: 'How long does a typical IT project take?', a: 'Project timelines vary based on scope. Small projects may take a few days while larger infrastructure projects can take several weeks. We provide detailed timelines during the planning phase.' },
               { q: 'Do you provide documentation after completing a project?', a: 'Yes. We provide comprehensive documentation including network diagrams, configuration details, and user guides to ensure your team can manage the systems effectively.' },
-            ].map((faq, i) => (
-              <div key={i} className="border border-white/8 rounded-xl overflow-hidden">
-                <button
-                  className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-white/3 transition-colors gap-4"
-                  onClick={() => {}}
-                >
-                  <span className="font-medium text-sm leading-snug">{faq.q}</span>
-                  <svg className="w-4 h-4 text-teal flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-              </div>
-            ))}
+            ]} />
           </div>
         </div>
       </section>
 
-      {/* Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ background: '#0d1530', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <div className="flex gap-2 p-3">
-          <a href="tel:+15033137121" className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2">
-            <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-            </svg>
-            Call Now
-          </a>
-          <Link href="/get-started/wizard" className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center">
-            Get Free Quote
-          </Link>
-        </div>
-      </div>
+      <StickyCTA />
 
       <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
     </>

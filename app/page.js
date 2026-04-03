@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
-import { saveLeadToAPI } from '@/lib/leads';
+import StickyCTA from '@/components/StickyCTA';
+import { saveLeadToAPI, validators, formatPhone, Toast, trackEvent } from '@/lib/leads';
 
 const SERVICES = [
   {
@@ -253,24 +254,54 @@ function MobileStickyCTA({ show, onQuoteClick }) {
   return (
     <div
       className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-transform duration-300 ${show ? 'translate-y-0' : 'translate-y-full'}`}
+      style={{ 
+        background: 'linear-gradient(to top, rgba(13,21,48,0.98) 70%, rgba(13,21,48,0))',
+        paddingTop: 40,
+      }}
     >
-      <div className="bg-navy2/95 backdrop-blur-md border-t border-white/10 p-3 flex gap-2">
+      <div 
+        className="flex gap-2 mx-3 mb-3 rounded-xl"
+        style={{ 
+          background: '#0d1530',
+          padding: 12,
+          border: '1px solid rgba(53,178,159,0.3)',
+          boxShadow: '0 -4px 30px rgba(53,178,159,0.15), 0 8px 40px rgba(0,0,0,0.5)',
+        }}
+      >
         <a
           href="tel:+15033137121"
-          className="flex-1 bg-teal hover:bg-teal/90 text-white font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center gap-2"
+          className="flex-1 bg-gradient-to-r from-teal to-cyan hover:from-teal/90 hover:to-cyan/90 text-white font-bold py-3.5 rounded-lg text-sm inline-flex items-center justify-center gap-2 transition-all duration-200"
+          style={{
+            animation: 'pulse-cta 2s ease-in-out infinite',
+            boxShadow: '0 4px 15px rgba(53,178,159,0.4)',
+          }}
         >
           <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
           </svg>
-          Get Instant Help
+          Call Now
         </a>
         <button
           onClick={onQuoteClick}
-          className="flex-1 border border-teal/50 text-teal font-bold py-3 rounded-lg text-sm inline-flex items-center justify-center"
+          className="flex-1 border-2 text-teal hover:bg-teal hover:text-white font-bold py-3.5 rounded-lg text-sm inline-flex items-center justify-center transition-all duration-200"
+          style={{
+            borderColor: '#35b29f',
+            background: 'rgba(53,178,159,0.1)',
+          }}
         >
           Get Free Quote
         </button>
       </div>
+      <style>{`
+        @keyframes pulse-cta {
+          0%, 100% {
+            box-shadow: 0 4px 15px rgba(53,178,159,0.4);
+          }
+          50% {
+            box-shadow: 0 4px 25px rgba(53,178,159,0.6);
+          }
+        }
+      `}</style>
     </div>
   );
 }
@@ -364,6 +395,10 @@ function WizardModal({ isOpen, onClose }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [checkbox, setCheckbox] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const STEPS = [
     {
@@ -414,6 +449,26 @@ function WizardModal({ isOpen, onClose }) {
   const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
   const currentStepData = STEPS[currentStep - 1];
 
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type, id: Date.now() });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  const validateContactStep = () => {
+    const newErrors = {};
+    if (!firstName.trim()) newErrors.firstName = 'First name is required';
+    if (!lastName.trim()) newErrors.lastName = 'Last name is required';
+    
+    const emailError = validators.email(email);
+    if (emailError) newErrors.email = emailError;
+    
+    const phoneError = validators.phone(phone);
+    if (phoneError) newErrors.phone = phoneError;
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSelect = (option) => {
     setAnswers({ ...answers, [currentStep]: option });
     setTimeout(() => {
@@ -426,24 +481,44 @@ function WizardModal({ isOpen, onClose }) {
   };
 
   const handleSubmit = async () => {
-    await saveLeadToAPI({
-      formType: 'wizard',
-      firstName,
-      lastName,
-      email,
-      phone,
-      zipCode: '97205',
-      mainIssue: answers[1],
-      computerType: answers[2],
-      deviceType: answers[3],
-      workLocation: answers[5],
-      startTime: answers[6],
-      message: textAnswer,
-    });
-    onClose();
+    setSubmitting(true);
+    setSubmitError(null);
+    
+    trackEvent('form_submitted', { formType: 'wizard', step: currentStep });
+    
+    try {
+      await saveLeadToAPI({
+        formType: 'wizard',
+        firstName,
+        lastName,
+        email,
+        phone,
+        zipCode: '97205',
+        mainIssue: answers[1],
+        computerType: answers[2],
+        deviceType: answers[3],
+        workLocation: answers[5],
+        startTime: answers[6],
+        message: textAnswer,
+      });
+      
+      trackEvent('form_completed', { formType: 'wizard' });
+      showToast('Thank you! We will be in touch soon.', 'success');
+      setTimeout(() => onClose(), 1500);
+    } catch (error) {
+      setSubmitError('Something went wrong. Please try again.');
+      showToast('Failed to submit. Please try again.', 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleNext = () => {
+    if (currentStep === 8 && !validateContactStep()) {
+      showToast('Please fill in all required fields', 'error');
+      return;
+    }
+    
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -467,7 +542,7 @@ function WizardModal({ isOpen, onClose }) {
 
   const isAnswered = currentStepData.isText ? true :
                      currentStepData.isSummary ? true :
-                     currentStepData.isContact ? (firstName.trim() && lastName.trim()) :
+                     currentStepData.isContact ? (firstName.trim() && lastName.trim() && email.trim() && phone.trim()) :
                      answers[currentStep];
 
   const showSkipBtn = !currentStepData.isSummary && !currentStepData.isContact;
@@ -476,12 +551,14 @@ function WizardModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-      <div 
-        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <>
+      <Toast toast={toast} />
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+        <div 
+          className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
         {/* Progress Bar */}
         <div className="h-1 bg-gray-200 sticky top-0 z-10">
           <div className="h-full bg-teal transition-all duration-300" style={{ width: `${progress}%` }} />
@@ -607,49 +684,53 @@ function WizardModal({ isOpen, onClose }) {
               </div>
               <div className="flex gap-3 mb-4">
                 <div className="flex-1">
-                  <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>First name</label>
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>First name <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => { setFirstName(e.target.value); setErrors({...errors, firstName: null}); }}
                     placeholder="John"
                     className="w-full p-4 rounded-xl text-base outline-none"
-                    style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                    style={{ border: `1.5px solid ${errors.firstName ? '#ef4444' : '#9ca3af'}`, color: '#111827' }}
                   />
+                  {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Last name</label>
+                  <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Last name <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e) => { setLastName(e.target.value); setErrors({...errors, lastName: null}); }}
                     placeholder="Doe"
                     className="w-full p-4 rounded-xl text-base outline-none"
-                    style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                    style={{ border: `1.5px solid ${errors.lastName ? '#ef4444' : '#9ca3af'}`, color: '#111827' }}
                   />
+                  {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
                 </div>
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Email address</label>
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Email address <span className="text-red-500">*</span></label>
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); setErrors({...errors, email: null}); }}
                   placeholder="your@email.com"
                   className="w-full p-4 rounded-xl text-base outline-none"
-                  style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                  style={{ border: `1.5px solid ${errors.email ? '#ef4444' : '#9ca3af'}`, color: '#111827' }}
                 />
+                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Phone number</label>
+                <label className="block text-sm font-semibold mb-2" style={{ color: '#374151' }}>Phone number <span className="text-red-500">*</span></label>
                 <input
                   type="tel"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => { setPhone(formatPhone(e.target.value)); setErrors({...errors, phone: null}); }}
                   placeholder="(503) 000-0000"
                   className="w-full p-4 rounded-xl text-base outline-none"
-                  style={{ border: '1.5px solid #9ca3af', color: '#111827' }}
+                  style={{ border: `1.5px solid ${errors.phone ? '#ef4444' : '#9ca3af'}`, color: '#111827' }}
                 />
+                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
             </div>
           )}
@@ -660,29 +741,47 @@ function WizardModal({ isOpen, onClose }) {
               {showSkipBtn && (
                 <button
                   onClick={handleSkip}
+                  disabled={submitting}
                   className="flex-1 p-4 rounded-xl text-base font-semibold border transition-all"
-                  style={{ borderColor: '#d1d5db', color: '#374151' }}
+                  style={{ borderColor: '#d1d5db', color: '#374151', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.6 : 1 }}
                 >
                   Skip
                 </button>
               )}
               <button
                 onClick={handleNext}
-                disabled={!isAnswered}
-                className="flex-1 p-4 rounded-xl text-base font-semibold border-none transition-all"
+                disabled={!isAnswered || submitting}
+                className="flex-1 p-4 rounded-xl text-base font-semibold border-none transition-all flex items-center justify-center gap-2"
                 style={{
                   background: isAnswered ? '#0099CC' : '#9ca3af',
                   color: '#fff',
-                  cursor: isAnswered ? 'pointer' : 'not-allowed',
+                  cursor: isAnswered && !submitting ? 'pointer' : 'not-allowed',
                 }}
               >
-                {isLastStep ? 'Submit' : 'Next'}
+                {submitting ? (
+                  <>
+                    <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  isLastStep ? 'Submit' : 'Next'
+                )}
               </button>
+            </div>
+          )}
+
+          {submitError && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{submitError}</p>
             </div>
           )}
         </div>
       </div>
     </div>
+    </>
   );
 }
 
