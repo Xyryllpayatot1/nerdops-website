@@ -1,15 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import { type NextRequest } from 'next/server';
 import { LeadSchema } from '@/lib/lead-schema';
-import { leadsLimiter } from '@/lib/rate-limit';
-
-function getIP(req: NextRequest): string {
-  return (
-    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
-    req.headers.get('x-real-ip') ??
-    'unknown'
-  );
-}
+import { leadsLimiter, getClientIP } from '@/lib/rate-limit';
 
 // GET /api/leads — protected by middleware (session required)
 export async function GET() {
@@ -29,7 +21,7 @@ export async function GET() {
 // POST /api/leads — public, rate-limited + Zod validated
 export async function POST(req: NextRequest) {
   // Rate limiting
-  const ip = getIP(req);
+  const ip = getClientIP(req.headers);
   const limit = leadsLimiter(ip);
   if (!limit.success) {
     return Response.json(

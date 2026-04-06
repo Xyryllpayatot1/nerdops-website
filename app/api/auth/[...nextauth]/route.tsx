@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { authLimiter } from '@/lib/rate-limit';
+import { authLimiter, getClientIP } from '@/lib/rate-limit';
 import { headers } from 'next/headers';
 
 function secureCompare(a: string, b: string): boolean {
@@ -28,10 +28,7 @@ const handler = NextAuth({
 
         // Rate limit by IP
         const headersList = await headers();
-        const ip =
-          headersList.get('x-forwarded-for')?.split(',')[0].trim() ??
-          headersList.get('x-real-ip') ??
-          'unknown';
+        const ip = getClientIP(headersList);
 
         const limit = authLimiter(ip);
         if (!limit.success) {
