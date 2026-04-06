@@ -1,103 +1,96 @@
 import { neon } from '@neondatabase/serverless';
+import { type NextRequest } from 'next/server';
+import { LeadSchema } from '@/lib/lead-schema';
+import { leadsLimiter } from '@/lib/rate-limit';
 
+function getIP(req: NextRequest): string {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+    req.headers.get('x-real-ip') ??
+    'unknown'
+  );
+}
+
+// GET /api/leads — protected by middleware (session required)
 export async function GET() {
   try {
     if (!process.env.DATABASE_URL) {
       return Response.json({ error: 'Database not configured', leads: [] }, { status: 503 });
     }
-
     const sql = neon(process.env.DATABASE_URL);
-    const leads = await sql`
-      SELECT * FROM leads ORDER BY created_at DESC
-    `;
+    const leads = await sql`SELECT * FROM leads ORDER BY created_at DESC`;
     return Response.json(leads);
   } catch (error) {
-    console.warn('Database unavailable:', error.message);
+    console.warn('Database unavailable:', (error as Error).message);
     return Response.json({ error: 'Database unavailable', leads: [] }, { status: 503 });
   }
 }
 
-export async function POST(request) {
+// POST /api/leads — public, rate-limited + Zod validated
+export async function POST(req: NextRequest) {
+  // Rate limiting
+  const ip = getIP(req);
+  const limit = leadsLimiter(ip);
+  if (!limit.success) {
+    return Response.json(
+      { error: 'Too many submissions. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil((limit.resetAt - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
+  // Input validation
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return Response.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
+
+  const parsed = LeadSchema.safeParse(body);
+  if (!parsed.success) {
+    return Response.json(
+      { error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+      { status: 422 }
+    );
+  }
+
+  const {
+    formType, name, firstName, lastName, email, phone,
+    companyName, teamSize, zipCode, mainIssue, computerType,
+    deviceType, workLocation, startTime, message,
+    securityConcerns, hasSecurityTeam, sensitiveDataAccess,
+    securityIncidents, complianceRequirements,
+  } = parsed.data;
+
   try {
     if (!process.env.DATABASE_URL) {
       return Response.json({ error: 'Database not configured' }, { status: 503 });
     }
-
     const sql = neon(process.env.DATABASE_URL);
-    const body = await request.json();
-    
-    const {
-      formType,
-      name,
-      firstName,
-      lastName,
-      email,
-      phone,
-      companyName,
-      teamSize,
-      zipCode,
-      mainIssue,
-      computerType,
-      deviceType,
-      workLocation,
-      startTime,
-      message,
-      securityConcerns,
-      hasSecurityTeam,
-      sensitiveDataAccess,
-      securityIncidents,
-      complianceRequirements,
-    } = body;
-
     const lead = await sql`
       INSERT INTO leads (
-        form_type,
-        name,
-        first_name,
-        last_name,
-        email,
-        phone,
-        company_name,
-        team_size,
-        zip_code,
-        main_issue,
-        computer_type,
-        device_type,
-        work_location,
-        start_time,
-        message,
-        security_concerns,
-        has_security_team,
-        sensitive_data_access,
-        security_incidents,
-        compliance_requirements,
-        created_at
+        form_type, name, first_name, last_name, email, phone,
+        company_name, team_size, zip_code, main_issue, computer_type,
+        device_type, work_location, start_time, message,
+        security_concerns, has_security_team, sensitive_data_access,
+        security_incidents, compliance_requirements, created_at
       ) VALUES (
-        ${formType},
-        ${name || null},
-        ${firstName || null},
-        ${lastName || null},
-        ${email || null},
-        ${phone || null},
-        ${companyName || null},
-        ${teamSize || null},
-        ${zipCode || null},
-        ${mainIssue || null},
-        ${computerType || null},
-        ${deviceType || null},
-        ${workLocation || null},
-        ${startTime || null},
-        ${message || null},
-        ${securityConcerns || null},
-        ${hasSecurityTeam || null},
-        ${sensitiveDataAccess || null},
-        ${securityIncidents || null},
-        ${complianceRequirements || null},
+        ${formType}, ${name ?? null}, ${firstName ?? null}, ${lastName ?? null},
+        ${email ?? null}, ${phone ?? null}, ${companyName ?? null},
+        ${teamSize ?? null}, ${zipCode ?? null}, ${mainIssue ?? null},
+        ${computerType ?? null}, ${deviceType ?? null}, ${workLocation ?? null},
+        ${startTime ?? null}, ${message ?? null}, ${securityConcerns ?? null},
+        ${hasSecurityTeam ?? null}, ${sensitiveDataAccess ?? null},
+        ${securityIncidents ?? null}, ${complianceRequirements ?? null},
         NOW()
       )
       RETURNING *
     `;
-
     return Response.json(lead[0], { status: 201 });
   } catch (error) {
     console.error('Error saving lead:', error);
@@ -105,19 +98,19 @@ export async function POST(request) {
   }
 }
 
-export async function DELETE(request) {
-  const { searchParams } = new URL(request.url);
+// DELETE /api/leads — protected by middleware (session required)
+export async function DELETE(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
 
-  if (!id) {
-    return Response.json({ error: 'Lead ID required' }, { status: 400 });
+  if (!id || !/^\d+$/.test(id)) {
+    return Response.json({ error: 'Valid lead ID required' }, { status: 400 });
   }
 
   try {
     if (!process.env.DATABASE_URL) {
       return Response.json({ error: 'Database not configured' }, { status: 503 });
     }
-
     const sql = neon(process.env.DATABASE_URL);
     await sql`DELETE FROM leads WHERE id = ${id}`;
     return Response.json({ success: true });
