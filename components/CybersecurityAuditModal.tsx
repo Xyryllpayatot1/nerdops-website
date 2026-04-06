@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { saveLeadToAPI, validators, formatPhone, Toast, trackEvent } from '@/lib/leads';
 
@@ -116,11 +116,11 @@ export default function CybersecurityAuditModal({ isOpen, onClose }) {
     if (field) {
       handleFieldChange(field, value);
       setTimeout(() => {
-        if (currentStep < totalSteps) {
-          setCurrentStep(currentStep + 1);
-        } else {
-          handleSubmit();
-        }
+        setCurrentStep(prev => {
+          if (prev < totalSteps) return prev + 1;
+          return prev;
+        });
+        if (currentStep >= totalSteps) handleSubmit();
       }, 300);
     }
   };
@@ -194,9 +194,10 @@ export default function CybersecurityAuditModal({ isOpen, onClose }) {
     }
   };
 
-  const isAnswered = currentStepData.fields
-    ? currentStepData.fields.every(f => formData[f]?.trim())
-    : true;
+  const isAnswered = useMemo(
+    () => currentStepData.fields ? currentStepData.fields.every(f => formData[f]?.trim()) : true,
+    [currentStepData, formData]
+  );
 
   const isLastStep = currentStep === totalSteps;
 

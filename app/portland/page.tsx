@@ -1,20 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
-import StickyCTA from '@/components/StickyCTA';
-
-function useReveal() {
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
+import { FAQSection } from '@/components/FAQSection';
+import PageClientShell from '@/components/PageClientShell';
+import AuditButton from '@/components/AuditButton';
 
 const SERVICES = [
   {
@@ -79,9 +66,6 @@ const FAQS = [
 ];
 
 export default function PortlandPage() {
-  useReveal();
-  const [auditOpen, setAuditOpen] = useState(false);
-
   return (
     <>
       {/* Hero */}
@@ -144,9 +128,9 @@ export default function PortlandPage() {
               We are a trusted IT support company serving businesses throughout Portland, OR. From downtown Portland to the surrounding metro area, we provide proactive IT services that reduce downtime, strengthen cybersecurity, and keep operations running smoothly. Located at 750 SW 9th Ave, Portland, OR 97205 — available for both remote and on-site support.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <button onClick={() => setAuditOpen(true)} className="bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
+              <AuditButton className="bg-teal hover:bg-teal/90 text-white font-bold px-7 py-3 rounded-lg transition-all text-sm">
                 Schedule IT Assessment
-              </button>
+              </AuditButton>
               <Link href="/about" className="border border-teal/40 text-teal hover:border-teal font-bold px-7 py-3 rounded-lg transition-all text-sm">
                 About Our Company
               </Link>
@@ -225,7 +209,7 @@ export default function PortlandPage() {
           <div className="reveal">
             <span className="section-label">Why Choose Us</span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold mb-5 leading-tight">
-              Portland's Trusted IT Partner
+              Portland&apos;s Trusted IT Partner
             </h2>
             <p className="text-gray text-sm leading-relaxed mb-5">
               Businesses across Portland trust us to keep their technology secure, stable, and performing at its best.
@@ -301,10 +285,8 @@ export default function PortlandPage() {
             <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Portland IT Support — FAQs</h2>
             <p className="text-gray text-sm">Common questions from Portland businesses about our IT services.</p>
           </div>
-          <div className="reveal space-y-2">
-            {FAQS.map((faq) => (
-              <FAQItem key={faq.q} q={faq.q} a={faq.a} />
-            ))}
+          <div className="reveal">
+            <FAQSection faqs={FAQS} />
           </div>
         </div>
       </section>
@@ -324,12 +306,9 @@ export default function PortlandPage() {
             in Portland, OR and surrounding areas — no commitment, no sales pressure.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <button
-              onClick={() => setAuditOpen(true)}
-              className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm tracking-wide"
-            >
+            <AuditButton className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm tracking-wide">
               Claim Your Free Cyber Security Audit
-            </button>
+            </AuditButton>
             <a
               href="tel:+15033137121"
               className="border border-teal/40 text-cyan hover:border-teal hover:bg-teal/8 font-bold px-8 py-3.5 rounded-lg transition-all text-sm tracking-wide inline-flex items-center gap-2"
@@ -343,34 +322,7 @@ export default function PortlandPage() {
         </div>
       </section>
 
-      <StickyCTA />
-
-      <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
+      <PageClientShell />
     </>
-  );
-}
-
-function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-white/8 rounded-xl overflow-hidden">
-      <button
-        className="w-full flex justify-between items-center px-6 py-5 text-left hover:bg-white/3 transition-colors gap-4"
-        onClick={() => setOpen(!open)}
-      >
-        <span className="font-medium text-sm leading-snug">{q}</span>
-        <svg
-          className={`w-4 h-4 text-teal flex-shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
-          fill="none" stroke="currentColor" viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      {open && (
-        <div className="px-6 pb-5 text-gray text-sm leading-relaxed border-t border-white/5 pt-4">
-          {a}
-        </div>
-      )}
-    </div>
   );
 }

@@ -1,21 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
-import StickyCTA from '@/components/StickyCTA';
 import { FAQSection } from '@/components/FAQSection';
-
-function useReveal() {
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
+import PageClientShell from '@/components/PageClientShell';
+import AuditButton from '@/components/AuditButton';
 
 const SOLUTIONS = [
   {
@@ -111,9 +97,6 @@ const SOLUTIONS = [
 ];
 
 export default function SolutionsPage() {
-  useReveal();
-  const [auditOpen, setAuditOpen] = useState(false);
-
   return (
     <>
       {/* Hero */}
@@ -191,9 +174,9 @@ export default function SolutionsPage() {
             We will review your infrastructure, identify gaps, and recommend the right combination of
             services for your environment — at no cost and with no obligation.
           </p>
-          <button onClick={() => setAuditOpen(true)} className="bg-teal hover:bg-teal/90 text-white font-bold px-9 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm">
+          <AuditButton className="bg-teal hover:bg-teal/90 text-white font-bold px-9 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm">
             Schedule Your IT Assessment
-          </button>
+          </AuditButton>
         </div>
       </section>
 
@@ -217,9 +200,7 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      <StickyCTA />
-
-      <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
+      <PageClientShell />
     </>
   );
 }

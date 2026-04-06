@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+const NAV_STYLE = { backgroundColor: '#dce6f5' } as const;
+const DRAWER_STYLE = { backgroundColor: '#dce6f5', animation: 'drawerSlideIn 0.28s cubic-bezier(0.32,0.72,0,1) both' } as const;
+
 const SOLUTIONS = [
   { label: 'Managed IT Services',               href: '/solutions#managed-it' },
   { label: 'IT Support & Help Desk Services',    href: '/solutions#help-desk' },
@@ -44,7 +47,7 @@ export default function Navbar() {
         className={`sticky top-0 z-50 transition-all duration-300 border-b border-[#c8d4e8] ${
           scrolled ? 'shadow-md' : ''
         }`}
-        style={{ backgroundColor: '#dce6f5' }}
+        style={NAV_STYLE}
       >
         <div className="max-w-7xl mx-auto px-5 flex items-center justify-between h-16">
 
@@ -130,7 +133,7 @@ export default function Navbar() {
             {/* Slide-in panel from right */}
             <div
               className="absolute top-0 right-0 h-full w-4/5 max-w-xs flex flex-col pt-6 px-6 pb-8 overflow-y-auto shadow-2xl border-l border-white/10"
-              style={{ backgroundColor: '#dce6f5', animation: 'drawerSlideIn 0.28s cubic-bezier(0.32,0.72,0,1) both' }}
+              style={DRAWER_STYLE}
             >
               {/* Close button */}
               <div className="flex justify-end mb-6">

@@ -182,21 +182,21 @@ function CustomDropdown({ label, options, value, onChange }: DropdownProps) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between border-[1.5px] border-gray-400 rounded-lg px-4 bg-white cursor-pointer text-[15px] font-bold text-gray-900 min-h-[52px]"
+        className="w-full flex items-center justify-between border-[1.5px] border-gray-400 rounded-lg px-4 bg-white cursor-pointer text-[15px] font-bold text-black min-h-[52px]"
       >
         <span>{value || label}</span>
-        <svg className="w-[18px] h-[18px] text-gray-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-[18px] h-[18px] text-black shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       {open && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-md z-20 overflow-hidden">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-20 overflow-hidden">
           {options.map((opt, i) => (
             <button
               key={opt}
               type="button"
               onClick={() => { onChange(opt); setOpen(false); }}
-              className={`w-full px-4 py-[14px] text-left bg-transparent border-none cursor-pointer text-base font-medium text-gray-700 hover:bg-gray-50 ${i < options.length - 1 ? 'border-b border-gray-100' : ''}`}
+              className={`w-full px-4 py-[14px] text-left bg-transparent border-none cursor-pointer text-base font-medium text-black hover:bg-gray-50 ${i < options.length - 1 ? 'border-b border-gray-100' : ''}`}
             >
               {opt}
             </button>
@@ -209,7 +209,7 @@ function CustomDropdown({ label, options, value, onChange }: DropdownProps) {
 
 function Stars({ n, color = '#22c55e' }: StarsProps) {
   return (
-    <span style={{ color, letterSpacing: -0.5 }} className="text-sm">
+    <span style={{ color, letterSpacing: '-0.5px' }} className="text-sm">
       {'★'.repeat(n)}{'☆'.repeat(5 - n)}
     </span>
   );
@@ -223,15 +223,15 @@ function FAQItem({ q, a }: FaqItemProps) {
         className="w-full flex justify-between items-center py-5 text-left gap-4 bg-transparent border-none cursor-pointer"
         onClick={() => setOpen(!open)}
       >
-        <span className="text-gray-900 text-base font-bold leading-normal">{q}</span>
+        <span className="text-black text-base font-bold leading-normal">{q}</span>
         <svg
-          className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-black shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
           fill="none" stroke="currentColor" viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      {open && <div className="pb-5 text-gray-500 text-sm leading-relaxed">{a}</div>}
+      {open && <div className="pb-5 text-black text-sm leading-relaxed">{a}</div>}
     </div>
   );
 }
@@ -294,44 +294,52 @@ function FunnelNavbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 text-gray-700">
-        <div className="w-full px-5 h-16 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-white border-b border-[#e5e7eb]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+        <div className="w-full px-6 h-[64px] flex items-center justify-between max-w-[1280px] mx-auto">
           {/* Mobile: logo + hamburger */}
-          <div className="md:hidden flex items-center">
-            <Link href="/" className="flex items-center bg-transparent">
-              <Image src="/mainlogo.png" alt="ZERO NERDS" width={220} height={110} className="h-[110px] w-auto object-contain bg-transparent" priority />
+          <div className="md:hidden flex items-center justify-between w-full">
+            <Link href="/" className="flex items-center">
+              <Image src="/mainlogo.png" alt="ZERO NERDS" width={220} height={110} priority />
             </Link>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden bg-transparent border-none cursor-pointer pl-1 flex items-center text-gray-700"
+              className="bg-transparent border-none cursor-pointer flex items-center text-[#1a1a1a] p-1"
             >
-              <svg className={`w-5 h-5 transition-transform duration-200 ${menuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={menuOpen ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'} />
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={menuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
               </svg>
             </button>
           </div>
 
-          {/* Desktop: nav links */}
-          <div className="hidden md:flex items-center gap-8 text-[15px] text-gray-700 font-normal">
-            <Link href="/contact" className="text-gray-700 no-underline">Sign up as a pro</Link>
-            <Link href="/solutions" className="text-gray-700 no-underline">Services</Link>
-            <Link href="/about" className="text-gray-700 no-underline">About</Link>
-            <Link href="/contact" className="text-gray-700 no-underline">Inbox</Link>
+          {/* Desktop: logo left */}
+          <div className="hidden md:flex items-center">
+            <Link href="/" className="flex items-center">
+              <Image src="/mainlogo.png" alt="ZERO NERDS" width={220} height={110} priority />
+            </Link>
+          </div>
+
+          {/* Desktop: nav links right */}
+          <div className="hidden md:flex items-center gap-6">
+            <Link href="/contact" className="text-[15px] font-medium text-[#1a1a1a] no-underline hover:text-[#009fd4] transition-colors">Sign up as a pro</Link>
+            <Link href="/solutions" className="text-[15px] font-medium text-[#1a1a1a] no-underline hover:text-[#009fd4] transition-colors">Plan</Link>
+            <Link href="/about" className="text-[15px] font-medium text-[#1a1a1a] no-underline hover:text-[#009fd4] transition-colors">Team</Link>
+            <Link href="/contact" className="text-[15px] font-medium text-[#1a1a1a] no-underline hover:text-[#009fd4] transition-colors">Inbox</Link>
+            <div className="w-px h-5 bg-gray-300" />
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setDesktopDropdownOpen(!desktopDropdownOpen)}
-                className="hidden md:flex items-center gap-2 cursor-pointer bg-transparent border-none p-0"
+                className="flex items-center gap-2 cursor-pointer bg-transparent border-none p-0"
               >
-                <div className="w-8 h-8 rounded-full bg-[#29abe2] flex items-center justify-center text-white text-[11px] font-bold shrink-0">ZN</div>
-                <span className="text-[15px] text-gray-700">Client</span>
-                <svg className={`w-[14px] h-[14px] text-gray-500 transition-transform duration-200 ${desktopDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-[11px] font-bold shrink-0 tracking-wide">JX</div>
+                <span className="text-[15px] font-medium text-[#1a1a1a]">Jhon</span>
+                <svg className={`w-4 h-4 text-[#6b7280] transition-transform duration-200 ${desktopDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               {desktopDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-md min-w-[150px] overflow-hidden z-[60]">
-                  <Link href="/profile" onClick={() => setDesktopDropdownOpen(false)} className="block px-4 py-3 text-sm text-gray-900 no-underline border-b border-gray-100">Profile</Link>
-                  <Link href="/logout" onClick={() => setDesktopDropdownOpen(false)} className="block px-4 py-3 text-sm text-gray-900 no-underline">Log out</Link>
+                <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg min-w-[160px] overflow-hidden z-[60]">
+                  <Link href="/profile" onClick={() => setDesktopDropdownOpen(false)} className="block px-4 py-3 text-[14px] text-[#1a1a1a] no-underline border-b border-gray-100 hover:bg-gray-50 font-medium">Profile</Link>
+                  <Link href="/logout" onClick={() => setDesktopDropdownOpen(false)} className="block px-4 py-3 text-[14px] text-[#1a1a1a] no-underline hover:bg-gray-50 font-medium">Log out</Link>
                 </div>
               )}
             </div>
@@ -341,18 +349,18 @@ function FunnelNavbar() {
 
       {/* Mobile dropdown menu */}
       {menuOpen && (
-        <div className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-white z-[49] overflow-y-auto border-t border-gray-200">
+        <div className="md:hidden fixed top-[64px] left-0 right-0 bottom-0 bg-white z-[49] overflow-y-auto border-t border-gray-100">
           <div className="py-2">
             {mainLinks.map((link) => (
               <Link key={link.label} href={link.href} onClick={() => setMenuOpen(false)}
-                className="block px-5 py-[18px] text-[17px] font-bold text-gray-900 no-underline border-b border-gray-100">
+                className="block px-5 py-[18px] text-[17px] font-bold text-black no-underline border-b border-gray-100">
                 {link.label}
               </Link>
             ))}
             <div className="h-2 bg-gray-50 border-t border-gray-200" />
             {bottomLinks.map((link) => (
               <Link key={link.label} href={link.href} onClick={() => setMenuOpen(false)}
-                className="block px-5 py-[18px] text-[17px] font-bold text-gray-900 no-underline border-b border-gray-100">
+                className="block px-5 py-[18px] text-[17px] font-bold text-black no-underline border-b border-gray-100">
                 {link.label}
               </Link>
             ))}
@@ -381,14 +389,14 @@ function FunnelFooter() {
   ];
 
   return (
-    <footer className="bg-white border-t border-gray-200 text-gray-900 mt-16">
+    <footer className="bg-white border-t border-gray-200 text-[#1a1a1a] mt-16" style={{ fontFamily: "'DM Sans', sans-serif" }}>
       {/* Row 1 — link columns */}
       <div className="grid grid-cols-1 md:grid-cols-4 max-w-6xl mx-auto px-5 py-10 gap-8">
         {row1.map((col) => (
           <div key={col.title}>
-            <p className="font-bold text-sm text-gray-900 mb-3">{col.title}</p>
+            <p className="font-bold text-sm text-black mb-3">{col.title}</p>
             {col.links.map((l) => (
-              <Link key={l} href={col.href} className="block text-[13px] text-gray-500 no-underline mb-2">{l}</Link>
+              <Link key={l} href={col.href} className="block text-[13px] text-black no-underline mb-2">{l}</Link>
             ))}
             <Link href={col.href} className="block text-[13px] text-[#29abe2] font-semibold no-underline mt-1">Show more</Link>
           </div>
@@ -401,14 +409,14 @@ function FunnelFooter() {
       <div className="grid grid-cols-1 md:grid-cols-4 max-w-6xl mx-auto px-5 py-10 gap-8">
         {/* Brand */}
         <div>
-          <p className="font-bold text-sm text-gray-900 mb-0.5">ZERO NERDS</p>
-          <p className="font-bold text-sm text-gray-900 mb-4">Consider it done.</p>
+          <p className="font-bold text-sm text-black mb-0.5">ZERO NERDS</p>
+          <p className="font-bold text-sm text-black mb-4">Consider it done.</p>
           {['About','Partner with us','For developers','Careers','Press','Blog'].map((l) => (
-            <Link key={l} href="/about" className="block text-[13px] text-gray-500 no-underline mb-2">{l}</Link>
+            <Link key={l} href="/about" className="block text-[13px] text-black no-underline mb-2">{l}</Link>
           ))}
           <div className="flex gap-[14px] mt-4">
             {socialIcons.map((s) => (
-              <svg key={s.label} className="w-[18px] h-[18px] fill-gray-500 cursor-pointer" viewBox="0 0 24 24">
+              <svg key={s.label} className="w-[18px] h-[18px] fill-gray-900 cursor-pointer" viewBox="0 0 24 24">
                 <path d={s.path} />
               </svg>
             ))}
@@ -417,15 +425,15 @@ function FunnelFooter() {
 
         {/* Customers */}
         <div>
-          <p className="font-bold text-sm text-gray-900 mb-4">Customers</p>
+          <p className="font-bold text-sm text-black mb-4">Customers</p>
           {['How to use ZERO NERDS','Get the app','Services near me','Cost estimates','Home resource center'].map((l) => (
-            <Link key={l} href="/contact" className="block text-[13px] text-gray-500 no-underline mb-2">{l}</Link>
+            <Link key={l} href="/contact" className="block text-[13px] text-black no-underline mb-2">{l}</Link>
           ))}
         </div>
 
         {/* Pros */}
         <div>
-          <p className="font-bold text-sm text-gray-900 mb-4">Pros</p>
+          <p className="font-bold text-sm text-black mb-4">Pros</p>
           {['ZERO NERDS for pros','Sign up as a pro','Community','Pro Resources','Pro reviews','IT support app','Android app for pros'].map((l) => (
             <Link key={l} href="/solutions" className="block text-[13px] text-[#29abe2] no-underline mb-2">{l}</Link>
           ))}
@@ -433,9 +441,9 @@ function FunnelFooter() {
 
         {/* Support */}
         <div>
-          <p className="font-semibold text-sm text-gray-900 mb-4">Support</p>
+          <p className="font-semibold text-sm text-black mb-4">Support</p>
           {['Help','Safety','Terms of Use','Privacy Policy','CA Notice at Collection','Do not Sell or Share My Personal Information'].map((l) => (
-            <Link key={l} href="/contact" className="block text-[13px] text-gray-500 no-underline mb-2">{l}</Link>
+            <Link key={l} href="/contact" className="block text-[13px] text-black no-underline mb-2">{l}</Link>
           ))}
         </div>
       </div>
@@ -458,16 +466,18 @@ export default function GetStartedPage() {
   ];
 
   return (
-    <div className="bg-white min-h-screen text-gray-900">
+    <div className="bg-white min-h-screen text-[#1a1a1a]" style={{ fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <FunnelNavbar />
 
       {/* ── HERO ── */}
       <section className="relative w-full bg-[#0d1530]">
         <div className="relative w-full h-[300px] md:h-[55vh] md:max-h-[560px]">
-          <img
+          <Image
             src="https://production-next-images-cdn.thumbtack.com/i/319590363801166026/width/1920.jpeg"
             alt="IT Support"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/60" />
 
@@ -481,16 +491,16 @@ export default function GetStartedPage() {
           <div className="hidden md:flex absolute inset-0 items-center px-[60px]">
             <div className="bg-white rounded-xl shadow-2xl p-8 w-[420px] shrink-0 border border-gray-100 ml-[15%]">
               <div className="flex items-start justify-between gap-3 mb-1">
-                <h1 className="font-bold text-gray-900 text-[28px] leading-tight m-0">Find IT support in your area</h1>
+                <h1 className="font-bold text-black text-[28px] leading-tight m-0">Find IT support in your area</h1>
                 <span className="shrink-0 bg-indigo-500 text-white text-[11px] font-bold px-3 py-[6px] rounded-full whitespace-nowrap mt-0.5">18 near you</span>
               </div>
-              <p className="text-gray-400 text-[13px] mb-5 mt-1">Confirm your location to see quality pros near you.</p>
+              <p className="text-black text-[13px] mb-5 mt-1">Confirm your location to see quality pros near you.</p>
               <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-3 mb-3 bg-white">
-                <svg className="w-4 h-4 text-gray-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-black shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-400 text-[13px] mr-1">Zip code</span>
-                <input type="text" defaultValue="97205" className="flex-1 text-[13px] text-gray-900 outline-none bg-transparent border-none" />
+                <span className="text-black text-[13px] mr-1">Zip code</span>
+                <input type="text" defaultValue="97205" className="flex-1 text-[13px] text-black outline-none bg-transparent border-none" />
               </div>
               <Link href="/get-started/wizard" className="flex items-center justify-center bg-[#29abe2] text-white font-bold py-[14px] rounded-lg text-sm no-underline w-full">
                 Find a pro
@@ -501,13 +511,13 @@ export default function GetStartedPage() {
 
         {/* Mobile — form below image */}
         <div className="md:hidden bg-white p-5 border-b border-gray-100">
-          <p className="text-gray-500 text-sm mb-4">Give us a few details and we&apos;ll match you with the right pro.</p>
+          <p className="text-black text-sm mb-4">Give us a few details and we&apos;ll match you with the right pro.</p>
           <div className="flex items-center gap-2 border-[1.5px] border-gray-400 rounded-lg px-4 mb-3 bg-white h-[52px]">
-            <svg className="w-5 h-5 text-gray-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-5 h-5 text-black shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
             </svg>
-            <span className="text-gray-500 text-[15px]">Zip code</span>
-            <input type="text" defaultValue="97205" className="flex-1 text-[15px] text-gray-900 outline-none bg-transparent border-none" />
+            <span className="text-black text-[15px]">Zip code</span>
+            <input type="text" defaultValue="97205" className="flex-1 text-[15px] text-black outline-none bg-transparent border-none" />
           </div>
           <div className="flex flex-col gap-[10px] mb-[10px]">
             <CustomDropdown label="Computer issue" options={['Network issues','Software issues','Virus removal','Data recovery','Hardware repair']} value={computerIssue} onChange={setComputerIssue} />
@@ -524,17 +534,17 @@ export default function GetStartedPage() {
 
       {/* ── BREADCRUMB + TITLE ── */}
       <section className="px-5 pt-8 pb-6 border-b border-gray-100 max-w-6xl mx-auto">
-        <div className="flex items-center gap-[6px] text-xs text-gray-400 mb-4 flex-wrap">
-          <Link href="/" className="text-gray-400 no-underline">ZERO NERDS</Link>
+        <div className="flex items-center gap-[6px] text-xs text-black mb-4 flex-wrap">
+          <Link href="/" className="text-black no-underline">ZERO NERDS</Link>
           <span>›</span>
-          <Link href="/areas" className="text-gray-400 no-underline">OR</Link>
+          <Link href="/areas" className="text-black no-underline">OR</Link>
           <span>›</span>
-          <Link href="/portland" className="text-gray-400 no-underline">Portland</Link>
+          <Link href="/portland" className="text-black no-underline">Portland</Link>
           <span>›</span>
-          <span className="text-gray-700 font-medium">IT Support</span>
+          <span className="text-black font-medium">IT Support</span>
         </div>
-        <h2 className="font-bold text-[32px] text-gray-900 mb-3">IT support technicians near Portland, OR</h2>
-        <p className="text-gray-500 text-sm leading-relaxed max-w-[680px]">
+        <h2 className="font-bold text-[32px] text-black mb-3">IT support technicians near Portland, OR</h2>
+        <p className="text-black text-sm leading-relaxed max-w-[680px]">
           IT support pros in Portland, OR manage cloud infrastructure, monitor systems 24/7, and keep your business secure. They handle network setup, help desk support, and data backup so you spend less time troubleshooting and more time growing.
         </p>
       </section>
@@ -542,16 +552,16 @@ export default function GetStartedPage() {
       {/* ── TOP PROS ── */}
       <section className="px-5 py-8 border-b border-gray-100 max-w-6xl mx-auto">
         <div className="mb-4">
-          <h3 className="font-bold text-2xl text-gray-900 mb-1">Top pros for your project</h3>
+          <h3 className="font-bold text-2xl text-black mb-1">Top pros for your project</h3>
         </div>
 
         {/* Scrollable sort tabs */}
         <div className="overflow-x-auto mb-3">
           <div className="flex gap-2 pb-1 min-w-max">
             {sortTabs.map((tab, i) => (
-              <button key={tab.label} className={`shrink-0 flex items-center gap-[6px] border border-gray-200 rounded-full px-4 py-2 text-sm text-gray-900 bg-white cursor-pointer whitespace-nowrap ${i === 0 ? 'font-semibold' : 'font-normal'}`}>
+              <button key={tab.label} className={`shrink-0 flex items-center gap-[6px] border border-gray-200 rounded-full px-4 py-2 text-sm text-black bg-white cursor-pointer whitespace-nowrap ${i === 0 ? 'font-semibold' : 'font-normal'}`}>
                 {tab.icon && (
-                  <svg className="w-[14px] h-[14px] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-[14px] h-[14px] text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M6 12h12M9 17h6" />
                   </svg>
                 )}
@@ -561,28 +571,28 @@ export default function GetStartedPage() {
           </div>
         </div>
 
-        <p className="text-gray-500 text-sm mb-2">These highly recommended pros are experts, ready to help with your project.</p>
+        <p className="text-black text-sm mb-2">These highly recommended pros are experts, ready to help with your project.</p>
 
         {/* Pro listings */}
         {PROS.map((pro) => (
           <div key={pro.num} className="flex flex-col gap-4 py-6 border-b border-gray-100">
             <div className="flex gap-4">
               <div className="shrink-0">
-                <div className="w-20 h-20 md:w-[140px] md:h-[140px] rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center">
-                  <img src={pro.logo} alt={pro.name} className="w-full h-full object-cover" />
+                <div className="relative w-20 h-20 md:w-[140px] md:h-[140px] rounded-full overflow-hidden border border-gray-200 bg-gray-50">
+                  <Image src={pro.logo} alt={pro.name} fill className="object-cover" />
                 </div>
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-900 font-bold text-base mb-1">{pro.num}. {pro.name}</p>
+                    <p className="text-black font-bold text-base mb-1">{pro.num}. {pro.name}</p>
                     <div className="flex items-center gap-[6px] mb-2 flex-wrap">
                       {pro.topPro && (
                         <span className="bg-[#29abe2] text-white text-[11px] font-bold px-2 py-0.5 rounded-full">Top Pro</span>
                       )}
                       <span style={{ color: pro.ratingColor }} className="font-semibold text-[13px]">{pro.ratingLabel}</span>
                       <Stars n={pro.stars} color={pro.ratingColor} />
-                      <span className="text-gray-500 text-[13px]">({pro.reviews})</span>
+                      <span className="text-black text-[13px]">({pro.reviews})</span>
                     </div>
                     {pro.badges.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-3">
@@ -593,28 +603,28 @@ export default function GetStartedPage() {
                     )}
                     <div className="flex flex-col gap-1 mb-[10px]">
                       {pro.hires && (
-                        <span className="text-[13px] text-gray-500 flex items-center gap-[6px]">
-                          <svg className="w-[14px] h-[14px] text-gray-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <span className="text-[13px] text-black flex items-center gap-[6px]">
+                          <svg className="w-[14px] h-[14px] text-black shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                           </svg>
                           {pro.hires}
                         </span>
                       )}
-                      <span className="text-[13px] text-gray-500 flex items-center gap-[6px]">
-                        <svg className="w-[14px] h-[14px] text-gray-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <span className="text-[13px] text-black flex items-center gap-[6px]">
+                        <svg className="w-[14px] h-[14px] text-black shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                         </svg>
                         {pro.area}
                       </span>
                       {pro.onlineNow && (
-                        <span className="text-[13px] text-gray-500 flex items-center gap-[6px]">
+                        <span className="text-[13px] text-black flex items-center gap-[6px]">
                           <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
                           Online now
                         </span>
                       )}
                     </div>
                     {pro.quote && (
-                      <p className="text-[13px] text-gray-700">
+                      <p className="text-[13px] text-black">
                         {pro.quote}<strong>{pro.bold}</strong>{pro.quoteEnd}{' '}
                         <span className="text-[#29abe2] cursor-pointer text-xs">See more</span>
                       </p>
@@ -624,7 +634,7 @@ export default function GetStartedPage() {
                     <Link href="/get-started/wizard" className="inline-flex items-center bg-[#29abe2] text-white font-semibold px-5 py-[10px] rounded-[6px] text-sm no-underline whitespace-nowrap">
                       Get Free Quote
                     </Link>
-                    <a href="tel:+15033137121" className="inline-flex items-center bg-white text-gray-900 font-semibold px-5 py-[10px] rounded-[6px] text-sm no-underline whitespace-nowrap border border-gray-200">
+                    <a href="tel:+15033137121" className="inline-flex items-center bg-white text-black font-semibold px-5 py-[10px] rounded-[6px] text-sm no-underline whitespace-nowrap border border-gray-200">
                       View profile
                     </a>
                   </div>
@@ -642,7 +652,7 @@ export default function GetStartedPage() {
       <section className="px-5 py-10 border-b border-gray-100 max-w-6xl mx-auto">
         <div className="flex flex-row items-center gap-10 flex-wrap justify-center">
           <div className="text-center min-w-[200px]">
-            <h3 className="font-bold text-xl text-gray-900 leading-snug mb-5">IT Support Services<br />Cost Guide</h3>
+            <h3 className="font-bold text-xl text-black leading-snug mb-5">IT Support Services<br />Cost Guide</h3>
             <a href="tel:+15033137121" className="inline-flex items-center justify-center bg-[#29abe2] text-white font-bold px-7 py-3 rounded-[6px] text-sm no-underline">
               View cost guide
             </a>
@@ -655,8 +665,8 @@ export default function GetStartedPage() {
 
       {/* ── FAQs ── */}
       <section className="px-5 py-10 border-b border-gray-100 max-w-6xl mx-auto">
-        <h3 className="font-bold text-2xl text-gray-900 mb-[6px]">FAQs</h3>
-        <p className="text-[15px] font-bold text-gray-900 mb-6">
+        <h3 className="font-bold text-2xl text-black mb-[6px]">FAQs</h3>
+        <p className="text-[15px] font-bold text-black mb-6">
           Answers to commonly asked questions from the experts on{' '}
           <span className="text-[#29abe2]">ZERO NERDS</span>.
         </p>
@@ -668,67 +678,49 @@ export default function GetStartedPage() {
       {/* ── REVIEWS ── */}
       <section className="py-10 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-5 mb-6">
-          <h3 className="font-bold text-xl text-gray-900">Reviews for Portland IT technicians on ZERO NERDS</h3>
+          <h3 className="font-bold text-xl text-black">Reviews for Portland IT technicians on ZERO NERDS</h3>
         </div>
-        <div className="flex items-center gap-3 max-w-6xl mx-auto px-5">
-          <button
-            onClick={() => { const el = document.getElementById('reviews-carousel'); if (el) el.scrollBy({ left: -320, behavior: 'smooth' }); }}
-            className="hidden md:flex w-10 h-10 rounded-full border border-gray-200 bg-white items-center justify-center cursor-pointer shadow-sm shrink-0"
-          >
-            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <div className="flex-1 overflow-hidden relative">
-            <div
-              id="reviews-carousel"
-              className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory"
-              style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
-            >
-              <style>{`#reviews-carousel::-webkit-scrollbar { display: none; }`}</style>
-              {([...REVIEWS, null] as (Review | null)[]).map((r) =>
-                r ? (
-                  <div key={r.from} className="w-[300px] shrink-0 snap-start border border-gray-200 rounded-xl p-5 bg-white">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white text-xs font-bold shrink-0">{r.initials}</div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-900 mb-0.5">{r.from}</p>
-                        <p className="text-xs text-gray-400">{r.company}</p>
-                      </div>
-                    </div>
-                    <div className="mb-2"><Stars n={r.stars} /></div>
-                    <p className="text-[13px] text-gray-700 leading-relaxed line-clamp-3">{r.text}</p>
+        {/* Desktop: grid. Mobile: horizontal scroll */}
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="hidden md:grid md:grid-cols-3 gap-4">
+            {REVIEWS.map((r) => (
+              <div key={r.from} className="border border-gray-200 rounded-xl p-5 bg-white">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white text-xs font-bold shrink-0">{r.initials}</div>
+                  <div>
+                    <p className="text-sm font-semibold text-black mb-0.5">{r.from}</p>
+                    <p className="text-xs text-black">{r.company}</p>
                   </div>
-                ) : (
-                  <div key="cta" className="w-[300px] shrink-0 snap-start border border-blue-200 rounded-xl p-6 bg-blue-50 flex flex-col justify-center text-center">
-                    <h4 className="font-bold text-base text-gray-900 mb-2">Ready to find a pro?</h4>
-                    <p className="text-[13px] text-gray-700 leading-relaxed mb-4">See more reviews, compare prices, and hire your favorite pros all with ZERO NERDS.</p>
-                    <Link href="/get-started/wizard" className="block w-full bg-blue-600 text-white font-bold px-4 py-3 rounded-lg text-sm no-underline text-center">
-                      Get Free Quote
-                    </Link>
-                  </div>
-                )
-              )}
-            </div>
+                </div>
+                <div className="mb-2"><Stars n={r.stars} /></div>
+                <p className="text-[13px] text-black leading-relaxed">{r.text}</p>
+              </div>
+            ))}
           </div>
-
-          <button
-            onClick={() => { const el = document.getElementById('reviews-carousel'); if (el) el.scrollBy({ left: 320, behavior: 'smooth' }); }}
-            className="hidden md:flex w-10 h-10 rounded-full border border-gray-200 bg-white items-center justify-center cursor-pointer shadow-sm shrink-0"
-          >
-            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+          {/* Mobile: scrollable */}
+          <div className="md:hidden flex gap-4 overflow-x-auto pb-2">
+            {REVIEWS.map((r) => (
+              <div key={r.from} className="w-[280px] shrink-0 border border-gray-200 rounded-xl p-5 bg-white">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white text-xs font-bold shrink-0">{r.initials}</div>
+                  <div>
+                    <p className="text-sm font-semibold text-black mb-0.5">{r.from}</p>
+                    <p className="text-xs text-black">{r.company}</p>
+                  </div>
+                </div>
+                <div className="mb-2"><Stars n={r.stars} /></div>
+                <p className="text-[13px] text-black leading-relaxed line-clamp-4">{r.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── WHY HIRE ── */}
       <section className="px-5 py-14 border-b border-gray-100">
         <div className="max-w-[860px] mx-auto text-center">
-          <p className="text-sm text-gray-500 mb-2">There are 18 five-star IT Technicians near Portland, OR on ZERO NERDS.</p>
-          <h3 className="font-bold text-[28px] text-gray-900 mb-12 leading-snug">Why hire professionals at ZERO NERDS?</h3>
+          <p className="text-sm text-black mb-2">There are 18 five-star IT Technicians near Portland, OR on ZERO NERDS.</p>
+          <h3 className="font-bold text-[28px] text-black mb-12 leading-tight">Why hire professionals at ZERO NERDS?</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
             <div className="text-center">
@@ -737,8 +729,8 @@ export default function GetStartedPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h4 className="font-bold text-[15px] text-gray-900 mb-2">Flat-rate pricing</h4>
-              <p className="text-sm text-gray-500 leading-relaxed">No hidden fees — clear, predictable pricing upfront. Get cost estimates, contact pros, and even book the job — all with no surprises.</p>
+              <h4 className="font-bold text-[15px] text-black mb-2">Flat-rate pricing</h4>
+              <p className="text-sm text-black leading-relaxed">No hidden fees — clear, predictable pricing upfront. Get cost estimates, contact pros, and even book the job — all with no surprises.</p>
             </div>
 
             <div className="text-center">
@@ -747,8 +739,8 @@ export default function GetStartedPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h4 className="font-bold text-[15px] text-gray-900 mb-2">Compare prices side-by-side</h4>
-              <p className="text-sm text-gray-500 leading-relaxed">You&apos;ll know how much your project costs even before booking a pro.</p>
+              <h4 className="font-bold text-[15px] text-black mb-2">Compare prices side-by-side</h4>
+              <p className="text-sm text-black leading-relaxed">You&apos;ll know how much your project costs even before booking a pro.</p>
             </div>
 
             <div className="text-center">
@@ -757,8 +749,8 @@ export default function GetStartedPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h4 className="font-bold text-[15px] text-gray-900 mb-2">Hire with confidence</h4>
-              <p className="text-sm text-gray-500 leading-relaxed">With access to 50+ customer reviews and the pros&apos; work history, you&apos;ll have all the info you need to make a hire.</p>
+              <h4 className="font-bold text-[15px] text-black mb-2">Hire with confidence</h4>
+              <p className="text-sm text-black leading-relaxed">With access to 50+ customer reviews and the pros&apos; work history, you&apos;ll have all the info you need to make a hire.</p>
             </div>
           </div>
 

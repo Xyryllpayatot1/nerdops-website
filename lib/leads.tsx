@@ -1,11 +1,17 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ZIP_RE = /^\d{5}(-\d{4})?$/;
+
+const LEADS_KEY = 'zeronerds_leads_v2';
 
 // Analytics tracking
 export function trackEvent(eventName, properties = {}) {
   if (typeof window === 'undefined') return;
-  
+
   const event = {
     event: eventName,
     timestamp: new Date().toISOString(),
@@ -15,23 +21,28 @@ export function trackEvent(eventName, properties = {}) {
       userAgent: navigator.userAgent,
     },
   };
-  
-  // Store locally
-  const events = JSON.parse(localStorage.getItem('zeronerds_analytics') || '[]');
-  events.push(event);
-  if (events.length > 100) events.shift(); // Keep last 100 events
-  localStorage.setItem('zeronerds_analytics', JSON.stringify(events));
-  
-  // Log for debugging
+
+  const write = () => {
+    const events = JSON.parse(localStorage.getItem('zeronerds_analytics') || '[]');
+    events.push(event);
+    if (events.length > 100) events.shift();
+    localStorage.setItem('zeronerds_analytics', JSON.stringify(events));
+  };
+
+  if ('requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(write);
+  } else {
+    setTimeout(write, 0);
+  }
+
   console.log('[Analytics]', eventName, properties);
 }
 
 // Form validation utilities
 export const validators = {
   email: (value) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!value) return 'Email is required';
-    if (!regex.test(value)) return 'Please enter a valid email';
+    if (!EMAIL_RE.test(value)) return 'Please enter a valid email';
     return null;
   },
   
@@ -49,8 +60,7 @@ export const validators = {
   
   zipCode: (value) => {
     if (!value) return null; // Optional
-    const regex = /^\d{5}(-\d{4})?$/;
-    if (!regex.test(value)) return 'Please enter a valid ZIP code';
+    if (!ZIP_RE.test(value)) return 'Please enter a valid ZIP code';
     return null;
   },
 };
@@ -100,14 +110,29 @@ export function Toast({ toast }) {
   );
 }
 
+// Module-level cache for localStorage reads
+let leadsCache: ReturnType<typeof JSON.parse> | null = null;
+
 // Get leads from storage
-export function getLeadsFromStorage() {
+export function getLeadsFromStorage(): any[] {
   if (typeof window === 'undefined') return [];
-  const stored = localStorage.getItem('zeronerds_leads');
-  return stored ? JSON.parse(stored) : [];
+  // Migrate v1 → v2 once
+  if (!localStorage.getItem(LEADS_KEY) && localStorage.getItem('zeronerds_leads')) {
+    localStorage.setItem(LEADS_KEY, localStorage.getItem('zeronerds_leads')!);
+    localStorage.removeItem('zeronerds_leads');
+  }
+  if (leadsCache) return leadsCache;
+  const stored = localStorage.getItem(LEADS_KEY);
+  leadsCache = stored ? JSON.parse(stored) : [];
+  return leadsCache;
 }
 
-function normalizeLead(lead) {
+function saveLeadsToStorage(leads: any[]): void {
+  leadsCache = leads;
+  localStorage.setItem(LEADS_KEY, JSON.stringify(leads));
+}
+
+export function normalizeLead(lead) {
   return {
     id: lead.id,
     formType: lead.form_type || lead.formType,
@@ -146,11 +171,11 @@ export async function saveLeadToAPI(lead, maxRetries = 2) {
   
   // Always save to localStorage first
   leads.unshift(newLead);
-  localStorage.setItem('zeronerds_leads', JSON.stringify(leads));
-  
+  saveLeadsToStorage(leads);
+
   // Track submission
   trackEvent('lead_submitted', { formType: lead.formType, hasEmail: !!lead.email });
-  
+
   // Try to save to API with retry
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -160,13 +185,13 @@ export async function saveLeadToAPI(lead, maxRetries = 2) {
         body: JSON.stringify(lead),
         signal: AbortSignal.timeout(5000), // 5 second timeout
       });
-      
+
       if (response.ok) {
         // Mark as synced
-        const updatedLeads = getLeadsFromStorage().map(l => 
+        const updatedLeads = getLeadsFromStorage().map(l =>
           l.id === newLead.id ? { ...l, syncStatus: 'synced' } : l
         );
-        localStorage.setItem('zeronerds_leads', JSON.stringify(updatedLeads));
+        saveLeadsToStorage(updatedLeads);
         
         trackEvent('lead_synced', { formType: lead.formType });
         return { ...newLead, syncStatus: 'synced' };
@@ -193,42 +218,25 @@ export function saveLead(lead) {
     syncStatus: 'synced',
   };
   leads.unshift(newLead);
-  localStorage.setItem('zeronerds_leads', JSON.stringify(leads));
+  saveLeadsToStorage(leads);
   return newLead;
 }
 
+const fetcher = (url: string) =>
+  fetch(url, { signal: AbortSignal.timeout(5000) })
+    .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))));
+
 export function useLeads() {
-  const [leads, setLeads] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, error, isLoading, mutate } = useSWR<any[]>('/api/leads', fetcher, {
+    fallbackData: getLeadsFromStorage(),
+    onError: () => { /* silently fall through to localStorage fallback */ },
+  });
 
-  const fetchLeads = useCallback(async () => {
-    const localLeads = getLeadsFromStorage();
-    
-    try {
-      const response = await fetch('/api/leads', {
-        signal: AbortSignal.timeout(5000),
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setLeads(Array.isArray(data) ? data.map(normalizeLead) : localLeads);
-      } else {
-        setLeads(localLeads);
-      }
-    } catch (err) {
-      console.log('API not available, using local storage');
-      setLeads(localLeads);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const leads = data && Array.isArray(data)
+    ? data.map(normalizeLead)
+    : getLeadsFromStorage();
 
-  useEffect(() => {
-    fetchLeads();
-  }, [fetchLeads]);
-
-  return { leads, loading, error, refresh: fetchLeads };
+  return { leads, loading: isLoading, error, refresh: mutate };
 }
 
 // Form field component with validation

@@ -1,24 +1,11 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
-import StickyCTA from '@/components/StickyCTA';
+import Image from 'next/image';
 import { FAQSection } from '@/components/FAQSection';
+import PageClientShell from '@/components/PageClientShell';
+import AuditButton from '@/components/AuditButton';
 
-function useReveal() {
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
-
-const STICKER_H = { 1: 160, 2: 145, 3: 155, 4: 150, 5: 162, 6: 140, 7: 158, 8: 148, 9: 152, 10: 145, 11: 155, 12: 148, 13: 160, 14: 142 };
-const STICKER_ROT = { 1: -2, 2: 1.5, 3: -1, 4: 2.5, 5: 1, 6: -2.5, 7: 2, 8: -1.5, 9: 1.8, 10: -1.2, 11: 2.2, 12: -1.8, 13: 1, 14: -2.2 };
+const STICKER_H: Record<number, number> = { 1: 160, 2: 145, 3: 155, 4: 150, 5: 162, 6: 140, 7: 158, 8: 148, 9: 152, 10: 145, 11: 155, 12: 148, 13: 160, 14: 142 };
+const STICKER_ROT: Record<number, number> = { 1: -2, 2: 1.5, 3: -1, 4: 2.5, 5: 1, 6: -2.5, 7: 2, 8: -1.5, 9: 1.8, 10: -1.2, 11: 2.2, 12: -1.8, 13: 1, 14: -2.2 };
 
 function StickerFilterDef() {
   return (
@@ -38,7 +25,7 @@ function StickerFilterDef() {
   );
 }
 
-function TeamSticker({ n }) {
+function TeamSticker({ n }: { n: number }) {
   return (
     <div
       className="flex-shrink-0 relative"
@@ -49,10 +36,11 @@ function TeamSticker({ n }) {
         filter: 'url(#sticker-border) drop-shadow(0 6px 20px rgba(0,0,0,0.7))',
       }}
     >
-      <img
+      <Image
         src={`/team/face${n}.png`}
         alt="Team member"
-        className="w-full h-full object-contain object-bottom"
+        fill
+        className="object-contain object-bottom"
       />
     </div>
   );
@@ -74,9 +62,6 @@ const VALUES = [
 ];
 
 export default function AboutPage() {
-  useReveal();
-  const [auditOpen, setAuditOpen] = useState(false);
-
   return (
     <>
       {/* Hero */}
@@ -227,9 +212,9 @@ export default function AboutPage() {
             No obligation. Just honest IT advice.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <button onClick={() => setAuditOpen(true)} className="bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm">
+            <AuditButton className="bg-teal hover:bg-teal/90 text-white font-bold px-6 py-3 rounded-lg transition-all text-sm">
               Schedule Assessment
-            </button>
+            </AuditButton>
             <a href="tel:+15033137121" className="border border-teal/40 text-cyan hover:border-teal font-bold px-6 py-3 rounded-lg transition-all text-sm">
               (503) 313-7121
             </a>
@@ -257,9 +242,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <StickyCTA />
-
-      <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
+      <PageClientShell />
     </>
   );
 }

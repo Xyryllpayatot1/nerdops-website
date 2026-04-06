@@ -3,36 +3,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useLeads } from '@/lib/leads';
+import { useLeads, normalizeLead } from '@/lib/leads';
 import Image from 'next/image';
-
-function normalizeLead(lead) {
-  return {
-    id: lead.id,
-    formType: lead.form_type || lead.formType,
-    name: lead.name || lead.name,
-    firstName: lead.first_name || lead.firstName,
-    lastName: lead.last_name || lead.lastName,
-    email: lead.email,
-    phone: lead.phone,
-    companyName: lead.company_name || lead.companyName,
-    teamSize: lead.team_size || lead.teamSize,
-    zipCode: lead.zip_code || lead.zipCode,
-    mainIssue: lead.main_issue || lead.mainIssue,
-    computerType: lead.computer_type || lead.computerType,
-    deviceType: lead.device_type || lead.deviceType,
-    workLocation: lead.work_location || lead.workLocation,
-    startTime: lead.start_time || lead.startTime,
-    message: lead.message,
-    securityConcerns: lead.security_concerns || lead.securityConcerns,
-    hasSecurityTeam: lead.has_security_team || lead.hasSecurityTeam,
-    sensitiveDataAccess: lead.sensitive_data_access || lead.sensitiveDataAccess,
-    securityIncidents: lead.security_incidents || lead.securityIncidents,
-    complianceRequirements: lead.compliance_requirements || lead.complianceRequirements,
-    createdAt: lead.created_at || lead.createdAt,
-    syncStatus: lead.syncStatus || lead.sync_status,
-  };
-}
 
 function StatCard({ title, value, color, onClick }: { title: string; value: number; color?: string; onClick?: () => void }) {
   return (
@@ -496,7 +468,9 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-3">
             {filteredLeads.map((lead) => (
-              <LeadCard key={lead.id} lead={lead} onClick={() => setSelectedLead(lead)} />
+              <div key={lead.id} style={{ contentVisibility: 'auto', containIntrinsicSize: '0 88px' }}>
+                <LeadCard lead={lead} onClick={() => setSelectedLead(lead)} />
+              </div>
             ))}
           </div>
         )}

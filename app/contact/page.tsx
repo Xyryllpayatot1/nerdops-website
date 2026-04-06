@@ -1,22 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
+import dynamic from 'next/dynamic';
 import StickyCTA from '@/components/StickyCTA';
 import { FAQSection } from '@/components/FAQSection';
 import { saveLeadToAPI, trackEvent } from '@/lib/leads';
+import { useReveal } from '@/lib/use-reveal';
 
-function useReveal() {
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
+const CybersecurityAuditModal = dynamic(
+  () => import('@/components/CybersecurityAuditModal'),
+  { ssr: false }
+);
 
 export default function ContactPage() {
   useReveal();

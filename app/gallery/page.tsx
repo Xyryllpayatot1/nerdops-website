@@ -1,21 +1,7 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import CybersecurityAuditModal from '@/components/CybersecurityAuditModal';
-import StickyCTA from '@/components/StickyCTA';
 import { FAQSection } from '@/components/FAQSection';
-
-function useReveal() {
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-}
+import PageClientShell from '@/components/PageClientShell';
+import AuditButton from '@/components/AuditButton';
 
 const GALLERY_ITEMS = [
   { id: 1,  label: 'Server Room Installation',       category: 'Infrastructure', aspect: '16/9' },
@@ -43,11 +29,8 @@ const MUTED_PALETTE = [
   '#182010', '#141428', '#101c1c', '#181820',
 ];
 
-export default function GalleryPage() {
-  useReveal();
-  const [auditOpen, setAuditOpen] = useState(false);
-
-  const GalleryCard = ({ item }) => (
+function GalleryCard({ item }: { item: typeof GALLERY_ITEMS[number] }) {
+  return (
     <div
       className="relative rounded-xl overflow-hidden group cursor-default"
       style={{ aspectRatio: item.aspect, background: MUTED_PALETTE[item.id % MUTED_PALETTE.length] }}
@@ -78,7 +61,9 @@ export default function GalleryPage() {
       </div>
     </div>
   );
+}
 
+export default function GalleryPage() {
   return (
     <>
       {/* Hero */}
@@ -142,9 +127,9 @@ export default function GalleryPage() {
             Secure your Free Cyber Security Audit today.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <button onClick={() => setAuditOpen(true)} className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm">
+            <AuditButton className="bg-teal hover:bg-teal/90 text-white font-bold px-8 py-3.5 rounded-lg transition-all shadow-lg shadow-teal/20 text-sm">
               Claim Your Free Cyber Security Audit
-            </button>
+            </AuditButton>
             <a href="tel:+15033137121" className="border border-teal/40 text-cyan hover:border-teal font-bold px-8 py-3.5 rounded-lg transition-all text-sm">
               (503) 313-7121
             </a>
@@ -172,9 +157,7 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <StickyCTA />
-
-      <CybersecurityAuditModal isOpen={auditOpen} onClose={() => setAuditOpen(false)} />
+      <PageClientShell />
     </>
   );
 }
