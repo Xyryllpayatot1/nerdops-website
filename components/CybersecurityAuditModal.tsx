@@ -21,7 +21,7 @@ export default function CybersecurityAuditModal({ isOpen, onClose }) {
     securityIncidents: '',
     complianceRequirements: '',
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [toast, setToast] = useState(null);
 
   const STEPS = [
@@ -44,7 +44,7 @@ export default function CybersecurityAuditModal({ isOpen, onClose }) {
   };
 
   const validateStep = (step) => {
-    const newErrors = {};
+    const newErrors: Record<string, string> = {};
     
     if (step === 1) {
       const companyError = validators.required(formData.companyName, 'Company name');

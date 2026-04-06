@@ -91,7 +91,7 @@ export default function WizardPage() {
   const [lastName, setLastName] = useState('');
   const [checkbox, setCheckbox] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const totalSteps = STEPS.length;
   const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
@@ -123,7 +123,7 @@ export default function WizardPage() {
   };
 
   const validateContactStep = () => {
-    const newErrors = {};
+    const newErrors: Record<string, string> = {};
     if (!firstName.trim()) newErrors.firstName = 'First name is required';
     if (!lastName.trim()) newErrors.lastName = 'Last name is required';
     

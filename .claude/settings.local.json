@@ -37,7 +37,8 @@
       "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/547786898467520518/desktop/standard/400square-legacy\" -o aquilante.jpg)",
       "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/391592483043000323/desktop/standard/400square-legacy\" -o rightclick.jpg)",
       "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/575737278812815363/desktop/standard/400square-legacy\" -o fixophile.jpg)",
-      "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/575070050008834063/desktop/standard/400square-legacy\" -o j3legacy.jpg)"
+      "Bash(curl -sL \"https://production-next-images-cdn.thumbtack.com/i/575070050008834063/desktop/standard/400square-legacy\" -o j3legacy.jpg)",
+      "Bash(npx next:*)"
     ]
   }
 }

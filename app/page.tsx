@@ -398,7 +398,7 @@ function WizardModal({ isOpen, onClose }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [toast, setToast] = useState(null);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const STEPS = [
     {
@@ -455,7 +455,7 @@ function WizardModal({ isOpen, onClose }) {
   };
 
   const validateContactStep = () => {
-    const newErrors = {};
+    const newErrors: Record<string, string> = {};
     if (!firstName.trim()) newErrors.firstName = 'First name is required';
     if (!lastName.trim()) newErrors.lastName = 'Last name is required';
     

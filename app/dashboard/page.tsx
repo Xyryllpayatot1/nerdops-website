@@ -34,7 +34,7 @@ function normalizeLead(lead) {
   };
 }
 
-function StatCard({ title, value, color, onClick }) {
+function StatCard({ title, value, color, onClick }: { title: string; value: number; color?: string; onClick?: () => void }) {
   return (
     <button
       onClick={onClick}
@@ -56,7 +56,7 @@ function LeadCard({ lead, onClick }) {
   const formatTime = (dateStr) => {
     const date = new Date(dateStr);
     const now = new Date();
-    const diffMs = now - date;
+    const diffMs = now.getTime() - date.getTime();
     const diffMins = Math.floor(diffMs / 60000);
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
@@ -319,7 +319,7 @@ export default function DashboardPage() {
     thisWeek: normalizedLeads.filter(l => {
       const d = new Date(l.createdAt);
       const now = new Date();
-      return (now - d) / (1000 * 60 * 60 * 24) <= 7;
+      return (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24) <= 7;
     }).length,
   }), [normalizedLeads]);
 
@@ -340,7 +340,7 @@ export default function DashboardPage() {
       result = result.filter(lead => lead.formType === activeTab);
     }
 
-    result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     return result;
   }, [normalizedLeads, searchTerm, activeTab]);
